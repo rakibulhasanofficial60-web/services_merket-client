@@ -1,0 +1,52 @@
+[
+  {
+    "image": "https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg",
+    "name": "Maldives Getaway Resort",
+    "rating": "4.8/5",
+    "booking": "18k bookings",
+    "subheading": "Luxury beach experience",
+    "text1": "Overwater villas with ocean views",
+    "text2": "Private snorkeling & diving sessions",
+    "text3": "Complimentary sunset cruise included"
+  },
+  {
+    "image": "https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg",
+    "name": "Paris City Tour",
+    "rating": "4.6/5",
+    "booking": "25k bookings",
+    "subheading": "Explore the City of Love",
+    "text1": "Visit Eiffel Tower & Louvre Museum",
+    "text2": "Romantic Seine River cruise",
+    "text3": "Guided walking tour through Montmartre"
+  },
+  {
+    "image": "https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg",
+    "name": "African Safari Adventure",
+    "rating": "4.9/5",
+    "booking": "9.8k bookings",
+    "subheading": "Wildlife and nature at its best",
+    "text1": "Morning and evening safari rides",
+    "text2": "Luxury tents with campfire dinners",
+    "text3": "Professional wildlife photography guide"
+  },
+  {
+    "image": "https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg",
+    "name": "Tokyo Experience Package",
+    "rating": "4.7/5",
+    "booking": "15k bookings",
+    "subheading": "Modern meets tradition",
+    "text1": "Explore Shibuya & Asakusa",
+    "text2": "Authentic sushi-making class",
+    "text3": "Stay at a traditional ryokan"
+  },
+  {
+    "image": "https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg",
+    "name": "Swiss Alps Escape",
+    "rating": "4.9/5",
+    "booking": "12k bookings",
+    "subheading": "Snowy peaks and cozy cabins",
+    "text1": "Scenic train ride through the Alps",
+    "text2": "Skiing and snowboarding included",
+    "text3": "Relax at mountain-view spa resort"
+  }
+]
