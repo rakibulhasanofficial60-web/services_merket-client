@@ -3,9 +3,11 @@ import Navbar from "../routes/pages/shared/Navbar/Navbar";
 
 const Main = () => {
     return (
-        <div className="max-w-[1500px] mx-auto bg-white text-gray-600">
+        <div className="mx-auto bg-white text-gray-600">
             <Navbar></Navbar>
-            <Outlet></Outlet>
+            <div className="max-w-[950px] mx-auto">
+                <Outlet></Outlet>
+            </div>
         </div>
     );
 };

@@ -9,7 +9,7 @@ const useAllServices = () => {
             return data;
         },
     });
-    
+
     return [services, isLoading, error, refetch];
 };
 
