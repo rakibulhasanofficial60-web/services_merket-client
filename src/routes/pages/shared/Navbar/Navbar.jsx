@@ -13,7 +13,7 @@ const Navbar = () => {
     // </div>
 
     return (
-        <div className="md:px-20 navbar shadow-sm md:flex md:justify-center md:items-center">
+        <div className="md:px-12 navbar shadow-md md:flex md:justify-center md:items-center">
             <div className="navbar-start flex items-center">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -35,7 +35,7 @@ const Navbar = () => {
 
 
             <div className="navbar-end mr-4 md:w-[100px]">
-                {user ? <button className="btn bg-white text-gray-500 border-0 shadow-xs">Log Out</button> : <button className="btn bg-white text-gray-500 border-0 shadow-xs">Login</button>}
+                {user ? <button className="btn bg-white text-gray-500 border-0 shadow-xs">Log Out</button> : <button className="btn bg-white text-[#5D4F52] border-0 shadow-xs font-bold">Login</button>}
             </div>
         </div >
     );

@@ -1,52 +1,171 @@
-[
-  {
-    "image": "https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg",
-    "name": "Maldives Getaway Resort",
-    "rating": "4.8/5",
-    "booking": "18k bookings",
-    "subheading": "Luxury beach experience",
-    "text1": "Overwater villas with ocean views",
-    "text2": "Private snorkeling & diving sessions",
-    "text3": "Complimentary sunset cruise included"
-  },
-  {
-    "image": "https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg",
-    "name": "Paris City Tour",
-    "rating": "4.6/5",
-    "booking": "25k bookings",
-    "subheading": "Explore the City of Love",
-    "text1": "Visit Eiffel Tower & Louvre Museum",
-    "text2": "Romantic Seine River cruise",
-    "text3": "Guided walking tour through Montmartre"
-  },
-  {
-    "image": "https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg",
-    "name": "African Safari Adventure",
-    "rating": "4.9/5",
-    "booking": "9.8k bookings",
-    "subheading": "Wildlife and nature at its best",
-    "text1": "Morning and evening safari rides",
-    "text2": "Luxury tents with campfire dinners",
-    "text3": "Professional wildlife photography guide"
-  },
-  {
-    "image": "https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg",
-    "name": "Tokyo Experience Package",
-    "rating": "4.7/5",
-    "booking": "15k bookings",
-    "subheading": "Modern meets tradition",
-    "text1": "Explore Shibuya & Asakusa",
-    "text2": "Authentic sushi-making class",
-    "text3": "Stay at a traditional ryokan"
-  },
-  {
-    "image": "https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg",
-    "name": "Swiss Alps Escape",
-    "rating": "4.9/5",
-    "booking": "12k bookings",
-    "subheading": "Snowy peaks and cozy cabins",
-    "text1": "Scenic train ride through the Alps",
-    "text2": "Skiing and snowboarding included",
-    "text3": "Relax at mountain-view spa resort"
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Data fetched successfully",
+  "data": {
+    "service": {
+      "id": "u98765",
+      "image": "https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg",
+      "title": "Holiday Homes",
+      "rating": "4.6",
+      "booking": "18k",
+      "subHeading": "From cozy cottages to beach villas",
+      "description": {
+        "des1": "Find your perfect getaway.",
+        "des2": "From cozy cottages to beach villas.",
+        "des3": "Enjoy comfort, style, and great hospitality."
+      }
+    },
+    "serviceType": [
+      {
+        "image": "image2",
+        "title": "family",
+        "propertyType": [
+          {
+            "image": "image2",
+            "title": "apartment",
+            "description": "Spacious family apartments",
+            "startFrom": "189",
+            "propertyItems": [
+              {
+                "image": "image2",
+                "title": "Comfort Apartment",
+                "description": "Large living area with balcony",
+                "studio": "No",
+                "price": "189",
+                "included": [
+                  {
+                    "feature1": "Wi-Fi",
+                    "feature2": "Kids Zone",
+                    "feature3": "Smart TV"
+                  }
+                ]
+              },
+              {
+                "image": "image2",
+                "title": "Family Deluxe",
+                "description": "Fully furnished apartment",
+                "price": "219",
+                "included": [
+                  {
+                    "feature1": "Kitchen",
+                    "feature2": "Breakfast Included",
+                    "feature3": "Parking"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "image": "image2",
+            "title": "villa",
+            "description": "Perfect villas for family vacations",
+            "startFrom": "279",
+            "propertyItems": [
+              {
+                "image": "image2",
+                "title": "Sunrise Villa",
+                "description": "Beautiful sunrise view every morning",
+                "price": "299",
+                "included": [
+                  {
+                    "feature1": "Private Pool",
+                    "feature2": "Garden",
+                    "feature3": "Free Breakfast"
+                  }
+                ]
+              },
+              {
+                "image": "image2",
+                "title": "Palm Villa",
+                "description": "Spacious villa surrounded by trees",
+                "price": "339",
+                "included": [
+                  {
+                    "feature1": "Wi-Fi",
+                    "feature2": "BBQ Area",
+                    "feature3": "Playground"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "image": "image2",
+        "title": "romantic",
+        "propertyType": [
+          {
+            "image": "image2",
+            "title": "apartment",
+            "description": "Perfect for couples and honeymooners",
+            "startFrom": "209",
+            "propertyItems": [
+              {
+                "image": "image2",
+                "title": "Couple Suite",
+                "description": "Romantic suite with jacuzzi",
+                "price": "229",
+                "included": [
+                  {
+                    "feature1": "Jacuzzi",
+                    "feature2": "Sea View",
+                    "feature3": "Breakfast"
+                  }
+                ]
+              },
+              {
+                "image": "image2",
+                "title": "Dream Apartment",
+                "description": "Luxury and privacy combined",
+                "price": "259",
+                "included": [
+                  {
+                    "feature1": "Smart TV",
+                    "feature2": "Mini Bar",
+                    "feature3": "Wi-Fi"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "image": "image2",
+            "title": "villa",
+            "description": "Romantic villas with luxury amenities",
+            "startFrom": "319",
+            "propertyItems": [
+              {
+                "image": "image2",
+                "title": "Lover’s Retreat",
+                "description": "Private villa designed for couples",
+                "price": "359",
+                "included": [
+                  {
+                    "feature1": "Private Pool",
+                    "feature2": "Candlelight Dinner",
+                    "feature3": "Spa Access"
+                  }
+                ]
+              },
+              {
+                "image": "image2",
+                "title": "Secret Villa",
+                "description": "Hidden paradise for lovebirds",
+                "price": "379",
+                "included": [
+                  {
+                    "feature1": "Sea View",
+                    "feature2": "Wi-Fi",
+                    "feature3": "Jacuzzi"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
-]
+}
