@@ -7,7 +7,7 @@ const Card = ({ service }) => {
     const [showModal, setShowModal] = useState(false);
 
     return (
-        <div className="shadow-md overflow-hidden bg-white">
+        <div className="overflow-hidden bg-white">
             {/* Image Section */}
             <img
                 className="object-cover w-full h-64"
@@ -50,7 +50,7 @@ const Card = ({ service }) => {
             {/* Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-2xl shadow-lg p-6 w-[90%] max-w-md relative">
+                    <div className="bg-white rounded-2xl p-6 w-[90%] max-w-md relative">
                         {/* Close Button */}
                         <button
                             className="absolute top-3 right-4 text-gray-600 hover:text-black text-xl"
