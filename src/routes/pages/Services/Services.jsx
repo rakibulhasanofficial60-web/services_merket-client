@@ -9,7 +9,6 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import dirhum from '../../../assets/icon/dirhum.png';
 
-
 const Services = () => {
     const [services] = useAllServices();
     const [showInput, setShowInput] = useState(false);
@@ -25,7 +24,7 @@ const Services = () => {
         setPromo("");
         setShowInput(false);
     };
-    console.log(services);
+    
     return (
         <div>
             <ServiceDetails></ServiceDetails>
@@ -47,7 +46,7 @@ const Services = () => {
                         </div>
 
                         {/* 👉 Slider Section */}
-                        <div className="px-6 sticky top-[64px] z-40 bg-white shadow-sm py-2">
+                        <div className="px-6 sticky top-16 z-40 bg-white shadow-sm py-2">
                             <div className="w-full flex items-center justify-center">
                                 {/* left arrow */}
                                 <button
@@ -63,7 +62,7 @@ const Services = () => {
                                 {/* slider container */}
                                 <div
                                     id="btn-slider"
-                                    className="flex items-center overflow-x-auto no-scrollbar snap-x snap-mandatory gap-2 py-2 w-full max-w-5xl"
+                                    className="flex items-center overflow-x-auto    no-scrollbar snap-x snap-mandatory gap-2 py-2 w-full"
                                 >
                                     {Array.from({ length: 7 }).map((_, i) => (
                                         <button
@@ -354,7 +353,7 @@ const Services = () => {
                 </div>
             )}
             <div className="bottom-0 fixed left-0 w-full bg-white shadow-md flex justify-center py-4">
-                <button className="btn text-lg font-medium w-[270px] border-0 bg-[#ED6329]">NEXT <IoArrowForward className="text-xl" /></button>
+                <button className="btn text-lg font-medium w-[270px] border-0 z-50 bg-[#ED6329]">NEXT <IoArrowForward className="text-xl" /></button>
             </div>
         </div>
     );
