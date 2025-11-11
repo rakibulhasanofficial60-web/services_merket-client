@@ -3,7 +3,6 @@ import { FaStar } from "react-icons/fa";
 import { IoInformationCircleOutline } from "react-icons/io5";
 
 const Card = ({ service }) => {
-    // console.log(service);
     const { image, title, rated, totalBooking, des1, des2, des3 } = service;
     const [showModal, setShowModal] = useState(false);
 

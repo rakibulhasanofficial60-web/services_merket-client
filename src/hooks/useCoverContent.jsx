@@ -1,16 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 
-const useButton = () => {
-    const { data: button = [], isLoading: loadingButton, error, refetch } = useQuery({
-        queryKey: ["all-button"],
+const useCoverContent = () => {
+
+    const { data: content = [], isLoading } = useQuery({
+        queryKey: ['all-content'],
         queryFn: async () => {
             const res = await fetch("https://job-task-nu.vercel.app/api/v1/service-type");
             const data = await res.json();
+            console.log(data);
             return data.Data;
         }
-    });
-
-    return [button, loadingButton, error, refetch];
+    })
+    
+    return [content, isLoading];
 };
 
-export default useButton;
+export default useCoverContent;

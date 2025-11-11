@@ -1,9 +1,10 @@
-const Cover = ({ image, title }) => {
+const Cover = ({ content }) => {
+
     return (
         <section
             className="relative w-full h-72 md:h-[130px] lg:h-[200px] bg-center bg-cover rounded-md overflow-hidden"
-            style={{ backgroundImage: `url(${image})` }}
-            aria-label={title}
+            style={{ backgroundImage: `url(${content.image})` }}
+            aria-label={content.title}
         >
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/40 rounded-md" />
             <div
@@ -14,7 +15,7 @@ const Cover = ({ image, title }) => {
             />
             <div className="absolute inset-0 flex items-center justify-center px-6">
                 <h1 className="text-white text-2xl font-semibold text-center leading-tight drop-shadow-lg">
-                    {title}
+                    {content.title}
                 </h1>
             </div>
 

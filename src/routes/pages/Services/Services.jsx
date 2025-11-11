@@ -1,22 +1,22 @@
 import { useState } from "react";
 import Card from "../../../components/Card/Card";
 import useAllServices from "../../../hooks/useAllServices";
-import Cover from "../../../components/Cover/Cover";
-import { MdOutlineArrowRightAlt } from "react-icons/md";
-import { IoAddSharp, IoArrowForward } from "react-icons/io5";
+import { IoArrowForward } from "react-icons/io5";
 import ServiceDetails from "../../../components/ServiceDetails/ServiceDetails";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import dirhum from '../../../assets/icon/dirhum.png';
 import useButton from "../../../hooks/useButton";
+import CoverContent from "../../../components/CoverContent/CoverContent";
+import Cover from "../../../components/Cover/Cover";
+import useCoverContent from "../../../hooks/useCoverContent";
 
 const Services = () => {
     const [services] = useAllServices();
-    const [button, isLoading] = useButton();
+    const [content] = useCoverContent();
+    const [button] = useButton();
     const [showInput, setShowInput] = useState(false);
     const [promo, setPromo] = useState("");
-    const [showModal, setShowModal] = useState(false);
-
 
     const handleApply = () => {
         if (promo.trim() === "") {
@@ -33,6 +33,8 @@ const Services = () => {
             <ServiceDetails></ServiceDetails>
             <div className="md:flex gap-8 mt-5">
                 <div className="md:w-[60%] mb-4 space-y-4">
+
+                    {/* search bar input  */}
                     <div>
                         <input
                             className="py-3 border border-[#01788E] w-full rounded-md px-7 focus:outline-none"
@@ -42,16 +44,17 @@ const Services = () => {
                     </div>
 
                     <div className="shadow-md">
+                        {/* main card cover || main services */}
                         <div>
                             {
                                 services?.map(service => <Card key={service.id} service={service}> </Card>)
                             }
                         </div>
 
-                        {/* 👉 Slider Section */}
+                        {/* Slider Section for button */}
                         <div className="px-6 sticky top-16 z-10 bg-white shadow-sm py-2">
                             <div className="w-full flex items-center justify-center">
-                                {/* left arrow */}
+                                {/* left arrow btn */}
                                 <button
                                     onClick={() => {
                                         const scroller = document.getElementById("btn-slider");
@@ -62,9 +65,8 @@ const Services = () => {
                                     <IoIosArrowBack />
                                 </button>
 
-                                {/* slider container */}
 
-                                {/* 🎠 Slider Section */}
+                                {/* slider button main */}
                                 <div
                                     id="btn-slider"
                                     className="flex items-center overflow-x-auto no-scrollbar snap-x snap-mandatory gap-2 py-2 w-full"
@@ -88,9 +90,7 @@ const Services = () => {
                                         ))}
                                 </div>
 
-
-
-                                {/* right arrow */}
+                                {/* right arrow btn*/}
                                 <button
                                     onClick={() => {
                                         const scroller = document.getElementById("btn-slider");
@@ -103,158 +103,26 @@ const Services = () => {
                             </div>
                         </div>
 
-
-
-                        {/* content card */}
-                        <div className="p-6">
-                            <Cover
-                                image="https://sm-voucherify.imgix.net/org_SrqsCH8kZnYvfL7HaV5WvLgQXSm2q24v/img_RklW8OH70i1ND5VJ02aowwbS.jpeg?auto=format,compress&q=46&fit=crop&w=490&h=180&quot"
-                                title="General"
-                            />
-
-                            {/* cover content */}
-                            <div className="mt-4">
-                                <div className="flex border-b pb-2.5 border-gray-400">
-                                    {/* Left Side: Image */}
-                                    <img
-                                        src="https://sm-voucherify.imgix.net/org_SrqsCH8kZnYvfL7HaV5WvLgQXSm2q24v/img_p0lYxObH5UVbOr3dwW5Gy0ip.jpeg?auto=format,compress&q=46&fit=crop&w=150&h=150"
-                                        alt="Card Image"
-                                        className="w-20 h-20 object-cover rounded-sm"
-                                    />
-
-                                    {/* Right Side: Content */}
-                                    <div className="ml-5 space-y-1">
-                                        <h2 className="text-[18px] font-semibold mb-2">
-                                            Apartment
-                                        </h2>
-                                        <p className="text-gray-600 text-[13px]">
-                                            Get rid of common pests and keep your home safe with our easy and effective General Pest Control service.
-                                        </p>
-                                        <div className="flex justify-between items-center">
-                                            <p className="text-gray-600 flex items-center gap-2 text-[14px]">
-                                                Starting from <span className="font-bold flex items-center"><img className="h-[15px] w-[15px]" src={dirhum} alt="" /> 299</span>
-                                            </p>
-                                            {/* 🔹 Modal Trigger Button */}
-                                            <button
-                                                onClick={() => setShowModal(true)}
-                                                className="cursor-pointer border px-2.5 py-1 flex items-center gap-2 text-[#01788E] rounded-xs hover:bg-gray-100 transition text-[13px]"
-                                            >
-                                                6 Options <MdOutlineArrowRightAlt />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="space-y-2 mt-7">
-                                <h3 className="font-medium">
-                                    Do you have any special instructions? (Optional)
-                                </h3>
-                                <textarea
-                                    className="textarea text-sm bg-white w-full focus:outline-none border border-black"
-                                    placeholder="Example: Please mention any sensitivities, allergies or any particular requirements you may have."
-                                ></textarea>
-                            </div>
+                        {/* content card | btn data === load data */}
+                        <div className="p-6 border-4">
+                            {
+                                content.map((content, idx) => <div key={idx} className="space-y-6">
+                                    <Cover content={content}></Cover>
+                                    <CoverContent content={content}></CoverContent>
+                                </div>)
+                            }
                         </div>
-                        <div className="p-6">
-                            <Cover
-                                image="https://sm-voucherify.imgix.net/org_SrqsCH8kZnYvfL7HaV5WvLgQXSm2q24v/img_RklW8OH70i1ND5VJ02aowwbS.jpeg?auto=format,compress&q=46&fit=crop&w=490&h=180&quot"
-                                title="General"
-                            />
 
-                            {/* cover content */}
-                            <div className="mt-4">
-                                <div className="flex border-b pb-2.5 border-gray-400">
-                                    {/* Left Side: Image */}
-                                    <img
-                                        src="https://sm-voucherify.imgix.net/org_SrqsCH8kZnYvfL7HaV5WvLgQXSm2q24v/img_p0lYxObH5UVbOr3dwW5Gy0ip.jpeg?auto=format,compress&q=46&fit=crop&w=150&h=150"
-                                        alt="Card Image"
-                                        className="w-20 h-20 object-cover rounded-sm"
-                                    />
 
-                                    {/* Right Side: Content */}
-                                    <div className="ml-5 space-y-1">
-                                        <h2 className="text-[18px] font-semibold mb-2">
-                                            Apartment
-                                        </h2>
-                                        <p className="text-gray-600 text-[13px]">
-                                            Get rid of common pests and keep your home safe with our easy and effective General Pest Control service.
-                                        </p>
-                                        <div className="flex justify-between items-center">
-                                            <p className="text-gray-600 flex items-center gap-2 text-[14px]">
-                                                Starting from <span className="font-bold flex items-center"><img className="h-[15px] w-[15px]" src={dirhum} alt="" /> 299</span>
-                                            </p>
-                                            {/* 🔹 Modal Trigger Button */}
-                                            <button
-                                                onClick={() => setShowModal(true)}
-                                                className="cursor-pointer border px-2.5 py-1 flex items-center gap-2 text-[#01788E] rounded-xs hover:bg-gray-100 transition text-[13px]"
-                                            >
-                                                6 Options <MdOutlineArrowRightAlt />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="space-y-2 mt-7">
-                                <h3 className="font-medium">
-                                    Do you have any special instructions? (Optional)
-                                </h3>
-                                <textarea
-                                    className="textarea text-sm bg-white w-full focus:outline-none border border-black"
-                                    placeholder="Example: Please mention any sensitivities, allergies or any particular requirements you may have."
-                                ></textarea>
-                            </div>
-                        </div>
-                        <div className="p-6">
-                            <Cover
-                                image="https://sm-voucherify.imgix.net/org_SrqsCH8kZnYvfL7HaV5WvLgQXSm2q24v/img_RklW8OH70i1ND5VJ02aowwbS.jpeg?auto=format,compress&q=46&fit=crop&w=490&h=180&quot"
-                                title="General"
-                            />
-
-                            {/* cover content */}
-                            <div className="mt-4">
-                                <div className="flex border-b pb-2.5 border-gray-400">
-                                    {/* Left Side: Image */}
-                                    <img
-                                        src="https://sm-voucherify.imgix.net/org_SrqsCH8kZnYvfL7HaV5WvLgQXSm2q24v/img_p0lYxObH5UVbOr3dwW5Gy0ip.jpeg?auto=format,compress&q=46&fit=crop&w=150&h=150"
-                                        alt="Card Image"
-                                        className="w-20 h-20 object-cover rounded-sm"
-                                    />
-
-                                    {/* Right Side: Content */}
-                                    <div className="ml-5 space-y-1">
-                                        <h2 className="text-[18px] font-semibold mb-2">
-                                            Apartment
-                                        </h2>
-                                        <p className="text-gray-600 text-[13px]">
-                                            Get rid of common pests and keep your home safe with our easy and effective General Pest Control service.
-                                        </p>
-                                        <div className="flex justify-between items-center">
-                                            <p className="text-gray-600 flex items-center gap-2 text-[14px]">
-                                                Starting from <span className="font-bold flex items-center"><img className="h-[15px] w-[15px]" src={dirhum} alt="" /> 299</span>
-                                            </p>
-                                            {/* 🔹 Modal Trigger Button */}
-                                            <button
-                                                onClick={() => setShowModal(true)}
-                                                className="cursor-pointer border px-2.5 py-1 flex items-center gap-2 text-[#01788E] rounded-xs hover:bg-gray-100 transition text-[13px]"
-                                            >
-                                                6 Options <MdOutlineArrowRightAlt />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="space-y-2 mt-7">
-                                <h3 className="font-medium">
-                                    Do you have any special instructions? (Optional)
-                                </h3>
-                                <textarea
-                                    className="textarea text-sm bg-white w-full focus:outline-none border border-black"
-                                    placeholder="Example: Please mention any sensitivities, allergies or any particular requirements you may have."
-                                ></textarea>
-                            </div>
+                        {/* Do you have any special instructions? (Optional) */}
+                        < div className="space-y-2 p-6" >
+                            <h3 className="font-medium">
+                                Do you have any special instructions? (Optional)
+                            </h3>
+                            <textarea
+                                className="textarea text-sm bg-white w-full focus:outline-none border border-black"
+                                placeholder="Example: Please mention any sensitivities, allergies or any particular requirements you may have."
+                            ></textarea>
                         </div>
                     </div>
                 </div>
@@ -315,55 +183,8 @@ const Services = () => {
                 </div>
             </div>
 
-            {/* 🔹 Modal Section */}
-            {showModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg shadow-lg w-[90%] md:w-[600px] p-6 relative">
-                        <div>
-                            <button
-                                onClick={() => setShowModal(false)}
-                                className="absolute top-3 font-bold cursor-pointer right-3 text-gray-500 hover:text-black"
-                            >
-                                ✕
-                            </button>
-                            <h2 className="text-xl font-semibold mb-4 text-center border-dashed border-b pb-3">Villa</h2>
-                            <div>
-                                <div className="flex items-center border-b pb-2.5 border-gray-400">
-                                    {/* Left Side: Image */}
-                                    <img
-                                        src="https://i.postimg.cc/zXc0ZJSk/pexels-pixabay-258154.jpg"
-                                        alt="Card Image"
-                                        className="w-28 h-28 object-cover rounded-sm"
-                                    />
 
-                                    {/* Right Side: Content */}
-                                    <div className="ml-5 space-y-3">
-                                        <h2 className="text-[18px] font-semibold mb-2">
-                                            Card Title
-                                        </h2>
-                                        <p className="text-gray-600 text-[14px]">
-                                            This is a sample description for your card content. You
-                                            can put any text or details here.
-                                        </p>
-                                        <div className="flex justify-between items-center">
-                                            <p className="text-gray-600 text-[14px] font-bold">AED299</p>
-                                            {/* 🔹 Modal Trigger Button */}
-                                            <button
-                                                onClick={() => setShowModal(true)}
-                                                className="cursor-pointer border px-2 py-1 flex items-center gap-2 text-[#01788E] rounded-xs hover:bg-gray-100 transition"
-                                            >
-                                                Add <IoAddSharp />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button className="mt-4 btn w-full bg-[#ED6329] border-0 uppercase">Continue</button>
-                    </div>
-                </div>
-            )}
-
+            {/* button next  */}
             <div className="pb-20 md:pb-[70px]">
                 <div className="bottom-0 fixed left-0 w-full z-50 bg-white shadow-md flex justify-center py-4">
                     <button className="btn text-lg font-medium w-full md:w-[270px] border-0 bg-[#ED6329] text-white">NEXT <IoArrowForward className="text-xl" /></button>
