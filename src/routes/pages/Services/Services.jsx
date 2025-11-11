@@ -104,7 +104,7 @@ const Services = () => {
                         </div>
 
                         {/* content card | btn data === load data */}
-                        <div className="p-6 border-4">
+                        <div className="p-6">
                             {
                                 content.map((content, idx) => <div key={idx} className="space-y-6">
                                     <Cover content={content}></Cover>
