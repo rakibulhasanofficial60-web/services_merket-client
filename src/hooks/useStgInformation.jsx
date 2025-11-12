@@ -1,65 +1,62 @@
 import { useState, useEffect } from "react";
 
-
 const useStgInformation = (key = "item") => {
-    const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
-    // 🔸 Load data from localStorage on mount
-    useEffect(() => {
-        try {
-            const stored = JSON.parse(localStorage.getItem(key)) || [];
-            setData(stored);
-        } catch (err) {
-            console.error("Error reading from localStorage:", err);
-            setData([]);
-        }
+  // 🔹 Initial load
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem(key)) || [];
+    setData(stored);
+  }, [key]);
 
-        // 🔸 Listen for localStorage updates across tabs
-        const handleStorageChange = (event) => {
-            if (event.key === key) {
-                try {
-                    const updated = JSON.parse(event.newValue) || [];
-                    setData(updated);
-                } catch {
-                    setData([]);
-                }
-            }
-        };
-
-        window.addEventListener("storage", handleStorageChange);
-        return () => window.removeEventListener("storage", handleStorageChange);
-    }, [key]);
-
-    // 🔹 Helper to save and sync data
-    const saveData = (newData) => {
-        try {
-            localStorage.setItem(key, JSON.stringify(newData));
-            setData(newData);
-        } catch (err) {
-            console.error("Error writing to localStorage:", err);
-        }
+  // 🔹 Listen to "storage" events (cross-tab sync)
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === key) {
+        const updated = JSON.parse(event.newValue) || [];
+        setData(updated);
+      }
     };
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, [key]);
 
-    // 🔹 Add a new item ID (avoid duplicates)
-    const addItem = (id) => {
-        if (!data.includes(id)) {
-            const updated = [...data, id];
-            saveData(updated);
-        }
+  // ✅ Custom event listener for *same-tab updates*
+  useEffect(() => {
+    const handleCustomUpdate = () => {
+      const stored = JSON.parse(localStorage.getItem(key)) || [];
+      setData(stored);
     };
+    window.addEventListener("localStorageUpdated", handleCustomUpdate);
+    return () => window.removeEventListener("localStorageUpdated", handleCustomUpdate);
+  }, [key]);
 
-    // 🔹 Remove an item by ID
-    const removeItem = (id) => {
-        const updated = data.filter((itemId) => itemId !== id);
-        saveData(updated);
-    };
+  // 🔸 Save data and trigger re-render manually
+  const saveData = (newData) => {
+    localStorage.setItem(key, JSON.stringify(newData));
+    setData(newData);
 
-    // 🔹 Clear all saved data
-    const clearData = () => {
-        saveData([]);
-    };
+    // 🔥 Fire custom event so other components know data changed
+    window.dispatchEvent(new Event("localStorageUpdated"));
+  };
 
-    return { data, addItem, removeItem, clearData };
+  const addItem = (id) => {
+    const stored = JSON.parse(localStorage.getItem(key)) || [];
+    if (!stored.includes(id)) {
+      const updated = [...stored, id];
+      saveData(updated);
+    }
+  };
+
+  const removeItem = (id) => {
+    const stored = JSON.parse(localStorage.getItem(key)) || [];
+    const updated = stored.filter((itemId) => itemId !== id);
+    saveData(updated);
+  };
+
+  const clearData = () => saveData([]);
+
+  return { data, addItem, removeItem, clearData };
 };
 
 export default useStgInformation;

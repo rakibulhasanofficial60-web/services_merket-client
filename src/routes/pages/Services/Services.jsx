@@ -15,16 +15,15 @@ import useStgInformation from "../../../hooks/useStgInformation";
 const Services = () => {
     const [services] = useAllServices();
     const [content] = useCoverContent();
-    const { data } = useStgInformation();
     const [button] = useButton();
     const [showInput, setShowInput] = useState(false);
     const [promo, setPromo] = useState("");
     const [activeId, setActiveId] = useState(null);
     const observer = useRef(null);
+    const { data } = useStgInformation();
 
     useEffect(() => {
         const sections = document.querySelectorAll("[id^='content-']");
-
         observer.current = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -34,13 +33,9 @@ const Services = () => {
                     }
                 });
             },
-            {
-                threshold: 0.5, // content-এর ৫০% viewport এ এলেই active হবে
-            }
+            { threshold: 0.5 }
         );
-
         sections.forEach((section) => observer.current.observe(section));
-
         return () => {
             if (observer.current) {
                 sections.forEach((section) => observer.current.unobserve(section));
@@ -58,6 +53,7 @@ const Services = () => {
         setShowInput(false);
     };
 
+    // 🔹 LocalStorage IDs অনুযায়ী API ফেচ
     const itemQueries = useQueries({
         queries: data.map((id) => ({
             queryKey: ["item-summary", id],
@@ -72,12 +68,14 @@ const Services = () => {
         })),
     });
 
+    // 🔹 সব ফেচকৃত ডাটা সংগ্রহ
+    const itemSummary = itemQueries.map((q) => q.data).filter(Boolean);
 
-    const itemSummary = itemQueries
-        .map((q) => q.data)
-        .filter(Boolean);
-
-    console.log(itemSummary);
+    // 🔹 হিসাব
+    const subtotal = itemSummary.reduce((acc, item) => acc + Number(item?.price || 0), 0);
+    const serviceCharge = subtotal > 0 ? 20 : 0;
+    const vat = subtotal * 0.05;
+    const total = subtotal + serviceCharge + vat;
 
     return (
         <div>
@@ -85,13 +83,11 @@ const Services = () => {
             <div className="md:flex gap-8 mt-5">
                 {/* ---------- Left Section ---------- */}
                 <div className="md:w-[60%] mb-4 space-y-4">
-                    {/* 🔍 Search bar */}
                     <input
                         className="py-3 border border-[#01788E] w-full rounded-md px-7 focus:outline-none"
                         type="text"
                         placeholder="Search services..."
                     />
-
                     <div className="shadow-md">
                         {/* Main Card Cover */}
                         <div>
@@ -100,10 +96,9 @@ const Services = () => {
                             ))}
                         </div>
 
-                        {/* ---------- Slider Button Section ---------- */}
+                        {/* Slider Button Section */}
                         <div className="px-6 sticky top-16 z-10 bg-white shadow-sm py-2">
                             <div className="w-full flex items-center justify-center">
-                                {/* Left Arrow */}
                                 <button
                                     onClick={() => {
                                         const scroller = document.getElementById("btn-slider");
@@ -114,7 +109,6 @@ const Services = () => {
                                     <IoIosArrowBack />
                                 </button>
 
-                                {/* Buttons Slider */}
                                 <div
                                     id="btn-slider"
                                     className="flex items-center overflow-x-auto no-scrollbar snap-x snap-mandatory gap-2 py-2 w-full"
@@ -130,7 +124,7 @@ const Services = () => {
                                                     setActiveId(btn.id);
                                                     const section = document.getElementById(`content-${btn.id}`);
                                                     if (section) {
-                                                        const yOffset = -100; // sticky header fix
+                                                        const yOffset = -100;
                                                         const y =
                                                             section.getBoundingClientRect().top +
                                                             window.scrollY +
@@ -154,7 +148,6 @@ const Services = () => {
                                         ))}
                                 </div>
 
-                                {/* Right Arrow */}
                                 <button
                                     onClick={() => {
                                         const scroller = document.getElementById("btn-slider");
@@ -167,7 +160,7 @@ const Services = () => {
                             </div>
                         </div>
 
-                        {/* ---------- Content Section ---------- */}
+                        {/* Content Section */}
                         <div className="p-6">
                             {content.map((item, idx) => (
                                 <div
@@ -181,7 +174,7 @@ const Services = () => {
                             ))}
                         </div>
 
-                        {/* ---------- Special Instructions ---------- */}
+                        {/* Special Instructions */}
                         <div className="space-y-2 p-6">
                             <h3 className="font-medium">
                                 Do you have any special instructions? (Optional)
@@ -195,23 +188,44 @@ const Services = () => {
                 </div>
 
                 {/* ---------- Right Summary Section ---------- */}
-                <div className="md:w-[35%] h-[300px] sticky top-20 self-start shadow-md rounded-md">
+                <div className="md:w-[35%] text-gray-600 sticky top-20 self-start shadow-md rounded-md">
                     <div className="p-4">
                         <h2 className="text-xl font-medium mb-1.5">Summary</h2>
-                        <div className="flex justify-between items-center border-b border-gray-400 pb-2">
-                            <h3 className="font-semibold text-sm">Service Details</h3>
-                            <h3 className="text-[13px] font-semibold">ABC</h3>
-                        </div>
-                        <div className="mt-2 flex justify-between items-center border-b border-gray-400 pb-3">
-                            <h3 className="font-semibold text-sm">Date & Time</h3>
-                            <h3 className="font-semibold text-sm">Nov,12/25</h3>
-                        </div>
-                        <div className="mt-2 flex justify-between items-center border-b border-gray-400 pb-3">
-                            <h3 className="font-semibold text-sm">Payment Details</h3>
-                            <h3 className="font-semibold text-sm">$ 200</h3>
+
+                        {/* 🔹 Service Details */}
+                        <div className="border-b border-gray-400 pb-1.5">
+                            <h3 className="font-semibold text-sm mb-2">Service Details</h3>
+                            <ul className="space-y-1">
+                                {itemSummary.map((item) => (
+                                    <li
+                                        key={item.id}
+                                        className="flex justify-between text-sm"
+                                    >
+                                        <span className="font-medium text-[14px]">{item.title} X 1</span>
+                                        <span className="flex items-center gap-1 font-semibold">
+                                            <img
+                                                src={dirhum}
+                                                alt=""
+                                                className="w-3.5 h-3.5 mt-[1px]"
+                                            />
+                                            {item.price}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
 
+                        {/* date and time  */}
+                        <div className="border-b border-gray-400 mt-2">
+                            <h3 className="font-semibold text-sm mb-2">Date & Time</h3>
+
+                        </div>
+
+
+
+                        {/* 🔹 Discount Section */}
                         <div className="mt-2 border-b border-gray-400 pb-3">
+                            <h2 className="font-semibold text-sm mb-2.5">Payment Details</h2>
                             {!showInput && (
                                 <div className="flex justify-between items-center">
                                     <h3 className="text-sm font-semibold">Discount</h3>
@@ -243,11 +257,37 @@ const Services = () => {
                             )}
                         </div>
 
-                        <div className="mt-2 flex justify-between items-center border-b border-gray-400 pb-3">
+                        {/* 🔹 Service Charges & VAT */}
+                        {
+                            itemSummary.length > 0 && <div className="mt-2 border-b border-gray-400 pb-3 space-y-1">
+                                <div className="flex justify-between text-sm">
+                                    <span className="font-semibold">Service Charges</span>
+                                    <span className="flex items-center gap-1 font-semibold">
+                                        <img src={dirhum} className="w-3.5 h-3.5" alt="" />
+                                        {serviceCharge}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="font-semibold">VAT (5%)</span>
+                                    <span className="flex items-center gap-1 font-semibold">
+                                        <img src={dirhum} className="w-3.5 h-3.5" alt="" />
+                                        {vat.toFixed(2)}
+                                    </span>
+                                </div>
+                            </div>
+                        }
+
+                        {/* 🔹 Total */}
+                        <div className="mt-2 flex justify-between items-center">
                             <h3 className="font-semibold">Total To Pay</h3>
-                            <p className="text-gray-600 gap-2 text-[17px]">
+                            <p className="gap-2 text-[17px]">
                                 <span className="font-bold flex items-center">
-                                    <img className="h-[17px] w-[17px] mt-[3px]" src={dirhum} alt="" /> 299
+                                    <img
+                                        className="h-[17px] w-[17px] mt-[3px]"
+                                        src={dirhum}
+                                        alt=""
+                                    />{" "}
+                                    {total.toFixed(2)}
                                 </span>
                             </p>
                         </div>

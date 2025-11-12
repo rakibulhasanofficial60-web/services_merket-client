@@ -10,7 +10,7 @@ const ContentModal = ({ setShowModal, property }) => {
         const savedItems = JSON.parse(localStorage.getItem("item")) || [];
         const initialQuantities = {};
         savedItems.forEach((id) => {
-            initialQuantities[id] = 1; // সব saved item quantity = 1
+            initialQuantities[id] = 1;
         });
         setQuantities(initialQuantities);
     }, []);
@@ -19,7 +19,7 @@ const ContentModal = ({ setShowModal, property }) => {
     const handleAdd = (id) => {
         setQuantities((prev) => ({
             ...prev,
-            [id]: 1, // সর্বদা 1 থাকবে
+            [id]: 1,
         }));
 
         const savedItems = JSON.parse(localStorage.getItem("item")) || [];
