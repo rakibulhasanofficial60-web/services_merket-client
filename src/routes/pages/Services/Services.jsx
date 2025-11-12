@@ -9,18 +9,19 @@ import useButton from "../../../hooks/useButton";
 import CoverContent from "../../../components/CoverContent/CoverContent";
 import Cover from "../../../components/Cover/Cover";
 import useCoverContent from "../../../hooks/useCoverContent";
+import { useQueries } from "@tanstack/react-query";
+import useStgInformation from "../../../hooks/useStgInformation";
 
 const Services = () => {
     const [services] = useAllServices();
     const [content] = useCoverContent();
+    const { data } = useStgInformation();
     const [button] = useButton();
     const [showInput, setShowInput] = useState(false);
     const [promo, setPromo] = useState("");
     const [activeId, setActiveId] = useState(null);
-
     const observer = useRef(null);
 
-    // ✅ Auto Active Scroll logic
     useEffect(() => {
         const sections = document.querySelectorAll("[id^='content-']");
 
@@ -47,7 +48,6 @@ const Services = () => {
         };
     }, [content]);
 
-    // ✅ Promo Apply
     const handleApply = () => {
         if (promo.trim() === "") {
             alert("Please enter a promo code!");
@@ -58,10 +58,30 @@ const Services = () => {
         setShowInput(false);
     };
 
+    const itemQueries = useQueries({
+        queries: data.map((id) => ({
+            queryKey: ["item-summary", id],
+            queryFn: async () => {
+                const res = await fetch(
+                    `https://job-task-nu.vercel.app/api/v1/property-items/${id}`
+                );
+                const json = await res.json();
+                return json?.Data;
+            },
+            enabled: !!id,
+        })),
+    });
+
+
+    const itemSummary = itemQueries
+        .map((q) => q.data)
+        .filter(Boolean);
+
+    console.log(itemSummary);
+
     return (
         <div>
             <ServiceDetails />
-
             <div className="md:flex gap-8 mt-5">
                 {/* ---------- Left Section ---------- */}
                 <div className="md:w-[60%] mb-4 space-y-4">

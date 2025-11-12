@@ -7,7 +7,7 @@ const useCoverContent = () => {
         queryFn: async () => {
             const res = await fetch("https://job-task-nu.vercel.app/api/v1/service-type");
             const data = await res.json();
-            console.log(data);
+            // console.log(data);
             return data.Data;
         }
     })
