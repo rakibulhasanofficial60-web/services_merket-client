@@ -10,7 +10,7 @@ import CoverContent from "../../../components/CoverContent/CoverContent";
 import Cover from "../../../components/Cover/Cover";
 import useCoverContent from "../../../hooks/useCoverContent";
 import { useQueries } from "@tanstack/react-query";
-import useStgInformation from "../../../hooks/useStgInformation";
+import { useItem } from "../../../provider/ItemProvider";
 
 const Services = () => {
     const [services] = useAllServices();
@@ -20,7 +20,8 @@ const Services = () => {
     const [promo, setPromo] = useState("");
     const [activeId, setActiveId] = useState(null);
     const observer = useRef(null);
-    const { data } = useStgInformation();
+    const { data } = useItem();
+
 
     useEffect(() => {
         const sections = document.querySelectorAll("[id^='content-']");
@@ -206,7 +207,7 @@ const Services = () => {
                                             <img
                                                 src={dirhum}
                                                 alt=""
-                                                className="w-3.5 h-3.5 mt-[1px]"
+                                                className="w-3.5 h-3.5 mt-px"
                                             />
                                             {item.price}
                                         </span>
