@@ -3,7 +3,7 @@ import MapComponent from './SelectMap';
 // ম্যাপ কম্পোনেন্টের জন্য একটি ডামি কম্পোনেন্ট ধরে নেওয়া হলো
 // import MapComponent from './MapComponent'; 
 
-const Map = () => {
+const AddressSelection = () => {
   const [showMap, setShowMap] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState({
     name: "Jessy",
@@ -105,4 +105,4 @@ const Map = () => {
   );
 };
 
-export default Map;
+export default AddressSelection;

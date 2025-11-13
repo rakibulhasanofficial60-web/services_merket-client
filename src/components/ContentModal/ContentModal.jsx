@@ -133,7 +133,7 @@ const ContentModal = ({ setShowModal, property }) => {
                     )}
                 </div>
 
-                <button className="mt-5 btn w-full bg-[#ED6329] border-0 uppercase text-white font-semibold py-2 rounded-md">
+                <button onClick={() => setShowModal(false)} className="mt-5 btn w-full bg-[#ED6329] border-0 uppercase text-white font-semibold py-2 rounded-md">
                     Continue
                 </button>
             </div>
