@@ -16,13 +16,15 @@ const Services = () => {
             <div className="md:flex gap-8 mt-5">
 
                 {/* ---------- Left Section services ---------- */}
-                <div className="md:w-[60%] mb-4 space-y-4">
-                    <input
-                        className="py-3 border border-[#01788E] w-full rounded-md px-7 focus:outline-none"
+                <div className="md:w-[60%] md:mb-4 md:space-y-4">
+                    <div className="p-4 md:p-0">
+                        <input
+                        className="py-2 md:py-3 px-3 border border-[#01788E] w-full rounded-md md:px-7 focus:outline-none"
                         type="text"
                         placeholder="Search services..."
                     />
-                    <div className="shadow-md">
+                    </div>
+                    <div className="shadow-md rounded-xl">
                         {/* Main Card Cover */}
                         <div>
                             {services?.map((service) => (
@@ -31,7 +33,7 @@ const Services = () => {
                         </div>
 
                         {/* Slider Button Section */}
-                        <div className="px-6 sticky top-16 z-10 bg-white shadow-sm py-2">
+                        <div className="md:px-9 sticky md:top-16 z-10 bg-white md:py-2">
                             <div className="w-full flex items-center justify-center">
                                 <button
                                     onClick={() => {
@@ -68,8 +70,8 @@ const Services = () => {
                                                 }}
                                                 className={`snap-start shrink-0 min-w-[120px] md:min-w-[140px] lg:min-w-40 px-3 py-1 rounded-full border border-[#01788E] text-[#01788E] flex items-center gap-2.5 cursor-pointer transition-colors duration-300
                                                      ${activeId === btn.id
-                                                        ? "bg-red-500 text-white"
-                                                        : "bg-white hover:bg-[#01788E] hover:text-white"
+                                                        ? "text-[#ED6329] border-[#ED6329] border-2 bg-[#FFF2EE]"
+                                                        : "bg-white"
                                                     }`}
                                             >
                                                 <img
@@ -95,7 +97,7 @@ const Services = () => {
                         </div>
 
                         {/* Content Section */}
-                        <div className="p-6">
+                        <div className="px-3 md:px-9 mt-3.5">
                             {content.map((item, idx) => (
                                 <div
                                     key={idx}
@@ -109,7 +111,7 @@ const Services = () => {
                         </div>
 
                         {/* Special Instructions */}
-                        <div className="space-y-2 p-6">
+                        <div className="space-y-2 px-3 pb-4 md:px-9 md:pb-6">
                             <h3 className="font-medium">
                                 Do you have any special instructions? (Optional)
                             </h3>

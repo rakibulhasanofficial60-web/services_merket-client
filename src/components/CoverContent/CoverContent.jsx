@@ -40,7 +40,7 @@ const CoverContent = ({ content }) => {
                             {property.description}
                         </p>
 
-                        <div className="flex justify-between items-center">
+                        <div className="md:flex justify-between md:gap-0 items-center">
                             <p className="text-gray-600 flex items-center gap-2 text-[14px]">
                                 Starting from{" "}
                                 <span className="font-bold flex items-center">

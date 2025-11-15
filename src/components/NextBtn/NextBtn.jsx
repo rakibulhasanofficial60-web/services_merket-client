@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { IoArrowForward } from "react-icons/io5";
 
-const NextBtn = ({ path, disabled }) => {
+const NextBtn = ({ path, disabled, name = 'NEXT' }) => {
     const navigate = useNavigate();
 
     return (
@@ -14,7 +14,7 @@ const NextBtn = ({ path, disabled }) => {
                         ${disabled ? "bg-gray-300 cursor-not-allowed" : "bg-[#ED6329] text-white"}
                     `}
                 >
-                    NEXT <IoArrowForward className="text-xl" />
+                    {name} <IoArrowForward className="text-xl" />
                 </button>
             </div>
         </div>
