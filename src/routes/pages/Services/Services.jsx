@@ -1,78 +1,21 @@
-import { useState } from "react";
 import { useSummary } from "../../../provider/SummaryProvider";
-import { useNavigate } from "react-router-dom";
 import ServiceDetails from "../../../components/ServiceDetails/ServiceDetails";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Summery from "../../../components/Summery/Summery";
-import { IoArrowForward } from "react-icons/io5";
 import Cover from "../../../components/Cover/Cover";
 import CoverContent from "../../../components/CoverContent/CoverContent";
 import Card from "../../../components/Card/Card";
+import NextBtn from "../../../components/NextBtn/NextBtn";
 
 const Services = () => {
-    const navigate = useNavigate();
-    // const [services] = useAllServices();
-    // const [content] = useCoverContent();
-    // const [button] = useButton();
-    const [showInput, setShowInput] = useState(false);
-    const { services, button, setActiveId, activeId, content, itemSummary, total, vat, serviceCharge } = useSummary();
+    const { services, button, setActiveId, activeId, content, itemSummary, total, vat, serviceCharge, showInput, setShowInput } = useSummary();
 
-    // const [activeId, setActiveId] = useState(null);
-    // const observer = useRef(null);
-    // const { data } = useItem();
-
-
-    // useEffect(() => {
-    //     const sections = document.querySelectorAll("[id^='content-']");
-    //     observer.current = new IntersectionObserver(
-    //         (entries) => {
-    //             entries.forEach((entry) => {
-    //                 if (entry.isIntersecting) {
-    //                     const visibleId = entry.target.getAttribute("id").replace("content-", "");
-    //                     setActiveId(visibleId);
-    //                 }
-    //             });
-    //         },
-    //         { threshold: 0.5 }
-    //     );
-    //     sections.forEach((section) => observer.current.observe(section));
-    //     return () => {
-    //         if (observer.current) {
-    //             sections.forEach((section) => observer.current.unobserve(section));
-    //         }
-    //     };
-    // }, [content]);
-
-
-
-    // 🔹 LocalStorage IDs অনুযায়ী API ফেচ
-    // const itemQueries = useQueries({
-    //     queries: data.map((id) => ({
-    //         queryKey: ["item-summary", id],
-    //         queryFn: async () => {
-    //             const res = await fetch(
-    //                 `https://job-task-nu.vercel.app/api/v1/property-items/${id}`
-    //             );
-    //             const json = await res.json();
-    //             return json?.Data;
-    //         },
-    //         enabled: !!id,
-    //     })),
-    // });
-
-    // 🔹 সব ফেচকৃত ডাটা সংগ্রহ
-    // const itemSummary = itemQueries.map((q) => q.data).filter(Boolean);
-
-    // 🔹 হিসাব
-    // const subtotal = itemSummary.reduce((acc, item) => acc + Number(item?.price || 0), 0);
-    // const serviceCharge = subtotal > 0 ? 20 : 0;
-    // const vat = subtotal * 0.05;
-    // const total = subtotal + serviceCharge + vat;
 
     return (
         <div>
             <ServiceDetails title="Service Details" currentStep={1} />
             <div className="md:flex gap-8 mt-5">
+
                 {/* ---------- Left Section services ---------- */}
                 <div className="md:w-[60%] mb-4 space-y-4">
                     <input
@@ -179,20 +122,12 @@ const Services = () => {
                     </div>
                 </div>
 
-
-
                 {/* ---------- Right Section summery ---------- */}
                 <Summery itemSummary={itemSummary} total={total} showInput={showInput} setShowInput={setShowInput} vat={vat} serviceCharge={serviceCharge}></Summery>
             </div>
 
             {/* ---------- Bottom NEXT Button ---------- */}
-            <div className="pb-20 md:pb-[70px]">
-                <div className="bottom-0 fixed left-0 w-full z-30 bg-white shadow-md flex justify-center py-4">
-                    <button onClick={() => navigate("/address")} className="btn text-lg font-medium w-full md:w-[270px] border-0 bg-[#ED6329] text-white">
-                        NEXT <IoArrowForward className="text-xl" />
-                    </button>
-                </div>
-            </div>
+            <NextBtn path='/address'></NextBtn>
         </div>
     );
 };

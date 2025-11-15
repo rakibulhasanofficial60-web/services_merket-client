@@ -46,10 +46,7 @@ const Summery = ({ total, showInput, setShowInput, vat, itemSummary, serviceChar
                 {/* date and time  */}
                 <div className="border-b border-gray-400 mt-2">
                     <h3 className="font-semibold text-sm mb-2">Date & Time</h3>
-
                 </div>
-
-
 
                 {/* 🔹 Discount Section */}
                 <div className="mt-2 border-b border-gray-400 pb-3">

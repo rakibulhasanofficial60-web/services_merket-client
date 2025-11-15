@@ -5,8 +5,6 @@ import useButton from "../hooks/useButton";
 import { useItem } from "./ItemProvider";
 import { useQueries } from "@tanstack/react-query";
 
-
-
 const SummaryContext = createContext();
 
 export const SummaryProvider = ({ children }) => {

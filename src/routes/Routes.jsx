@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from "../layout/Main";
 import Home from "./pages/Home/Home/Home";
 import Address from "./pages/Address/Address";
+import DateTime from "./pages/DateTime/DateTime";
+import Confirmation from "./pages/Confirmation/Confirmation";
 
 export const router = createBrowserRouter([
     {
@@ -18,11 +20,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/date-time',
-                element: <Address></Address>
+                element: <DateTime></DateTime>
             },
             {
                 path: '/confirmation',
-                element: <Address></Address>
+                element: <Confirmation></Confirmation>
             },
         ]
     }
