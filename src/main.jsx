@@ -5,7 +5,7 @@ import { RouterProvider } from 'react-router-dom'
 import { router } from './routes/Routes.jsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ItemProvider } from './provider/ItemProvider.jsx'
-// import { SummaryProvider } from './provider/SummaryProvider.jsx'
+import { SummaryProvider } from './provider/SummaryProvider.jsx'
 
 const queryClient = new QueryClient();
 
@@ -13,9 +13,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ItemProvider>
-        {/* <SummaryProvider> */}
-        <RouterProvider router={router}></RouterProvider>
-        {/* </SummaryProvider> */}
+        <SummaryProvider>
+          <RouterProvider router={router}></RouterProvider>
+        </SummaryProvider>
       </ItemProvider>
     </QueryClientProvider>
   </StrictMode>,

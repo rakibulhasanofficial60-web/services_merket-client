@@ -1,55 +1,72 @@
-// import { createContext, useContext, useEffect, useState } from "react";
-// import { useItem } from "./ItemProvider";
-// import { useQueries } from "@tanstack/react-query";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import useAllServices from "../hooks/useAllServices";
+import useCoverContent from "../hooks/useCoverContent";
+import useButton from "../hooks/useButton";
+import { useItem } from "./ItemProvider";
+import { useQueries } from "@tanstack/react-query";
 
 
-// const SummaryContext = createContext();
 
-// export const SummaryProvider = ({ children }) => {
-//     const { data } = useItem(); // ✅ selected item IDs
-//     const [summary, setSummary] = useState({
-//         items: [],
-//         subtotal: 0,
-//         serviceCharge: 0,
-//         vat: 0,
-//         total: 0,
-//     });
+const SummaryContext = createContext();
 
-//     // 🔹 Fetch all item details
-//     const itemQueries = useQueries({
-//         queries: data.map((id) => ({
-//             queryKey: ["item-summary", id],
-//             queryFn: async () => {
-//                 const res = await fetch(`https://job-task-nu.vercel.app/api/v1/property-items/${id}`);
-//                 const json = await res.json();
-//                 return json?.Data;
-//             },
-//             enabled: !!id,
-//         })),
-//     });
+export const SummaryProvider = ({ children }) => {
+    const [services] = useAllServices();
+    const [content] = useCoverContent();
+    const [button] = useButton();
+    const [showInput, setShowInput] = useState(false);
 
-//     const itemSummary = itemQueries.map((q) => q.data).filter(Boolean);
+    const [activeId, setActiveId] = useState(null);
+    const observer = useRef(null);
+    const { data } = useItem();
 
-//     useEffect(() => {
-//         const subtotal = itemSummary.reduce((acc, item) => acc + Number(item?.price || 0), 0);
-//         const serviceCharge = subtotal > 0 ? 20 : 0;
-//         const vat = subtotal * 0.05;
-//         const total = subtotal + serviceCharge + vat;
+    useEffect(() => {
+        const sections = document.querySelectorAll("[id^='content-']");
+        observer.current = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const visibleId = entry.target.getAttribute("id").replace("content-", "");
+                        setActiveId(visibleId);
+                    }
+                });
+            },
+            { threshold: 0.5 }
+        );
+        sections.forEach((section) => observer.current.observe(section));
+        return () => {
+            if (observer.current) {
+                sections.forEach((section) => observer.current.unobserve(section));
+            }
+        };
+    }, [content]);
 
-//         setSummary({
-//             items: itemSummary,
-//             subtotal,
-//             serviceCharge,
-//             vat,
-//             total,
-//         });
-//     }, [itemQueries.map((q) => q.data)]); // 👈 updates when fetched
+    const itemQueries = useQueries({
+        queries: data.map((id) => ({
+            queryKey: ["item-summary", id],
+            queryFn: async () => {
+                const res = await fetch(
+                    `https://job-task-nu.vercel.app/api/v1/property-items/${id}`
+                );
+                const json = await res.json();
+                return json?.Data;
+            },
+            enabled: !!id,
+        })),
+    });
 
-//     return (
-//         <SummaryContext.Provider value={summary, itemSummary}>
-//             {children}
-//         </SummaryContext.Provider>
-//     );
-// };
+    const itemSummary = itemQueries.map((q) => q.data).filter(Boolean);
 
-// export const useSummary = () => useContext(SummaryContext);
+    const subtotal = itemSummary.reduce((acc, item) => acc + Number(item?.price || 0), 0);
+    const serviceCharge = subtotal > 0 ? 20 : 0;
+    const vat = subtotal * 0.05;
+    const total = subtotal + serviceCharge + vat;
+
+    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge };
+    return (
+        <SummaryContext.Provider value={summeryInfo}>
+            {children}
+        </SummaryContext.Provider>
+    );
+};
+
+export const useSummary = () => useContext(SummaryContext);
