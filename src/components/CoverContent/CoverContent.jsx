@@ -11,18 +11,17 @@ const CoverContent = ({ content }) => {
         ? content.propertyType
         : [];
 
-    // 🔹 Function to handle click anywhere on card
     const handleOpenModal = (property) => {
         setSelectedProperty(property);
         setShowModal(true);
     };
 
     return (
-        <div>
+        <div className="">
             {properties.map((property, idx) => (
                 <div
                     key={idx}
-                    onClick={() => handleOpenModal(property)} // 🔹 Whole div clickable
+                    onClick={() => handleOpenModal(property)}
                     className="flex border-b pb-2.5 border-gray-400 mb-6 cursor-pointer hover:bg-gray-50 transition"
                 >
                     {/* Left Side: Image */}

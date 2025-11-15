@@ -6,7 +6,7 @@ const Cover = ({ content }) => {
             style={{ backgroundImage: `url(${content.image})` }}
             aria-label={content.title}
         >
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/40 rounded-md" />
+            <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/25 to-black/40 rounded-md" />
             <div
                 className="absolute inset-0 pointer-events-none rounded-md"
                 style={{
@@ -19,7 +19,7 @@ const Cover = ({ content }) => {
                 </h1>
             </div>
 
-            <div className="absolute left-0 right-0 bottom-0 h-6 bg-gradient-to-t from-black/30 to-transparent rounded-b-md" />
+            <div className="absolute left-0 right-0 bottom-0 h-6 bg-linear-to-t from-black/30 to-transparent rounded-b-md" />
         </section>
     );
 };

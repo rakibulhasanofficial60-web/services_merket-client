@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoInformationCircleOutline } from "react-icons/io5";
+// import { useItem } from "../../provider/ItemProvider";
 
 const Card = ({ service }) => {
     const { image, title, rated, totalBooking, des1, des2, des3 } = service;
     const [showModal, setShowModal] = useState(false);
+    // const { data } = useItem();
+
 
     return (
         <div className="overflow-hidden bg-white">
@@ -40,11 +43,11 @@ const Card = ({ service }) => {
                 </div>
 
                 {/* Warning Message */}
-                <div className="bg-[#F8D7DA] rounded-md py-2 mt-5">
+                {/* {data.length < 1 && <div className="bg-[#F8D7DA] rounded-md py-2 mt-5">
                     <p className="text-red-500 text-center text-sm">
                         Please select any service to continue
                     </p>
-                </div>
+                </div>} */}
             </div>
 
             {/* Modal */}
@@ -61,7 +64,7 @@ const Card = ({ service }) => {
 
                         {/* Modal Content */}
                         <h2 className="text-xl font-semibold border-b border-dashed pb-4">
-                           Our {title} service includes:: 
+                            Our {title} service includes::
                         </h2>
                         <div className="space-y-2 text-gray-700 p-4">
                             <li>{des1}</li>

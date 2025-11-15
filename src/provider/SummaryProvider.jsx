@@ -12,10 +12,11 @@ export const SummaryProvider = ({ children }) => {
     const [content] = useCoverContent();
     const [button] = useButton();
     const [showInput, setShowInput] = useState(false);
-
     const [activeId, setActiveId] = useState(null);
     const observer = useRef(null);
     const { data } = useItem();
+    const [address, setAddress] = useState("");
+
 
     useEffect(() => {
         const sections = document.querySelectorAll("[id^='content-']");
@@ -59,7 +60,7 @@ export const SummaryProvider = ({ children }) => {
     const vat = subtotal * 0.05;
     const total = subtotal + serviceCharge + vat;
 
-    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge };
+    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress };
     return (
         <SummaryContext.Provider value={summeryInfo}>
             {children}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import dirhum from '../../assets/icon/dirhum.png'
 
 
-const Summery = ({ total, showInput, setShowInput, vat, itemSummary, serviceCharge }) => {
+const Summery = ({ total, showInput, setShowInput, vat, itemSummary, serviceCharge, address }) => {
     const [promo, setPromo] = useState("");
 
     const handleApply = () => {
@@ -47,6 +47,15 @@ const Summery = ({ total, showInput, setShowInput, vat, itemSummary, serviceChar
                 <div className="border-b border-gray-400 mt-2">
                     <h3 className="font-semibold text-sm mb-2">Date & Time</h3>
                 </div>
+
+                {/* Address Section */}
+                {address && (
+                    <div className="mt-2 border-b border-gray-400 pb-2">
+                        <h3 className="font-semibold text-sm mb-1">Address</h3>
+                        <p className="text-[14px] text-gray-700">{address}</p>
+                    </div>
+                )}
+
 
                 {/* 🔹 Discount Section */}
                 <div className="mt-2 border-b border-gray-400 pb-3">

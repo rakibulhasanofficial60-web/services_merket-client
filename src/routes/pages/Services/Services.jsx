@@ -10,7 +10,6 @@ import NextBtn from "../../../components/NextBtn/NextBtn";
 const Services = () => {
     const { services, button, setActiveId, activeId, content, itemSummary, total, vat, serviceCharge, showInput, setShowInput } = useSummary();
 
-
     return (
         <div>
             <ServiceDetails title="Service Details" currentStep={1} />
@@ -127,7 +126,10 @@ const Services = () => {
             </div>
 
             {/* ---------- Bottom NEXT Button ---------- */}
-            <NextBtn path='/address'></NextBtn>
+            <NextBtn
+                path="/address"
+                disabled={itemSummary.length === 0}
+            />
         </div>
     );
 };
