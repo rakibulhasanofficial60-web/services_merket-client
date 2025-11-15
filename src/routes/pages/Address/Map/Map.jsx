@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import MapComponent from './SelectMap';
+// import MapComponent from './SelectMap';
 
 const AddressSelection = ({ setAddress }) => {
   const [showMap, setShowMap] = useState(false);

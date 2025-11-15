@@ -16,6 +16,8 @@ export const SummaryProvider = ({ children }) => {
     const observer = useRef(null);
     const { data } = useItem();
     const [address, setAddress] = useState("");
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
 
 
     useEffect(() => {
@@ -60,7 +62,8 @@ export const SummaryProvider = ({ children }) => {
     const vat = subtotal * 0.05;
     const total = subtotal + serviceCharge + vat;
 
-    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress };
+    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime };
+
     return (
         <SummaryContext.Provider value={summeryInfo}>
             {children}

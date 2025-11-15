@@ -2,7 +2,7 @@ import { useState } from 'react';
 import dirhum from '../../assets/icon/dirhum.png'
 
 
-const Summery = ({ total, showInput, setShowInput, vat, itemSummary, serviceCharge, address }) => {
+const Summery = ({ total, showInput, setShowInput, vat, itemSummary, serviceCharge, address, date, time }) => {
     const [promo, setPromo] = useState("");
 
     const handleApply = () => {
@@ -44,14 +44,35 @@ const Summery = ({ total, showInput, setShowInput, vat, itemSummary, serviceChar
                 </div>
 
                 {/* date and time  */}
-                <div className="border-b border-gray-400 mt-2">
-                    <h3 className="font-semibold text-sm mb-2">Date & Time</h3>
+                {/* Date & Time */}
+<div className="border-b border-gray-400 mt-2">
+    <h3 className="font-semibold text-sm mb-2">Date & Time</h3>
+
+    {/* If both empty → hide */}
+    {(!date && !time) ? null : (
+        <div className="space-y-1">
+            {date && (
+                <div className="flex items-center justify-between">
+                    <p className="text-[14px] text-gray-700">Date</p>
+                    <p className="text-[14px] text-gray-700">{date}</p>
                 </div>
+            )}
+
+            {time && (
+                <div className="flex items-center justify-between">
+                    <p className="text-[14px] text-gray-700">Time</p>
+                    <p className="text-[14px] text-gray-700">{time}</p>
+                </div>
+            )}
+        </div>
+    )}
+</div>
+
 
                 {/* Address Section */}
                 {address && (
-                    <div className="mt-2 border-b border-gray-400 pb-2">
-                        <h3 className="font-semibold text-sm mb-1">Address</h3>
+                    <div className="border-b border-gray-400 mt-2">
+                        <h3 className="font-semibold text-sm mb-2">Address</h3>
                         <p className="text-[14px] text-gray-700">{address}</p>
                     </div>
                 )}
