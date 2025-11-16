@@ -9,7 +9,7 @@ const Navbar = () => {
             <div className="fixed top-0 left-0 w-full z-50 bg-white shadow-md md:px-12 navbar md:flex md:justify-center md:items-center">
                 <div className="navbar-start flex items-center">
                     <div className="dropdown">
-                        <div
+                        {/* <div
                             tabIndex={0}
                             role="button"
                             className="btn btn-ghost lg:hidden"
@@ -33,8 +33,23 @@ const Navbar = () => {
                             tabIndex={0}
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
                         >
-                            {/* {links} */}
-                        </ul>
+                            
+                            <Link className="hidden lg:block" to="/">
+                                <img
+                                    className="w-[133px] h-[33px]"
+                                    src={logo}
+                                    alt="Logo"
+                                />
+                            </Link>
+                        </ul> */}
+                        <Link className="block lg:hidden" to="/">
+                            <img
+                                className="w-[133px] h-[33px]"
+                                src={logo}
+                                alt="Logo"
+                            />
+                        </Link>
+
                     </div>
 
                     <Link className="hidden lg:block" to="/">

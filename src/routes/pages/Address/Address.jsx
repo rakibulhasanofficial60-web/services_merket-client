@@ -2,7 +2,7 @@ import ServiceDetails from "../../../components/ServiceDetails/ServiceDetails";
 import Summery from "../../../components/Summery/Summery";
 import { useSummary } from "../../../provider/SummaryProvider";
 import NextBtn from "../../../components/NextBtn/NextBtn";
-import AddressSelection from "./Map/Map";
+import AddressSelection from "./Map/AddressSelection";
 
 const Address = () => {
     const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, setAddress } = useSummary();

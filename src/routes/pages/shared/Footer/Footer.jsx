@@ -1,19 +1,24 @@
-export default function Footer() {
+import { FaDownload } from "react-icons/fa";
+import { IoLocation } from "react-icons/io5";
+import { CiMail } from "react-icons/ci";
+import { FaPhoneAlt } from "react-icons/fa";
+import { IoLogoWhatsapp } from "react-icons/io5";
 
+export default function Footer() {
   return (
-    <footer className="bg-red-700 text-white py-10 px-6 md:px-20 font-sans">
+    <footer className="bg-red-700 text-white py-10 px-6 md:px-20 font-sans mb-12 md:mb-0">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+
         {/* About Us */}
         <div>
           <h2 className="text-xl font-semibold mb-4">About Us</h2>
           <p className="text-base leading-relaxed">
             Al Mandhar Pest Control, established in 2002, is a trusted and reliable pest
-            control company serving the areas of Sharjah and Dubai. With our commitment
-            to excellence and customer satisfaction, we have built a strong reputation in
-            the industry.
+            control company serving the areas of Sharjah and Dubai.
           </p>
-          <div className="flex items-center gap-2 mt-6 text-lg">
-            <p className="text-xl">📄</p>
+
+          <div className="flex items-center gap-2 mt-6 text-lg cursor-pointer hover:text-black">
+            <FaDownload />
             <p className="tracking-wide">Company Profile</p>
           </div>
         </div>
@@ -22,12 +27,12 @@ export default function Footer() {
         <div>
           <h2 className="text-xl font-semibold mb-4">Usefull Links</h2>
           <ul className="space-y-2 text-base">
-            <li>Home</li>
-            <li>Pest Control Dubai</li>
-            <li>Blog</li>
-            <li>About Us</li>
-            <li>Contact Us</li>
-            <li>Privacy Policy</li>
+            <li className="cursor-pointer hover:text-black">Home</li>
+            <li className="cursor-pointer hover:text-black">Pest Control Dubai</li>
+            <li className="cursor-pointer hover:text-black">Blog</li>
+            <li className="cursor-pointer hover:text-black">About Us</li>
+            <li className="cursor-pointer hover:text-black">Contact Us</li>
+            <li className="cursor-pointer hover:text-black">Privacy Policy</li>
           </ul>
         </div>
 
@@ -35,14 +40,14 @@ export default function Footer() {
         <div>
           <h2 className="text-xl font-semibold mb-4">Top Services</h2>
           <ul className="space-y-2 text-base">
-            <li>Cockroach Control</li>
-            <li>Termites Control</li>
-            <li>Bed Bugs Control</li>
-            <li>Rodent Control</li>
-            <li>Mosquitoes Control</li>
-            <li>Ants Control</li>
-            <li>Spider Control</li>
-            <li>Bird Control</li>
+            <li className="cursor-pointer hover:text-black">Cockroach Control</li>
+            <li className="cursor-pointer hover:text-black">Termites Control</li>
+            <li className="cursor-pointer hover:text-black">Bed Bugs Control</li>
+            <li className="cursor-pointer hover:text-black">Rodent Control</li>
+            <li className="cursor-pointer hover:text-black">Mosquitoes Control</li>
+            <li className="cursor-pointer hover:text-black">Ants Control</li>
+            <li className="cursor-pointer hover:text-black">Spider Control</li>
+            <li className="cursor-pointer hover:text-black">Bird Control</li>
           </ul>
         </div>
 
@@ -50,20 +55,23 @@ export default function Footer() {
         <div>
           <h2 className="text-xl font-semibold mb-4">Get in Touch</h2>
           <ul className="space-y-3 text-base">
-            <li className="flex items-start gap-3">
-              <div className="text-xl mt-1">📍</div>
+            <li className="flex items-center gap-3 cursor-pointer hover:text-black">
+              <IoLocation className="text-xl" />
               <p>office 101 al zarouni building frej al murar deira dubai uae</p>
             </li>
-            <li className="flex items-center gap-3">
-              <div className="text-xl">✉️</div>
+
+            <li className="flex items-center gap-3 cursor-pointer hover:text-black">
+              <CiMail className="text-xl" />
               <p>info@mpcpest.ae</p>
             </li>
-            <li className="flex items-center gap-3">
-              <div className="text-xl">📞</div>
+
+            <li className="flex items-center gap-3 cursor-pointer hover:text-black">
+              <FaPhoneAlt className="text-xl" />
               <p>0563339199</p>
             </li>
-            <li className="flex items-center gap-3">
-              <div className="text-xl">💬</div>
+
+            <li className="flex items-center gap-3 cursor-pointer hover:text-black">
+              <IoLogoWhatsapp className="text-xl" />
               <p>0563339199</p>
             </li>
           </ul>
@@ -78,7 +86,7 @@ export default function Footer() {
         </p>
         <p className="mt-2">
           Development &amp; SEO By{" "}
-          <span className="font-semibold">NextGent.Org</span>
+          <span className="font-semibold hover:text-black cursor-pointer">NextGent.Org</span>
         </p>
       </div>
     </footer>

@@ -64,7 +64,7 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                     {address && (
                         <div className="border-b border-gray-400 mt-2">
                             <h3 className="font-semibold text-sm mb-2">Address</h3>
-                            <p className="text-[14px] text-gray-700">{address}</p>
+                            <p className="text-[14px] font-medium text-gray-700">{address}</p>
                         </div>
                     )}
 
@@ -130,7 +130,7 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
             </div>
 
             {/* MOBILE BOTTOM BAR */}
-            <div className="md:hidden fixed bottom-0 left-0 w-full bg-white shadow-[0_-2px_6px_rgba(0,0,0,0.15)] p-3 flex items-center justify-between z-50">
+            <div className="md:hidden fixed bottom-0 left-0 w-full bg-white shadow-[0_-2px_6px_rgba(0,0,0,0.15)] px-3 flex items-center justify-between z-50">
                 <div onClick={() => setOpen(true)} className="cursor-pointer select-none">
                     <p className="text-[12px] line-through text-gray-400">৳ {(total + serviceCharge + vat).toFixed(2)}</p>
                     <p className="text-[20px] font-bold flex items-center gap-1 text-gray-700">

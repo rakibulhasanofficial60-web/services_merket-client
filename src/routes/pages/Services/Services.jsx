@@ -33,7 +33,7 @@ const Services = () => {
                         </div>
 
                         {/* Slider Button Section */}
-                        <div className="md:px-9 sticky md:top-16 z-10 bg-white md:py-2">
+                        <div className="px-2 md:px-9 sticky top-16 z-10 bg-white py-2 md:py-2">
                             <div className="w-full flex items-center justify-center">
                                 <button
                                     onClick={() => {
@@ -68,8 +68,10 @@ const Services = () => {
                                                         window.scrollTo({ top: y, behavior: "smooth" });
                                                     }
                                                 }}
-                                                className={`snap-start shrink-0 min-w-[120px] md:min-w-[140px] lg:min-w-40 px-3 py-1 rounded-full border border-[#01788E] text-[#01788E] flex items-center gap-2.5 cursor-pointer transition-colors duration-300
-                                                     ${activeId === btn.id
+                                                className={`snap-start shrink-0 min-w-[120px] md:min-w-[140px] lg:min-w-40 px-3 py-1 
+                        rounded-full border border-[#01788E] text-[#01788E] flex items-center gap-2.5 
+                        cursor-pointer transition-colors duration-300
+                        ${activeId === btn.id
                                                         ? "text-[#ED6329] border-[#ED6329] border-2 bg-[#FFF2EE]"
                                                         : "bg-white"
                                                     }`}

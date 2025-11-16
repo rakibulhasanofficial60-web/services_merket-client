@@ -3,15 +3,18 @@ import NextBtn from "../../../components/NextBtn/NextBtn";
 import ServiceDetails from "../../../components/ServiceDetails/ServiceDetails";
 import Summery from "../../../components/Summery/Summery";
 import { useSummary } from "../../../provider/SummaryProvider";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 
 const days = [
     { id: 1, short: "Sat", label: "Nov 15", extra: 5 },
     { id: 2, short: "Sun", label: "Nov 16", extra: 5 },
-    { id: 3, short: "Mon", label: "Nov 17" },
+    { id: 3, short: "Mon", label: "Nov 17", extra: 9 },
     { id: 4, short: "Tue", label: "Nov 18" },
     { id: 5, short: "Wed", label: "Nov 19" },
     { id: 6, short: "Thu", label: "Nov 20" },
 ];
+
 const times = [
     "12:00 PM - 12:30 PM",
     "1:00 PM - 1:30 PM",
@@ -50,31 +53,26 @@ const DateTime = () => {
 
             <div className="flex gap-8 mt-5">
                 <div className="md:w-[60%] mb-4 space-y-4">
-                    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-sm">
+                    <div className="p-6 bg-white rounded-lg shadow-sm">
 
                         {/* Day Selector */}
                         <h3 className="text-lg font-semibold mb-4">
                             Which day would you like us to come?
                         </h3>
 
-                        <div className="relative">
+                        <div className="relative max-w-[300px] mx-auto md:max-w-4xl">
                             {/* Left Scroll Button */}
                             <button
                                 onClick={() => scroll("left")}
-                                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-white border shadow-sm flex items-center justify-center"
+                                className="hidden absolute -left-4 top-1/2 -translate-y-1/2 z-10 h-10 w-10  md:flex items-center justify-center"
                             >
-                                <svg className="w-5 h-5 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
-                                    <path
-                                        d="M12.293 16.293a1 1 0 010-1.414L15.586 11H4a1 1 0 110-2h11.586l-3.293-3.293a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z"
-                                        transform="rotate(180 10 10)"
-                                    />
-                                </svg>
+                                <IoIosArrowBack className="text-3xl font-bold" />
                             </button>
 
                             {/* Day List */}
                             <div
                                 ref={scrollerRef}
-                                className="flex gap-3 overflow-x-auto no-scrollbar py-2 px-10 snap-x snap-mandatory"
+                                className="flex gap-3 overflow-x-auto no-scrollbar py-2 px-10"
                             >
                                 {days.map((d) => {
                                     const isActive = selectedDay === d.label;
@@ -83,8 +81,8 @@ const DateTime = () => {
                                         <div
                                             key={d.id}
                                             onClick={() => setSelectedDay(d.label)}
-                                            className={`snap-start min-w-[110px] md:min-w-[140px] px-3 py-3 rounded-lg border cursor-pointer flex flex-col items-center gap-2 transition
-                ${isActive ? "bg-slate-200 border-transparent shadow" : "bg-white border-gray-200 hover:bg-gray-50"}
+                                            className={`snap-start min-w-[100px] md:min-w-[85px] px-2 py-1 rounded-lg border cursor-pointer flex flex-col items-center gap-1 transition
+                ${isActive ? "bg-[#B2D7DE] border-transparent shadow" : "bg-white border-gray-200 hover:bg-gray-50"}
             `}
                                         >
                                             {d.extra && (
@@ -103,11 +101,9 @@ const DateTime = () => {
                             {/* Right Scroll Button */}
                             <button
                                 onClick={() => scroll("right")}
-                                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-white border shadow-sm flex items-center justify-center"
+                                className="hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10  md:flex items-center justify-centerv cursor-pointer"
                             >
-                                <svg className="w-5 h-5 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M7.707 3.707a1 1 0 010 1.414L4.414 9H16a1 1 0 110 2H4.414l3.293 3.293a1 1 0 01-1.414 1.414l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 0z" />
-                                </svg>
+                                <IoIosArrowForward className="text-3xl font-bold" />
                             </button>
                         </div>
 

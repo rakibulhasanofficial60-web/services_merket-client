@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useEffect } from 'react';
 import {
   APIProvider,
@@ -190,4 +191,4 @@ const MapComponent = ({ onBack, onSelectLocation }) => {
   );
 };
 
-export default MapComponent;
+export default MapComponent;

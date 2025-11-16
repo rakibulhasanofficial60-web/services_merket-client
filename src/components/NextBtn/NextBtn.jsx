@@ -15,25 +15,28 @@ const NextBtn = ({ name = "Next", disabled }) => {
     if (pathname === "/date-time" && (!date || !time)) isDisabled = true;
 
     return (
-        <div className="border">
+        <div className="flex justify-center my-4">
             <button
                 onClick={() => navigate(nextPath)}
                 disabled={isDisabled}
                 className={`
-                flex items-center justify-center gap-2
-                px-6 py-3 rounded-md font-semibold 
-                text-white text-base
-                transition-all duration-200
+            flex items-center justify-center gap-2
+            px-6 py-3 rounded-md font-semibold 
+            text-white text-base
+            transition-all duration-200
 
-                /* Mobile full width */
-                w-full sm:w-auto
-                ${isDisabled ? "bg-gray-300" : "bg-[#ED6329] hover:bg-[#d4541f]"}
-            `}
+            w-full          /* mobile full width */
+            md:w-[60%]      /* medium screens = 60% */
+            lg:w-60    /* large screens = 240px */
+
+            ${isDisabled ? "bg-gray-300" : "bg-[#ED6329] hover:bg-[#d4541f]"}
+        `}
             >
                 {name}
                 <span className="text-xl">→</span>
             </button>
         </div>
+
     );
 };
 
