@@ -5,17 +5,7 @@ import { useSummary } from "../../../provider/SummaryProvider";
 import { CreditCard, Wallet, ChevronRight } from "lucide-react";
 
 const Confirmation = () => {
-    const {
-        itemSummary,
-        total,
-        vat,
-        serviceCharge,
-        showInput,
-        setShowInput,
-        address,
-        date,
-        time,
-    } = useSummary();
+    const { total, vat, serviceCharge, address, date, time, } = useSummary();
 
     return (
         <div className="pb-24">
@@ -112,16 +102,10 @@ const Confirmation = () => {
                         </span>
                     </div>
                 </div>
-
-
-                {/* PAY NOW BUTTON */}
-                <button className="w-full bg-orange-600 text-white py-4 text-lg rounded-2xl shadow-md hover:opacity-90 transition">
-                    Pay Now
-                </button>
             </div>
 
             {/* Next button bottom fixed */}
-            <NextBtn name="Book Now" path="/success" />
+            <NextBtn name="Book Now" />
         </div>
     );
 };

@@ -53,7 +53,7 @@ const ContentModal = ({ setShowModal, property }) => {
     const items = Array.isArray(property.propertyItems) ? property.propertyItems : [];
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 mb-[49px]">
             <div className="bg-white rounded-lg shadow-lg w-[90%] md:w-[600px] p-6 relative">
                 {/* Close Button */}
                 <button
@@ -68,24 +68,24 @@ const ContentModal = ({ setShowModal, property }) => {
                 </h2>
 
                 {/* 🔹 List of Property Items */}
-                <div className="max-h-[400px] overflow-y-auto space-y-4">
+                <div className="h-[250px] md:max-h-[400px] overflow-y-auto space-y-4">
                     {items.length > 0 ? (
                         items.map((item) => {
                             const qty = quantities[item.id] || 0;
                             return (
                                 <div
                                     key={item.id}
-                                    className="flex items-center border-b pb-2.5 border-gray-300"
+                                    className="md:flex items-center border-b pb-2.5 border-gray-300 space-y-2"
                                 >
                                     {/* Image */}
                                     <img
                                         src={item.image}
                                         alt={item.title}
-                                        className="w-24 h-24 object-cover rounded-sm"
+                                        className="w-24 h-24 mx-auto object-cover rounded-sm"
                                     />
 
                                     {/* Content */}
-                                    <div className="ml-5 space-y-2 flex-1">
+                                    <div className="ml-5 space-y-2 flex-1 text-center md:text-start">
                                         <h3 className="text-[16px] font-semibold">{item.title}</h3>
                                         <p className="text-gray-600 text-[13px]">{item.description}</p>
 
@@ -103,10 +103,10 @@ const ContentModal = ({ setShowModal, property }) => {
                                                     Add <IoAddSharp />
                                                 </button>
                                             ) : (
-                                                <div className="flex items-center gap-3 border px-2 py-1 rounded-md">
+                                                <div className="flex items-center gap-3">
                                                     <button
                                                         onClick={() => handleRemove(item.id)}
-                                                        className="text-[#01788E] font-bold text-lg px-2"
+                                                        className="text-[#01788E] border rounded-full font-bold text-lg px-[7px]"
                                                     >
                                                         −
                                                     </button>
@@ -116,7 +116,7 @@ const ContentModal = ({ setShowModal, property }) => {
                                                     {/* + button disabled */}
                                                     <button
                                                         disabled
-                                                        className="text-gray-400 font-bold text-lg px-2 cursor-not-allowed"
+                                                        className="text-gray-400 font-bold text-lg px-2 cursor-not-allowed border rounded-full border-[#014855]"
                                                         title="Maximum quantity reached"
                                                     >
                                                         +
@@ -133,7 +133,7 @@ const ContentModal = ({ setShowModal, property }) => {
                     )}
                 </div>
 
-                <button onClick={() => setShowModal(false)} className="mt-5 btn w-full bg-[#ED6329] border-0 uppercase text-white font-semibold py-2 rounded-md">
+                <button onClick={() => setShowModal(false)} className="mt-5 btn w-full bg-[#ED6329] border-0 uppercase text-white font-semibold py-2 rounded-md hidden md:block">
                     Continue
                 </button>
             </div>

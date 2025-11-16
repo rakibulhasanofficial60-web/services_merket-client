@@ -40,11 +40,10 @@ const AddressSelection = ({ setAddress }) => {
           {existingAddresses.map((address) => (
             <div
               key={address.id}
-              className={`p-4 mb-3 border rounded-lg cursor-pointer transition-colors ${
-                selectedAddress.id === address.id
+              className={`p-4 mb-3 border rounded-lg cursor-pointer transition-colors ${selectedAddress.id === address.id
                   ? "border-teal-500 bg-teal-50"
                   : "border-gray-200 hover:bg-gray-50"
-              }`}
+                }`}
               onClick={() => setSelectedAddress(address)}
             >
               <label className="flex items-center justify-between cursor-pointer">
@@ -104,7 +103,7 @@ export default AddressSelection;
 // import React, { useEffect, useState } from 'react';
 // import MapComponent from './SelectMap';
 // // ম্যাপ কম্পোনেন্টের জন্য একটি ডামি কম্পোনেন্ট ধরে নেওয়া হলো
-// // import MapComponent from './MapComponent'; 
+// // import MapComponent from './MapComponent';
 
 // const AddressSelection = ({ setAddress }) => {
 //   const [showMap, setShowMap] = useState(false);
@@ -136,7 +135,7 @@ export default AddressSelection;
 //   const handleMapLocationSelect = (newLocation) => {
 //     // এখানে নতুন ঠিকানাটি সেভ করার লজিক থাকবে (যেমন - API কল)
 //     // উদাহরণস্বরূপ:
-//     // setSelectedAddress(newLocation); 
+//     // setSelectedAddress(newLocation);
 //     // setShowMap(false);
 //     console.log("Selected from Map:", newLocation);
 //     // আপনি চাইলে ম্যাপ সিলেক্ট হওয়ার পর আবার অ্যাড্রেস লিস্টে ফিরে যেতে পারেন

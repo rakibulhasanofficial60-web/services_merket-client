@@ -18,7 +18,9 @@ const Address = () => {
             </div>
 
             {/* ---------- Bottom NEXT Button ---------- */}
-            <NextBtn path='/date-time'></NextBtn>
+            <div className="hidden md:block">
+                <NextBtn />
+            </div>
         </div>
     );
 };

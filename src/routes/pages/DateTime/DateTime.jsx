@@ -156,7 +156,9 @@ const DateTime = () => {
                     time={time}
                 />
             </div>
-            <NextBtn path="/confirmation" disabled={!selectedDay || !selectedTime} />
+            <div className="hidden md:block">
+                <NextBtn />
+            </div>
         </div>
     );
 };

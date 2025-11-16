@@ -1,22 +1,38 @@
-import { useNavigate } from "react-router-dom";
-import { IoArrowForward } from "react-icons/io5";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSummary } from "../../provider/SummaryProvider";
+import { steps } from "./FlowSteps";
 
-const NextBtn = ({ path, disabled, name = 'NEXT' }) => {
+const NextBtn = ({ name = "Next", disabled }) => {
     const navigate = useNavigate();
+    const { pathname } = useLocation();
+    const { itemSummary, address, date, time } = useSummary();
+    const currentIndex = steps.indexOf(pathname);
+    const nextPath = steps[currentIndex + 1];
+    let isDisabled = disabled ?? false;
+
+    if (pathname === "/services" && itemSummary.length === 0) isDisabled = true;
+    if (pathname === "/address" && !address) isDisabled = true;
+    if (pathname === "/date-time" && (!date || !time)) isDisabled = true;
 
     return (
-        <div className="pb-20 md:pb-[70px]">
-            <div className="bottom-0 fixed left-0 w-full z-30 bg-white shadow-md flex justify-center py-4">
-                <button
-                    disabled={disabled}
-                    onClick={() => !disabled && navigate(path)}
-                    className={`btn text-lg font-medium w-full md:w-[270px] border-0 
-                        ${disabled ? "bg-gray-300 cursor-not-allowed" : "bg-[#ED6329] text-white"}
-                    `}
-                >
-                    {name} <IoArrowForward className="text-xl" />
-                </button>
-            </div>
+        <div className="border">
+            <button
+                onClick={() => navigate(nextPath)}
+                disabled={isDisabled}
+                className={`
+                flex items-center justify-center gap-2
+                px-6 py-3 rounded-md font-semibold 
+                text-white text-base
+                transition-all duration-200
+
+                /* Mobile full width */
+                w-full sm:w-auto
+                ${isDisabled ? "bg-gray-300" : "bg-[#ED6329] hover:bg-[#d4541f]"}
+            `}
+            >
+                {name}
+                <span className="text-xl">→</span>
+            </button>
         </div>
     );
 };

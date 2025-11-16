@@ -19,10 +19,10 @@ const Services = () => {
                 <div className="md:w-[60%] md:mb-4 md:space-y-4">
                     <div className="p-4 md:p-0">
                         <input
-                        className="py-2 md:py-3 px-3 border border-[#01788E] w-full rounded-md md:px-7 focus:outline-none"
-                        type="text"
-                        placeholder="Search services..."
-                    />
+                            className="py-2 md:py-3 px-3 border border-[#01788E] w-full rounded-md md:px-7 focus:outline-none"
+                            type="text"
+                            placeholder="Search services..."
+                        />
                     </div>
                     <div className="shadow-md rounded-xl">
                         {/* Main Card Cover */}
@@ -128,10 +128,9 @@ const Services = () => {
             </div>
 
             {/* ---------- Bottom NEXT Button ---------- */}
-            <NextBtn
-                path="/address"
-                disabled={itemSummary.length === 0}
-            />
+            <div className="hidden md:block">
+                <NextBtn />
+            </div>
         </div>
     );
 };
