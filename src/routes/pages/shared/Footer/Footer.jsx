@@ -27,7 +27,7 @@ export default function Footer() {
         <div>
           <h2 className="text-xl font-semibold mb-4">Usefull Links</h2>
           <ul className="space-y-2 text-base">
-            <li className="cursor-pointer hover:text-black">Home</li>
+            <a className="cursor-pointer hover:text-black">Home</a>
             <li className="cursor-pointer hover:text-black">Pest Control Dubai</li>
             <li className="cursor-pointer hover:text-black">Blog</li>
             <li className="cursor-pointer hover:text-black">About Us</li>

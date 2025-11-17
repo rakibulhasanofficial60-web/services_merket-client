@@ -105,7 +105,7 @@ export default function LoginModal({ open, onClose }) {
 
                         {/* COUNTRY DROPDOWN */}
                         {dropdownOpen && (
-                            <div className="absolute z-30 -mt-50 w-full bg-white shadow-lg border rounded-xl max-h-80 overflow-auto">
+                            <div className="absolute z-30 -mt-50 w-[70%] bg-white shadow-lg ml-14 max-h-96 overflow-auto">
 
                                 {/* Search Input */}
                                 <div className="p-3 sticky top-0 bg-white border-b">

@@ -1,4 +1,7 @@
 import { useState, useCallback } from "react";
+import { FaLocationCrosshairs, FaPlus } from "react-icons/fa6";
+import { FaSatellite } from "react-icons/fa";
+import { FaMinus } from "react-icons/fa6";
 import {
     GoogleMap,
     Marker,
@@ -92,7 +95,7 @@ export default function LocationPicker({ onLocationSelect }) {
                     onClick={() => map?.setZoom(map.getZoom() + 1)}
                     className="bg-white shadow p-2 rounded-lg"
                 >
-                    ➕
+                    <FaPlus />
                 </button>
 
                 {/* Zoom Out */}
@@ -100,15 +103,15 @@ export default function LocationPicker({ onLocationSelect }) {
                     onClick={() => map?.setZoom(map.getZoom() - 1)}
                     className="bg-white shadow p-2 rounded-lg"
                 >
-                    ➖
+                   <FaMinus className="font-bold" />
                 </button>
 
                 {/* GPS Location */}
                 <button
                     onClick={gotoMyLocation}
-                    className="bg-white shadow p-2 rounded-lg"
+                    className="bg-white shadow p-2 rounded-lg flex items-center justify-center"
                 >
-                    📍
+                    <FaLocationCrosshairs />
                 </button>
 
                 {/* Satellite Toggle */}
@@ -118,7 +121,7 @@ export default function LocationPicker({ onLocationSelect }) {
                     }
                     className="bg-white shadow p-2 rounded-lg"
                 >
-                    🛰
+                    <FaSatellite />
                 </button>
             </div>
 
