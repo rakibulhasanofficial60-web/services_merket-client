@@ -85,7 +85,7 @@ const Navbar = () => {
 
             {/* 🔹 Spacer div — so content doesn’t go under navbar */}
             <div className="h-10 md:h-[70px]"></div>
-               <LoginModal open={openModal} onClose={() => setOpenModal(false)} />
+            <LoginModal open={openModal} onClose={() => setOpenModal(false)} />
         </>
     );
 };

@@ -50,11 +50,22 @@ const ContentModal = ({ setShowModal, property }) => {
         );
     }
 
+    const handelDetails = item => {
+        console.log(item);
+    }
+
     const items = Array.isArray(property.propertyItems) ? property.propertyItems : [];
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 mb-[49px]">
-            <div className="bg-white rounded-lg shadow-lg w-[90%] md:w-[600px] p-6 relative">
+        <div
+            className="fixed cursor-pointer inset-0 bg-black/50 flex items-center justify-center z-50 mb-[49px]"
+            onClick={() => setShowModal(false)}   // 🔹 Backdrop click → close modal
+        >
+            <div
+                className="bg-white rounded-lg shadow-lg w-[90%] md:w-[600px] p-6 relative"
+                onClick={(e) => e.stopPropagation()}  // 🔹 Modal box click → do NOT close
+            >
+
                 {/* Close Button */}
                 <button
                     onClick={() => setShowModal(false)}
@@ -67,7 +78,7 @@ const ContentModal = ({ setShowModal, property }) => {
                     {property.title}
                 </h2>
 
-                {/* 🔹 List of Property Items */}
+                {/* Items List */}
                 <div className="h-[250px] md:max-h-[400px] overflow-y-auto space-y-4">
                     {items.length > 0 ? (
                         items.map((item) => {
@@ -86,8 +97,10 @@ const ContentModal = ({ setShowModal, property }) => {
 
                                     {/* Content */}
                                     <div className="ml-5 space-y-2 flex-1 text-center md:text-start">
-                                        <h3 className="text-[16px] font-semibold">{item.title}</h3>
-                                        <p className="text-gray-600 text-[13px]">{item.description}</p>
+                                        <div onClick={() => handelDetails(item)}>
+                                            <h3 className="text-[16px] font-semibold">{item.title}</h3>
+                                            <p className="text-gray-600 text-[13px]">{item.description}</p>
+                                        </div>
 
                                         <div className="flex justify-between items-center">
                                             <p className="text-[#382F31] font-bold text-[14px] flex items-center gap-1">
@@ -106,14 +119,14 @@ const ContentModal = ({ setShowModal, property }) => {
                                                 <div className="flex items-center gap-3">
                                                     <button
                                                         onClick={() => handleRemove(item.id)}
-                                                        className="text-[#01788E] border rounded-full font-bold text-lg px-[7px]"
+                                                        className="text-[#01788E] border rounded-full font-bold text-lg px-[7px] cursor-pointer"
                                                     >
                                                         −
                                                     </button>
                                                     <span className="font-semibold text-gray-700">
                                                         {qty}
                                                     </span>
-                                                    {/* + button disabled */}
+
                                                     <button
                                                         disabled
                                                         className="text-gray-400 font-bold text-lg px-2 cursor-not-allowed border rounded-full border-[#014855]"
@@ -133,7 +146,10 @@ const ContentModal = ({ setShowModal, property }) => {
                     )}
                 </div>
 
-                <button onClick={() => setShowModal(false)} className="mt-5 btn w-full bg-[#ED6329] border-0 uppercase text-white font-semibold py-2 rounded-md hidden md:block">
+                <button
+                    onClick={() => setShowModal(false)}
+                    className="mt-5 btn w-full bg-[#ED6329] border-0 uppercase text-white font-semibold py-2 rounded-md hidden md:block"
+                >
                     Continue
                 </button>
             </div>
