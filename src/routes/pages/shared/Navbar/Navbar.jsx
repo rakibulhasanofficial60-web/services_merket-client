@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import logo from "../../../../assets/logo/logo.png";
+import { useState } from "react";
+import LoginModal from "../../../../components/LoginModal/LoginModal";
 
 const Navbar = () => {
     const user = false;
+    const [openModal, setOpenModal] = useState(false);
 
     return (
         <>
@@ -73,7 +76,7 @@ const Navbar = () => {
                             Log Out
                         </button>
                     ) : (
-                        <button className="btn bg-white text-[#5D4F52] border-0 shadow-xs font-bold">
+                        <button onClick={() => setOpenModal(true)} className="btn bg-white text-[#5D4F52] border-0 shadow-xs font-bold">
                             Login
                         </button>
                     )}
@@ -82,6 +85,7 @@ const Navbar = () => {
 
             {/* 🔹 Spacer div — so content doesn’t go under navbar */}
             <div className="h-10 md:h-[70px]"></div>
+               <LoginModal open={openModal} onClose={() => setOpenModal(false)} />
         </>
     );
 };
