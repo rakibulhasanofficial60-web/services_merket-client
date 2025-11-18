@@ -6,7 +6,7 @@ import dirhum from '../assets/icon/dirhum.png';
 import { LuMenu } from "react-icons/lu";
 import { FaUser } from "react-icons/fa";
 
-const UserDashboard = () => {
+const UserDashboard = () => {   
     const links =
         <ul>
             {/* My Bookings */}
@@ -15,7 +15,7 @@ const UserDashboard = () => {
                     to="/dashboard/booking"
                     className={({ isActive }) =>
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
-                    ${isActive ? "font-extrabold" : ""}`
+                        ${isActive ? "font-extrabold" : ""}`
                     }>
                     <FaCalendarAlt /> My Bookings
                 </NavLink>
@@ -27,7 +27,7 @@ const UserDashboard = () => {
                     to="/dashboard/quotes"
                     className={({ isActive }) =>
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
-                    ${isActive ? "font-extrabold" : ""}`
+                        ${isActive ? "font-extrabold" : ""}`
                     }>
                     <LuMenu className="text-[17px]" /> My Quotes
                 </NavLink>
@@ -39,7 +39,7 @@ const UserDashboard = () => {
                     to="/dashboard/profile"
                     className={({ isActive }) =>
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
-                    ${isActive ? "font-extrabold" : ""}`
+                        ${isActive ? "font-extrabold" : ""}`
                     }>
                     <FaUser /> My Profile
                 </NavLink>
@@ -51,7 +51,7 @@ const UserDashboard = () => {
                     to="/dashboard/outstanding-payments"
                     className={({ isActive }) =>
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
-                    ${isActive ? "font-extrabold" : ""}`
+                        ${isActive ? "font-extrabold" : ""}`
                     }>
                     <FaCalendarAlt /> Outstanding Payments
                 </NavLink>
@@ -63,7 +63,7 @@ const UserDashboard = () => {
                     to="/dashboard/saved-locations"
                     className={({ isActive }) =>
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
-                    ${isActive ? "font-extrabold" : ""}`
+                        ${isActive ? "font-extrabold" : ""}`
                     }>
                     <FaCalendarAlt /> Saved Locations
                 </NavLink>
@@ -75,7 +75,7 @@ const UserDashboard = () => {
                     to="/dashboard/payment-methods"
                     className={({ isActive }) =>
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
-                    ${isActive ? "font-extrabold" : ""}`
+                        ${isActive ? "font-extrabold" : ""}`
                     }>
                     <FaCalendarAlt /> Payment Methods
                 </NavLink>
@@ -87,7 +87,7 @@ const UserDashboard = () => {
                     to="/dashboard/support"
                     className={({ isActive }) =>
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
-                    ${isActive ? "font-extrabold" : ""}`
+                        ${isActive ? "font-extrabold" : ""}`
                     }>
                     <FaCalendarAlt /> Support
                 </NavLink>
@@ -99,7 +99,7 @@ const UserDashboard = () => {
                     to="/dashboard/wallet"
                     className={({ isActive }) =>
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
-                    ${isActive ? "font-extrabold" : ""}`
+                        ${isActive ? "font-extrabold" : ""}`
                     }>
                     <FaCalendarAlt /> My Wallet
                 </NavLink>
@@ -111,19 +111,19 @@ const UserDashboard = () => {
                     to="/dashboard/delete-account"
                     className={({ isActive }) =>
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
-                    ${isActive ? "font-extrabold" : ""}`
+                        ${isActive ? "font-extrabold" : ""}`
                     }>
                     <FaCalendarAlt /> Delete Account
                 </NavLink>
             </li>
 
-            {/* Invite a Friend + Credit Badge */}
+            {/* Invite a Friend */}
             <li className="list-none border-b border-dashed hover:bg-gray-50 flex justify-between items-center px-3 py-2">
                 <NavLink
                     to="/dashboard/invite"
                     className={({ isActive }) =>
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] py-1 transition 
-                    ${isActive ? "font-extrabold" : ""}`
+                        ${isActive ? "font-extrabold" : ""}`
                     }>
                     <FaCalendarAlt /> Invite a friend
                 </NavLink>
@@ -137,13 +137,15 @@ const UserDashboard = () => {
             <li className="list-none py-3 px-3 hover:underline cursor-pointer text-[#157D91]">
                 Logout
             </li>
-        </ul>
-
+        </ul>;
 
     return (
         <div className="drawer lg:drawer-open max-w-7xl mx-auto mt-10 px-4">
             <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />
+
+            {/* Drawer Content */}
             <div className="drawer-content flex flex-col">
+                {/* Top Navbar for Mobile */}
                 <div className="w-full navbar flex justify-between lg:hidden">
                     <div className="flex items-center gap-2">
                         <label htmlFor="dashboard-drawer" className="btn btn-ghost lg:hidden">
@@ -157,31 +159,38 @@ const UserDashboard = () => {
                 </div>
             </div>
 
+            {/* Drawer Side */}
             <div className="drawer-side border border-[#CED4DA]">
                 <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
 
-                <div className="md:w-72 bg-[#FFFFFF] p-2">
+                <div className="md:w-72 bg-[#FFFFFF] p-2 relative">
+
+                    {/* 🔥 Mobile Close Button */}
+                    <label
+                        htmlFor="dashboard-drawer"
+                        className="btn btn-sm btn-circle absolute right-2 top-2 lg:hidden"
+                    >
+                        ✕
+                    </label>
+
                     <div className="flex flex-col justify-center mb-4">
                         <Link to='/' className="text-5xl">
-                            <img src={logo} alt="" />
+                            <img src={logo} alt="logo" />
                         </Link>
 
                         <div className="text-center flex flex-col items-center mt-5 space-y-3">
                             <h2 className="text-2xl text-[#5D4F52] font-bold">Rakib</h2>
                             <div className="flex items-center justify-center gap-1.5 text-xl w-[70px] bg-[#ED6329] py-1 rounded-md">
-                                <img className="h-4 w-4" src={dirhum} alt="" />
+                                <img className="h-4 w-4" src={dirhum} alt="dirhum" />
                                 <p>80</p>
                             </div>
                             <p className="font-medium text-[#01788E]">Al Bada'a, Dubai</p>
                         </div>
                     </div>
-                    {links}
-                    <div className="w-[140px]">
 
-                    </div>
+                    {links}
                 </div>
             </div>
-
         </div>
     );
 };

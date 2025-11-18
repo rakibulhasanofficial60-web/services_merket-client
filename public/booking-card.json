@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "serviceName": "Pest control",
+    "status": "Confirmed",
+    "date": "Thu, 20 Nov",
+    "timeRange": "Between 11AM - 11:30AM",
+    "price": 1233.75,
+    "currencySymbol": "Đ",
+    "location": "Dubai",
+    "action": "Manage"
+  },
+  {
+    "id": 2,
+    "serviceName": "AC Cleaning",
+    "status": "Pending",
+    "date": "Mon, 25 Nov",
+    "timeRange": "Between 2PM - 3PM",
+    "price": 980.50,
+    "currencySymbol": "Đ",
+    "location": "Sharjah",
+    "action": "Manage"
+  }
+]

@@ -11,12 +11,16 @@ import dirhum from "../../../assets/icon/color_dirhum.png";
 import { SiTicktick } from "react-icons/si";
 import { useSummary } from "../../../provider/SummaryProvider";
 import dirhum1 from '../../../assets/icon/dirhum.png'
+import { useNavigate } from "react-router-dom";
 
 export default function Confirmation() {
     const [openModal, setOpenModal] = useState(false);
-    const { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime } = useSummary();
+    const { services, total, vat, serviceCharge } = useSummary();
+    const navigate = useNavigate();
 
-    console.log(date);
+    const handelBookingConfirmation = () => {
+        navigate('/booking-success');
+    }
 
     return (
         <div className="pb-24">
@@ -105,7 +109,7 @@ export default function Confirmation() {
                 </div>
             </div>
 
-            <NextBtn name="Book Now" />
+            <NextBtn onClick={handelBookingConfirmation} name="Book Now" />
 
             {/* ================= MODAL ================= */}
             {openModal && (

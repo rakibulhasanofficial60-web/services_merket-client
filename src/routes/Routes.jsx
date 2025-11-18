@@ -8,6 +8,7 @@ import UserDashboard from "../layout/UserDashboard";
 import UserBooking from "../UserDashboard/UserBooking";
 import UserQuotes from "../UserDashboard/UserQuotes";
 import UserProfile from "../UserDashboard/UserProfile";
+import BookingSuccess from "./pages/BookingSuccess/BookingSuccess";
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
             { path: 'address', element: <Address /> },
             { path: 'date-time', element: <DateTime /> },
             { path: 'confirmation', element: <Confirmation /> },
+            { path: 'booking-success', element: <BookingSuccess /> }
         ]
     },
     {

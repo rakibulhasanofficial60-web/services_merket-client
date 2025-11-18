@@ -32,7 +32,7 @@ const UserProfile = () => {
             </div>
 
 
-            <div className="flex items-center gap-6">
+            <div className="md:flex items-center gap-6">
                 {/* Email */}
                 <div className="mt-6 flex flex-col gap-2 w-full md:w-1/2">
                     <label className="text-sm text-gray-600">Email</label>
@@ -64,7 +64,7 @@ const UserProfile = () => {
                         {/* Phone Number */}
                         <input
                             type="text"
-                            placeholder="1717255891"
+                            placeholder=""
                             className="px-4 py-2 outline-none bg-transparent flex-1"
                         />
 
@@ -74,7 +74,6 @@ const UserProfile = () => {
                     </div>
                 </div>
             </div>
-
 
             {/* Button */}
             <div className="mt-10 flex justify-center">
