@@ -4,28 +4,29 @@ import Home from "./pages/Home/Home/Home";
 import Address from "./pages/Address/Address";
 import DateTime from "./pages/DateTime/DateTime";
 import Confirmation from "./pages/Confirmation/Confirmation";
+import UserDashboard from "../layout/UserDashboard";
+import UserBooking from "../UserDashboard/UserBooking";
+import UserQuotes from "../UserDashboard/UserQuotes";
+import UserProfile from "../UserDashboard/UserProfile";
 
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: <Main></Main>,
+        element: <Main />,
         children: [
-            {
-                path: '/',
-                element: <Home></Home>
-            },
-            {
-                path: '/address',
-                element: <Address></Address>
-            },
-            {
-                path: '/date-time',
-                element: <DateTime></DateTime>
-            },
-            {
-                path: '/confirmation',
-                element: <Confirmation></Confirmation>
-            },
+            { path: '/', element: <Home /> },
+            { path: 'address', element: <Address /> },
+            { path: 'date-time', element: <DateTime /> },
+            { path: 'confirmation', element: <Confirmation /> },
+        ]
+    },
+    {
+        path: 'dashboard',
+        element: <UserDashboard />,
+        children: [
+            { path: 'booking', element: <UserBooking /> },
+            { path: 'quotes', element: <UserQuotes /> },
+            { path: 'profile', element: <UserProfile /> },
         ]
     }
-])
+]);

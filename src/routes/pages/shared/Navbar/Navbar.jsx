@@ -12,39 +12,6 @@ const Navbar = () => {
             <div className="fixed top-0 left-0 w-full z-50 bg-white shadow-md md:px-12 navbar md:flex md:justify-center md:items-center">
                 <div className="navbar-start flex items-center">
                     <div className="dropdown">
-                        {/* <div
-                            tabIndex={0}
-                            role="button"
-                            className="btn btn-ghost lg:hidden"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M4 6h16M4 12h8m-8 6h16"
-                                />
-                            </svg>
-                        </div>
-                        <ul
-                            tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
-                        >
-                            
-                            <Link className="hidden lg:block" to="/">
-                                <img
-                                    className="w-[133px] h-[33px]"
-                                    src={logo}
-                                    alt="Logo"
-                                />
-                            </Link>
-                        </ul> */}
                         <Link className="block lg:hidden" to="/">
                             <img
                                 className="w-[133px] h-[33px]"
@@ -83,31 +50,31 @@ const Navbar = () => {
         opacity-0 group-hover:opacity-100 
         pointer-events-none group-hover:pointer-events-auto
         transition-all duration-200
-        z-50 border
+        z-50
     ">
                                 <Link
+                                    to="/dashboard/booking"
+                                    className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-[#01788E]"
+                                >
+                                    My Booking
+                                </Link>
+
+                                <Link
+                                    to="/quotes"
+                                    className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-[#01788E]"
+                                >
+                                    My Quotes
+                                </Link>
+
+                                <Link
                                     to="/profile"
-                                    className="block px-4 py-2 rounded-lg hover:bg-gray-100"
+                                    className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-[#01788E]"
                                 >
                                     My Profile
                                 </Link>
 
-                                <Link
-                                    to="/bookings"
-                                    className="block px-4 py-2 rounded-lg hover:bg-gray-100"
-                                >
-                                    My Bookings
-                                </Link>
-
-                                <Link
-                                    to="/settings"
-                                    className="block px-4 py-2 rounded-lg hover:bg-gray-100"
-                                >
-                                    Settings
-                                </Link>
-
                                 <button
-                                    className="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 text-red-500"
+                                    className="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 text-[#01788E]"
                                 >
                                     Logout
                                 </button>
