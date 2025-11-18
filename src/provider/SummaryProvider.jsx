@@ -58,9 +58,10 @@ export const SummaryProvider = ({ children }) => {
     const itemSummary = itemQueries.map((q) => q.data).filter(Boolean);
 
     const subtotal = itemSummary.reduce((acc, item) => acc + Number(item?.price || 0), 0);
-    const serviceCharge = subtotal > 0 ? 20 : 0;
-    const vat = subtotal * 0.05;
-    const total = subtotal + serviceCharge + vat;
+    const serviceCharge = Number((subtotal > 0 ? 20 : 0).toFixed(2));
+    const vat = Number((subtotal * 0.05).toFixed(2));
+    //    const vat = (subtotal * 0.05).toFixed(2);
+    const total = Number((subtotal + serviceCharge + vat).toFixed(2));
 
     const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime };
 

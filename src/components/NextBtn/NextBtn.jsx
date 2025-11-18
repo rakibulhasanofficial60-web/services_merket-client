@@ -13,7 +13,7 @@ const NextBtn = ({ name = "Next", disabled }) => {
     let isDisabled = disabled ?? false;
 
     if (pathname === "/services" && itemSummary.length === 0) isDisabled = true;
-    if (pathname === "/address" && !address) isDisabled = true;
+    if (pathname === "/address" && !address) isDisabled = false;
     if (pathname === "/date-time" && (!date || !time)) isDisabled = true;
 
     return (

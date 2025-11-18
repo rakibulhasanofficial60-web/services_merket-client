@@ -60,14 +60,14 @@ const Navbar = () => {
                                 </Link>
 
                                 <Link
-                                    to="/quotes"
+                                    to="/dashboard/quotes"
                                     className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-[#01788E]"
                                 >
                                     My Quotes
                                 </Link>
 
                                 <Link
-                                    to="/profile"
+                                    to="/dashboard/profile"
                                     className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-[#01788E]"
                                 >
                                     My Profile

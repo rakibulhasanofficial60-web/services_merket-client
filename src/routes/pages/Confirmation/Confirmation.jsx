@@ -9,9 +9,14 @@ import { FaCalendar } from "react-icons/fa";
 import { RxCrossCircled } from "react-icons/rx";
 import dirhum from "../../../assets/icon/color_dirhum.png";
 import { SiTicktick } from "react-icons/si";
+import { useSummary } from "../../../provider/SummaryProvider";
+import dirhum1 from '../../../assets/icon/dirhum.png'
 
 export default function Confirmation() {
     const [openModal, setOpenModal] = useState(false);
+    const { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime } = useSummary();
+
+    console.log(date);
 
     return (
         <div className="pb-24">
@@ -22,7 +27,7 @@ export default function Confirmation() {
 
                 <div className="flex items-start gap-3 mb-3">
                     <IoBagRemoveSharp className="text-2xl" />
-                    <p className="font-medium">Pest control</p>
+                    <p className="font-medium">{services[0]?.title}</p>
                 </div>
 
                 <div className="flex items-start gap-3 mb-3">
@@ -83,17 +88,19 @@ export default function Confirmation() {
                 <h2 className="text-lg font-semibold mt-6 mb-3">Payment Summary</h2>
 
                 <div className="space-y-2 text-sm">
-                    <div className="flex justify-between"><span>Service Charges</span><span className="font-medium">₱ 349.00</span></div>
-                    <div className="flex justify-between"><span>Service Fee</span><span className="font-medium">₱ 29.00</span></div>
-                    <div className="flex justify-between text-green-600 font-semibold"><span>Discount</span><span>- ₱ 30.00</span></div>
-                    <div className="flex justify-between"><span>Sub Total</span><span className="font-medium">₱ 312.00</span></div>
-                    <div className="flex justify-between"><span>VAT (5%)</span><span className="font-medium">₱ 32.40</span></div>
+                    <div className="flex justify-between"><span>Service Charges</span><span className="font-medium flex items-center gap-1"><img className="h-3 w-3" src={dirhum1} alt="" />{serviceCharge}</span></div>
+                    <div className="flex justify-between"><span>Service Fee</span><span className="font-medium">{ }</span></div>
+
+                    <div className="flex justify-between font-semibold"><span>Discount</span><span className="flex items-center gap-1"><img className="h-3 w-3" src={dirhum1} alt="" /> 30.00</span></div>
+
+                    {/* <div className="flex justify-between"><span>Sub Total</span><span className="font-medium">{subTot}</span></div> */}
+                    <div className="flex justify-between items-center"><span>VAT (5%)</span><span className="font-medium flex items-center gap-1"><img className="h-3 w-3" src={dirhum1} alt="" />{vat}</span></div>
 
                     <hr className="my-3" />
 
                     <div className="flex justify-between text-lg font-bold">
                         <span>Total to pay</span>
-                        <span className="text-[#F26822]">₱ 344.40</span>
+                        <span className="flex items-center gap-1"><img className="h-4 w-4 mt-[3px]" src={dirhum1} alt="" /> {total}</span>
                     </div>
                 </div>
             </div>

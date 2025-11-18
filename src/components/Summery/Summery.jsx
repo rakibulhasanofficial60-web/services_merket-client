@@ -111,7 +111,7 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                             <div className="flex justify-between text-sm">
                                 <span className="font-semibold">VAT (5%)</span>
                                 <span className="flex items-center gap-1 font-semibold">
-                                    <img src={dirhum} className="w-3.5 h-3.5" /> {vat.toFixed(2)}
+                                    <img src={dirhum} className="w-3.5 h-3.5" /> {vat}
                                 </span>
                             </div>
                         </div>
@@ -122,7 +122,7 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                         <h3 className="font-semibold">Total To Pay</h3>
                         <p className="gap-2 text-[17px]">
                             <span className="font-bold flex items-center">
-                                <img className="h-[17px] w-[17px] mt-[3px]" src={dirhum} /> {total.toFixed(2)}
+                                <img className="h-[17px] w-[17px] mt-[3px]" src={dirhum} /> {total}
                             </span>
                         </p>
                     </div>
