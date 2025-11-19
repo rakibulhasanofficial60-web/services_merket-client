@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 const BookingSuccess = () => {
     const [open, setOpen] = useState(false);
-
     const handleClose = () => setOpen(false);
 
     return (

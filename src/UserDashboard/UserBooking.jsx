@@ -2,10 +2,14 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { MdOutlineWatchLater } from "react-icons/md";
 import { PiBookThin } from "react-icons/pi";
 import { SlHandbag } from "react-icons/sl";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import BookingCard from "../components/BookingCard/BookingCard";
 
 export default function UserBooking() {
-  const [activeTab, setActiveTab] = useState("delivered");
+  const [activeTab, setActiveTab] = useState("upcoming");
+  const [filteredData, setFilteredData] = useState([]);
+  const [tabLoading, setTabLoading] = useState(false);
 
   const tabs = [
     { id: "upcoming", label: "Upcoming", icon: <MdOutlineWatchLater /> },
@@ -14,48 +18,32 @@ export default function UserBooking() {
     { id: "unpaid", label: "Unpaid", icon: <PiBookThin /> },
   ];
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case "upcoming":
-        return (
-          <div className="border border-[#E5E7EB] rounded-md mt-10 w-full max-w-xl py-16 flex flex-col items-center text-center">
-            <SlHandbag className="text-4xl text-[#5D4F52] mb-4" />
-            <p className="font-semibold text-[#5D4F52] text-lg">No upcoming jobs!</p>
-            <p className="text-sm text-gray-500 mt-2 max-w-xs">Check again later.</p>
-          </div>
-        );
+  // Fetch Data
+  const { data: booking = [], isLoading } = useQuery({
+    queryKey: ["booking"],
+    queryFn: async () => {
+      const res = await fetch("/booking-card.json");
+      return res.json();
+    },
+  });
 
-      case "delivered":
-        return (
-          <div className="border border-[#E5E7EB] rounded-md mt-10 w-full max-w-xl py-16 flex flex-col items-center text-center">
-            <SlHandbag className="text-4xl text-[#5D4F52] mb-4" />
-            <p className="font-semibold text-[#5D4F52] text-lg">No delivered jobs!</p>
-            <p className="text-sm text-gray-500 mt-2 max-w-xs">Book a service or quote today through the Home tab</p>
-          </div>
-        );
+  // Filter when tab changes
+  useEffect(() => {
+    setTabLoading(true);
 
-      case "cancelled":
-        return (
-          <div className="border border-[#E5E7EB] rounded-md mt-10 w-full max-w-xl py-16 flex flex-col items-center text-center">
-            <SlHandbag className="text-4xl text-[#5D4F52] mb-4" />
-            <p className="font-semibold text-[#5D4F52] text-lg">No cancelled jobs!</p>
-            <p className="text-sm text-gray-500 mt-2 max-w-xs">You currently have no cancelled bookings.</p>
-          </div>
-        );
+    const timeout = setTimeout(() => {
+      const result = booking.filter((b) =>
+        activeTab === "upcoming"
+          ? b.status === "Confirmed" || b.status === "Pending"
+          : b.status.toLowerCase() === activeTab
+      );
 
-      case "unpaid":
-        return (
-          <div className="border border-[#E5E7EB] rounded-md mt-10 w-full max-w-xl py-16 flex flex-col items-center text-center">
-            <SlHandbag className="text-4xl text-[#5D4F52] mb-4" />
-            <p className="font-semibold text-[#5D4F52] text-lg">No unpaid jobs!</p>
-            <p className="text-sm text-gray-500 mt-2 max-w-xs">Make sure to complete your payments.</p>
-          </div>
-        );
+      setFilteredData(result);
+      setTabLoading(false);
+    }, 300);
 
-      default:
-        return null;
-    }
-  };
+    return () => clearTimeout(timeout);
+  }, [activeTab, booking]);
 
   return (
     <div className="border border-[#E5E7EB] px-6 py-4 rounded-lg bg-white w-full max-w-4xl mx-auto">
@@ -64,25 +52,47 @@ export default function UserBooking() {
       </h2>
 
       <div className="mt-10 flex flex-col items-center">
-        <nav
-          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 px-2"
-        >
+        {/* Tabs */}
+        <nav className="flex flex-wrap items-center justify-center gap-3">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1 text-[14px] cursor-pointer rounded-3xl px-4 py-1 transition
+              className={`flex items-center gap-1 text-[14px] rounded-3xl px-4 py-1 transition
                 ${activeTab === tab.id
                   ? "bg-[#01788E] text-white"
-                  : "border border-[#01788E] text-[#5D4F52] bg-white hover:bg-[#eef8fa]"}
-              `}
+                  : "border border-[#01788E] text-[#5D4F52] bg-white"
+                }`}
             >
               {tab.icon} {tab.label}
             </button>
           ))}
         </nav>
 
-        {renderContent()}
+        {/* Loading State */}
+        {(isLoading || tabLoading) && (
+          <p className="mt-10 text-gray-500">Loading...</p>
+        )}
+
+        {/* No Data State */}
+        {!isLoading && !tabLoading && filteredData.length === 0 && (
+          <div className="border border-[#E5E7EB] rounded-md mt-10 w-full max-w-xl py-16 flex flex-col items-center text-center">
+            <SlHandbag className="text-4xl text-[#5D4F52] mb-4" />
+            <p className="font-semibold text-[#5D4F52] text-lg">
+              No {activeTab} jobs!
+            </p>
+            <p className="text-sm text-gray-500 mt-2 max-w-xs">
+              Check again later.
+            </p>
+          </div>
+        )}
+
+        {/* Render Cards */}
+        <div className="mt-6 flex flex-col gap-4 w-full items-center">
+          {!isLoading &&
+            !tabLoading &&
+            filteredData.map((item) => <BookingCard key={item.id} item={item} />)}
+        </div>
       </div>
     </div>
   );
