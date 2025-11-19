@@ -1,8 +1,8 @@
 
 const UserQuotes = () => {
     return (
-        <div>
-            quotes            
+        <div className="uppercase flex items-center justify-center mt-20 text-7xl">
+          my  quotes            
         </div>
     );
 };

@@ -6,7 +6,7 @@ import dirhum from '../assets/icon/dirhum.png';
 import { LuMenu } from "react-icons/lu";
 import { FaUser } from "react-icons/fa";
 
-const UserDashboard = () => {   
+const UserDashboard = () => {
     const links =
         <ul>
             {/* My Bookings */}
@@ -82,7 +82,7 @@ const UserDashboard = () => {
             </li>
 
             {/* Support */}
-            <li className="list-none border-b border-dashed hover:bg-gray-50">
+            {/* <li className="list-none border-b border-dashed hover:bg-gray-50">
                 <NavLink
                     to="/dashboard/support"
                     className={({ isActive }) =>
@@ -91,7 +91,7 @@ const UserDashboard = () => {
                     }>
                     <FaCalendarAlt /> Support
                 </NavLink>
-            </li>
+            </li> */}
 
             {/* My Wallet */}
             <li className="list-none border-b border-dashed hover:bg-gray-50">
@@ -120,7 +120,7 @@ const UserDashboard = () => {
             {/* Invite a Friend */}
             <li className="list-none border-b border-dashed hover:bg-gray-50 flex justify-between items-center px-3 py-2">
                 <NavLink
-                    to="/dashboard/invite"
+                    to="/dashboard/invite-friend"
                     className={({ isActive }) =>
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] py-1 transition 
                         ${isActive ? "font-extrabold" : ""}`
@@ -154,7 +154,7 @@ const UserDashboard = () => {
                     </div>
                 </div>
 
-                <div className="px-10">
+                <div className="md:px-10">
                     <Outlet />
                 </div>
             </div>

@@ -46,22 +46,34 @@ export default function UserBooking() {
   }, [activeTab, booking]);
 
   return (
-    <div className="border border-[#E5E7EB] px-6 py-4 rounded-lg bg-white w-full max-w-4xl mx-auto">
+    <div className="border border-[#E5E7EB] px-2 md:px-6 py-4 rounded-lg bg-white w-full max-w-4xl mx-auto">
       <h2 className="flex items-center gap-2.5 text-xl font-semibold border-b border-[#E5E7EB] pb-3 text-[#5D4F52]">
         <FaCalendarAlt className="text-[#01788E]" /> My Bookings
       </h2>
 
       <div className="mt-10 flex flex-col items-center">
-        {/* Tabs */}
-        <nav className="flex flex-wrap items-center justify-center gap-3">
+        <nav
+          className="
+    hide-scroll-shadow 
+    no-scrollbar 
+    flex flex-nowrap 
+    items-center 
+    gap-3 
+    w-full 
+    overflow-x-auto 
+    px-2
+    justify-start 
+    md:justify-center
+  "
+        >
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1 text-[14px] rounded-3xl px-4 py-1 transition
-                ${activeTab === tab.id
-                  ? "bg-[#01788E] text-white"
-                  : "border border-[#01788E] text-[#5D4F52] bg-white"
+              className={`flex items-center gap-1 cursor-pointer text-[14px] rounded-3xl px-4 py-1 whitespace-nowrap transition
+        ${activeTab === tab.id
+                  ? 'bg-[#01788E] text-white'
+                  : 'border border-[#01788E] text-[#5D4F52] bg-white'
                 }`}
             >
               {tab.icon} {tab.label}

@@ -4,9 +4,9 @@ import dirhum from '../../assets/icon/dirhum.png'
 const BookingCard = ({ item }) => {
     const { serviceName, status, date, timeRange, price } = item;
     return (
-        <div className="w-full max-w-xl border rounded-2xl p-5 shadow-sm bg-white">
+        <div className="w-full max-w-xl border rounded-2xl p-2 md:p-5 shadow-sm bg-white">
             {/* Top Section */}
-            <div className="flex justify-between items-start">
+            <div className="md:flex justify-between items-start">
                 <div>
                     <h2 className="text-[18px] font-semibold text-[#1B1B1B]">
                         {serviceName}
@@ -26,7 +26,7 @@ const BookingCard = ({ item }) => {
             <div className="w-full border-b my-4"></div>
 
             {/* Bottom Section */}
-            <div className="flex justify-between items-center">
+            <div className="md:flex justify-between items-center">
                 {/* Price */}
                 <p className="text-[20px] font-semibold text-[#1B1B1B]">
                     <span className="text-[20px] flex items-center"><img className="h-5 w-5" src={dirhum} alt="" />{price}</span>

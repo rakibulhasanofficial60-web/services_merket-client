@@ -9,6 +9,12 @@ import UserBooking from "../UserDashboard/UserBooking";
 import UserQuotes from "../UserDashboard/UserQuotes";
 import UserProfile from "../UserDashboard/UserProfile";
 import BookingSuccess from "./pages/BookingSuccess/BookingSuccess";
+import OutstandingPayments from "../UserDashboard/OutstandingPayments";
+import SavedLocations from "../UserDashboard/SaveLocations";
+import PaymentMethods from "../UserDashboard/PaymentMethods";
+import MyWallet from "../UserDashboard/MyWallet";
+import DeleteAccount from "../UserDashboard/DeleteAccount";
+import InviteFriend from "../UserDashboard/InviteFriend";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +35,12 @@ export const router = createBrowserRouter([
             { path: 'booking', element: <UserBooking /> },
             { path: 'quotes', element: <UserQuotes /> },
             { path: 'profile', element: <UserProfile /> },
+            { path: 'outstanding-payments', element: <OutstandingPayments /> },
+            { path: 'saved-locations', element: <SavedLocations /> },
+            { path: 'payment-methods', element: <PaymentMethods /> },
+            { path: 'wallet', element: <MyWallet /> },
+            { path: 'delete-account', element: <DeleteAccount /> },
+            { path: 'invite-friend', element: <InviteFriend /> },
         ]
     }
 ]);
