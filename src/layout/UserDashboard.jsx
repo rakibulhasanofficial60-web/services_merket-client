@@ -1,10 +1,16 @@
 import { FaCalendarAlt } from "react-icons/fa";
-import { MdMenu } from "react-icons/md";
+import { MdDeleteSweep, MdMenu } from "react-icons/md";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import logo from '../assets/logo/logo.png';
 import dirhum from '../assets/icon/dirhum.png';
 import { LuMenu } from "react-icons/lu";
 import { FaUser } from "react-icons/fa";
+import { MdPayments } from "react-icons/md";
+import { FaLocationDot } from "react-icons/fa6";
+import { MdOutlinePayments } from "react-icons/md";
+import { FaWallet } from "react-icons/fa6";
+import { IoMdShare } from "react-icons/io";
+
 
 const UserDashboard = () => {
     const links =
@@ -53,7 +59,7 @@ const UserDashboard = () => {
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                     }>
-                    <FaCalendarAlt /> Outstanding Payments
+                    <MdPayments /> Outstanding Payments
                 </NavLink>
             </li>
 
@@ -65,7 +71,7 @@ const UserDashboard = () => {
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                     }>
-                    <FaCalendarAlt /> Saved Locations
+                    <FaLocationDot /> Saved Locations
                 </NavLink>
             </li>
 
@@ -77,7 +83,7 @@ const UserDashboard = () => {
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                     }>
-                    <FaCalendarAlt /> Payment Methods
+                    <MdOutlinePayments /> Payment Methods
                 </NavLink>
             </li>
 
@@ -101,7 +107,7 @@ const UserDashboard = () => {
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                     }>
-                    <FaCalendarAlt /> My Wallet
+                    <FaWallet /> My Wallet
                 </NavLink>
             </li>
 
@@ -113,7 +119,7 @@ const UserDashboard = () => {
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                     }>
-                    <FaCalendarAlt /> Delete Account
+                    <MdDeleteSweep /> Delete Account
                 </NavLink>
             </li>
 
@@ -125,7 +131,7 @@ const UserDashboard = () => {
                         `text-[14px] font-medium flex items-center gap-2 text-[#157D91] py-1 transition 
                         ${isActive ? "font-extrabold" : ""}`
                     }>
-                    <FaCalendarAlt /> Invite a friend
+                    <IoMdShare /> Invite a friend
                 </NavLink>
 
                 <span className="bg-[#ED6329] text-white text-[11px] px-2 py-0.5 rounded">
