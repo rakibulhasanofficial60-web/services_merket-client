@@ -16,6 +16,7 @@ import MyWallet from "../UserDashboard/MyWallet";
 import DeleteAccount from "../UserDashboard/DeleteAccount";
 import InviteFriend from "../UserDashboard/InviteFriend";
 import BookingDetails from "./pages/BookingDetails/BookingDetails";
+import AddServices from "../AdminDashboard/AddServices";
 
 export const router = createBrowserRouter([
     {
@@ -43,6 +44,9 @@ export const router = createBrowserRouter([
             { path: 'wallet', element: <MyWallet /> },
             { path: 'delete-account', element: <DeleteAccount /> },
             { path: 'invite-friend', element: <InviteFriend /> },
+
+            // admin routes 
+            { path: 'add-services', element: <AddServices /> },
         ]
     }
 ]);

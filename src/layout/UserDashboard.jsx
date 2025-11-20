@@ -14,169 +14,284 @@ import { RiLogoutCircleLine } from "react-icons/ri";
 
 
 const UserDashboard = () => {
-    // const user = true;
-    // const admin = false;
+    const user = false;
+    const admin = true;
 
 
-    // const links = (
-    //     <>
-    //         {/* just user  */}
-    //         {user && !admin && (
-    //             <ul>
-
-
-    //             </ul>
-    //         )}
-
-    //         {/* just admin  */}
-    //         {admin && !user && (
-    //             <ul>
-    //                 <li>
-    //                     <NavLink to="/dashboard/admin/users" className="text-[14px] font-medium px-3 py-2 text-[#157D91]">
-    //                         Manage Users
-    //                     </NavLink>
-    //                 </li>
-
-    //                 <li>
-    //                     <NavLink to="/dashboard/admin/services" className="text-[14px] font-medium px-3 py-2 text-[#157D91]">
-    //                         Manage Services
-    //                     </NavLink>
-    //                 </li>
-
-    //                 <li>
-    //                     <NavLink to="/dashboard/admin/orders" className="text-[14px] font-medium px-3 py-2 text-[#157D91]">
-    //                         All Orders
-    //                     </NavLink>
-    //                 </li>
-    //             </ul>
-    //         )}
-    //     </>
-    // );
-
-
-
-
-
-
-    const links =
-        <ul>
-            {/* My Bookings */}
-            <li className="list-none border-y border-dashed hover:bg-gray-50">
-                <NavLink
-                    to="/dashboard/booking"
-                    className={({ isActive }) =>
-                        `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+    const links = (
+        <>
+            {/* just user  */}
+            {user && !admin && (
+                <ul>
+                    {/* My Bookings */}
+                    <li className="list-none border-y border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/booking"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
-                    }>
-                    <FaCalendarAlt /> My Bookings
-                </NavLink>
-            </li>
+                            }>
+                            <FaCalendarAlt /> My Bookings
+                        </NavLink>
+                    </li>
 
-            {/* My Quotes */}
-            <li className="list-none border-b border-dashed hover:bg-gray-50">
-                <NavLink
-                    to="/dashboard/quotes"
-                    className={({ isActive }) =>
-                        `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                    {/* My Quotes */}
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/quotes"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
-                    }>
-                    <LuMenu className="text-[17px]" /> My Quotes
-                </NavLink>
-            </li>
+                            }>
+                            <LuMenu className="text-[17px]" /> My Quotes
+                        </NavLink>
+                    </li>
 
-            {/* My Profile */}
-            <li className="list-none border-b border-dashed hover:bg-gray-50">
-                <NavLink
-                    to="/dashboard/profile"
-                    className={({ isActive }) =>
-                        `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                    {/* My Profile */}
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/profile"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
-                    }>
-                    <FaUser /> My Profile
-                </NavLink>
-            </li>
+                            }>
+                            <FaUser /> My Profile
+                        </NavLink>
+                    </li>
 
-            {/* Outstanding Payments */}
-            <li className="list-none border-b border-dashed hover:bg-gray-50">
-                <NavLink
-                    to="/dashboard/outstanding-payments"
-                    className={({ isActive }) =>
-                        `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                    {/* Outstanding Payments */}
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/outstanding-payments"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
-                    }>
-                    <MdPayments /> Outstanding Payments
-                </NavLink>
-            </li>
+                            }>
+                            <MdPayments /> Outstanding Payments
+                        </NavLink>
+                    </li>
 
-            {/* Saved Locations */}
-            <li className="list-none border-b border-dashed hover:bg-gray-50">
-                <NavLink
-                    to="/dashboard/saved-locations"
-                    className={({ isActive }) =>
-                        `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                    {/* Saved Locations */}
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/saved-locations"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
-                    }>
-                    <FaLocationDot /> Saved Locations
-                </NavLink>
-            </li>
+                            }>
+                            <FaLocationDot /> Saved Locations
+                        </NavLink>
+                    </li>
 
-            {/* Payment Methods */}
-            <li className="list-none border-b border-dashed hover:bg-gray-50">
-                <NavLink
-                    to="/dashboard/payment-methods"
-                    className={({ isActive }) =>
-                        `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                    {/* Payment Methods */}
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/payment-methods"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
-                    }>
-                    <MdOutlinePayments /> Payment Methods
-                </NavLink>
-            </li>
+                            }>
+                            <MdOutlinePayments /> Payment Methods
+                        </NavLink>
+                    </li>
 
-            {/* My Wallet */}
-            <li className="list-none border-b border-dashed hover:bg-gray-50">
-                <NavLink
-                    to="/dashboard/wallet"
-                    className={({ isActive }) =>
-                        `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                    {/* My Wallet */}
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/wallet"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
-                    }>
-                    <FaWallet /> My Wallet
-                </NavLink>
-            </li>
+                            }>
+                            <FaWallet /> My Wallet
+                        </NavLink>
+                    </li>
 
-            {/* Delete Account */}
-            <li className="list-none border-b border-dashed hover:bg-gray-50">
-                <NavLink
-                    to="/dashboard/delete-account"
-                    className={({ isActive }) =>
-                        `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                    {/* Delete Account */}
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/delete-account"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
-                    }>
-                    <MdDeleteSweep /> Delete Account
-                </NavLink>
-            </li>
+                            }>
+                            <MdDeleteSweep /> Delete Account
+                        </NavLink>
+                    </li>
 
-            {/* Invite a Friend */}
-            <li className="list-none border-b border-dashed hover:bg-gray-50 flex justify-between items-center px-3 py-2">
-                <NavLink
-                    to="/dashboard/invite-friend"
-                    className={({ isActive }) =>
-                        `text-[14px] font-medium flex items-center gap-2 text-[#157D91] py-1 transition 
+                    {/* Invite a Friend */}
+                    <li className="list-none border-b border-dashed hover:bg-gray-50 flex justify-between items-center px-3 py-2">
+                        <NavLink
+                            to="/dashboard/invite-friend"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] py-1 transition 
                         ${isActive ? "font-extrabold" : ""}`
-                    }>
-                    <IoMdShare /> Invite a friend
-                </NavLink>
+                            }>
+                            <IoMdShare /> Invite a friend
+                        </NavLink>
 
-                <span className="bg-[#ED6329] text-white text-[11px] px-2 py-0.5 rounded">
-                    Get 30 ৳ credit
-                </span>
-            </li>
+                        <span className="bg-[#ED6329] text-white text-[11px] px-2 py-0.5 rounded">
+                            Get 30 ৳ credit
+                        </span>
+                    </li>
 
-            {/* Logout */}
-            <li className="list-none flex items-center gap-1.5 py-3 px-3 hover:underline cursor-pointer text-[#157D91]">
-                <RiLogoutCircleLine />  Logout
-            </li>
-        </ul>
+                    {/* Logout */}
+                    <li className="list-none flex items-center gap-1.5 py-3 px-3 hover:underline cursor-pointer text-[#157D91]">
+                        <RiLogoutCircleLine />  Logout
+                    </li>
+                </ul>
+            )}
+
+            {/* just admin  */}
+            {admin && !user && (
+                <ul>
+                    <li className="list-none border-y border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/add-services"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                        ${isActive ? "font-extrabold" : ""}`
+                            }>
+                            <FaCalendarAlt /> Add Services
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/dashboard" className="text-[14px] font-medium px-3 py-2 text-[#157D91]">
+                            Manage Services
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/dashboard" className="text-[14px] font-medium px-3 py-2 text-[#157D91]">
+                            All Orders
+                        </NavLink>
+                    </li>
+                </ul>
+            )}
+        </>
+    );
+
+
+    // const links =
+    //     <ul>
+    //         {/* My Bookings */}
+    //         <li className="list-none border-y border-dashed hover:bg-gray-50">
+    //             <NavLink
+    //                 to="/dashboard/booking"
+    //                 className={({ isActive }) =>
+    //                     `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+    //                     ${isActive ? "font-extrabold" : ""}`
+    //                 }>
+    //                 <FaCalendarAlt /> My Bookings
+    //             </NavLink>
+    //         </li>
+
+    //         {/* My Quotes */}
+    //         <li className="list-none border-b border-dashed hover:bg-gray-50">
+    //             <NavLink
+    //                 to="/dashboard/quotes"
+    //                 className={({ isActive }) =>
+    //                     `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+    //                     ${isActive ? "font-extrabold" : ""}`
+    //                 }>
+    //                 <LuMenu className="text-[17px]" /> My Quotes
+    //             </NavLink>
+    //         </li>
+
+    //         {/* My Profile */}
+    //         <li className="list-none border-b border-dashed hover:bg-gray-50">
+    //             <NavLink
+    //                 to="/dashboard/profile"
+    //                 className={({ isActive }) =>
+    //                     `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+    //                     ${isActive ? "font-extrabold" : ""}`
+    //                 }>
+    //                 <FaUser /> My Profile
+    //             </NavLink>
+    //         </li>
+
+    //         {/* Outstanding Payments */}
+    //         <li className="list-none border-b border-dashed hover:bg-gray-50">
+    //             <NavLink
+    //                 to="/dashboard/outstanding-payments"
+    //                 className={({ isActive }) =>
+    //                     `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+    //                     ${isActive ? "font-extrabold" : ""}`
+    //                 }>
+    //                 <MdPayments /> Outstanding Payments
+    //             </NavLink>
+    //         </li>
+
+    //         {/* Saved Locations */}
+    //         <li className="list-none border-b border-dashed hover:bg-gray-50">
+    //             <NavLink
+    //                 to="/dashboard/saved-locations"
+    //                 className={({ isActive }) =>
+    //                     `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+    //                     ${isActive ? "font-extrabold" : ""}`
+    //                 }>
+    //                 <FaLocationDot /> Saved Locations
+    //             </NavLink>
+    //         </li>
+
+    //         {/* Payment Methods */}
+    //         <li className="list-none border-b border-dashed hover:bg-gray-50">
+    //             <NavLink
+    //                 to="/dashboard/payment-methods"
+    //                 className={({ isActive }) =>
+    //                     `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+    //                     ${isActive ? "font-extrabold" : ""}`
+    //                 }>
+    //                 <MdOutlinePayments /> Payment Methods
+    //             </NavLink>
+    //         </li>
+
+    //         {/* My Wallet */}
+    //         <li className="list-none border-b border-dashed hover:bg-gray-50">
+    //             <NavLink
+    //                 to="/dashboard/wallet"
+    //                 className={({ isActive }) =>
+    //                     `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+    //                     ${isActive ? "font-extrabold" : ""}`
+    //                 }>
+    //                 <FaWallet /> My Wallet
+    //             </NavLink>
+    //         </li>
+
+    //         {/* Delete Account */}
+    //         <li className="list-none border-b border-dashed hover:bg-gray-50">
+    //             <NavLink
+    //                 to="/dashboard/delete-account"
+    //                 className={({ isActive }) =>
+    //                     `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+    //                     ${isActive ? "font-extrabold" : ""}`
+    //                 }>
+    //                 <MdDeleteSweep /> Delete Account
+    //             </NavLink>
+    //         </li>
+
+    //         {/* Invite a Friend */}
+    //         <li className="list-none border-b border-dashed hover:bg-gray-50 flex justify-between items-center px-3 py-2">
+    //             <NavLink
+    //                 to="/dashboard/invite-friend"
+    //                 className={({ isActive }) =>
+    //                     `text-[14px] font-medium flex items-center gap-2 text-[#157D91] py-1 transition 
+    //                     ${isActive ? "font-extrabold" : ""}`
+    //                 }>
+    //                 <IoMdShare /> Invite a friend
+    //             </NavLink>
+
+    //             <span className="bg-[#ED6329] text-white text-[11px] px-2 py-0.5 rounded">
+    //                 Get 30 ৳ credit
+    //             </span>
+    //         </li>
+
+    //         {/* Logout */}
+    //         <li className="list-none flex items-center gap-1.5 py-3 px-3 hover:underline cursor-pointer text-[#157D91]">
+    //             <RiLogoutCircleLine />  Logout
+    //         </li>
+    //     </ul>
 
 
     return (

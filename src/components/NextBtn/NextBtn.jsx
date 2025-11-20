@@ -11,15 +11,15 @@ const NextBtn = ({ name = "Next", disabled, onClick }) => {
     let isDisabled = disabled ?? false;
 
     if (pathname === "/services" && itemSummary.length === 0) isDisabled = true;
-    if (pathname === "/address" && !address) isDisabled = false;
+    if (pathname === "/address" && !address) isDisabled = true;
     if (pathname === "/date-time" && (!date || !time)) isDisabled = true;
 
     const isLastStep = !nextPath;
 
     const handleClick = () => {
         if (isLastStep && onClick) {
-            onClick(); // ONLY ON LAST STEP FIRE
-            return;    // no navigation
+            onClick();
+            return;
         }
         navigate(nextPath);
     };

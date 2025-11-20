@@ -19,7 +19,6 @@ const Navbar = () => {
                                 alt="Logo"
                             />
                         </Link>
-
                     </div>
 
                     <Link className="hidden lg:block" to="/">
@@ -46,12 +45,12 @@ const Navbar = () => {
 
                             {/* Hover Popup */}
                             <div className="
-        absolute top-7 right-0 mt-1 w-60 bg-white shadow-lg rounded-xl p-2
-        opacity-0 group-hover:opacity-100 
-        pointer-events-none group-hover:pointer-events-auto
-        transition-all duration-200
-        z-50
-    ">
+                                        absolute top-7 right-0 mt-1 w-60 bg-white shadow-lg rounded-xl p-2
+                                        opacity-0 group-hover:opacity-100 
+                                        pointer-events-none group-hover:pointer-events-auto
+                                        transition-all duration-200
+                                        z-50
+                                    ">
                                 <Link
                                     to="/dashboard/booking"
                                     className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-[#01788E]"

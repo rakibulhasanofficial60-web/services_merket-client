@@ -29,7 +29,7 @@ export default function InviteFriend() {
 
           {/* Social Buttons */}
           <div className="flex gap-5 mt-6">
-            <button className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow">
+            <button className="w-12 h-12 rounded-full bg-[#01788E] text-white flex items-center justify-center shadow">
               <FaFacebookF size={20} />
             </button>
 
