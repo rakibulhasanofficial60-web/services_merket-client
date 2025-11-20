@@ -1,8 +1,11 @@
 import { FaArrowRight } from "react-icons/fa";
 import dirhum from '../../assets/icon/dirhum.png'
+import { useNavigate } from "react-router-dom";
 
 const BookingCard = ({ item }) => {
     const { serviceName, status, date, timeRange, price } = item;
+    const navigate = useNavigate();
+
     return (
         <div className="w-full max-w-xl border rounded-2xl p-2 md:p-5 shadow-sm bg-white">
             {/* Top Section */}
@@ -33,7 +36,7 @@ const BookingCard = ({ item }) => {
                 </p>
 
                 {/* Manage Button */}
-                <button className="cursor-pointer flex items-center gap-1 text-[14px] font-semibold text-[#01788E] border border-[#01788E] px-4 py-2 rounded-lg hover:bg-[#F3FAFB] transition">
+                <button onClick={() => navigate('/booking-details')} className="cursor-pointer flex items-center gap-1 text-[14px] font-semibold text-[#01788E] border border-[#01788E] px-4 py-2 rounded-lg hover:bg-[#F3FAFB] transition">
                     MANAGE
                     <span className="text-[12px]"><FaArrowRight /></span>
                 </button>

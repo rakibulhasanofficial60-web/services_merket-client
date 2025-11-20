@@ -15,6 +15,7 @@ import PaymentMethods from "../UserDashboard/PaymentMethods";
 import MyWallet from "../UserDashboard/MyWallet";
 import DeleteAccount from "../UserDashboard/DeleteAccount";
 import InviteFriend from "../UserDashboard/InviteFriend";
+import BookingDetails from "./pages/BookingDetails/BookingDetails";
 
 export const router = createBrowserRouter([
     {
@@ -25,7 +26,8 @@ export const router = createBrowserRouter([
             { path: 'address', element: <Address /> },
             { path: 'date-time', element: <DateTime /> },
             { path: 'confirmation', element: <Confirmation /> },
-            { path: 'booking-success', element: <BookingSuccess /> }
+            { path: 'booking-success', element: <BookingSuccess /> },
+            { path: 'booking-details', element: <BookingDetails /> }
         ]
     },
     {

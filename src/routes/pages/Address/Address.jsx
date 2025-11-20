@@ -18,6 +18,7 @@ const Address = () => {
                 <div className="md:w-[60%] mb-4 space-y-4">
                      <LocationPicker onLocationSelect={handleLocation} />
                 </div>
+                
                 <Summery address={address} itemSummary={itemSummary} total={total} showInput={showInput} setShowInput={setShowInput} vat={vat} serviceCharge={serviceCharge}></Summery>
             </div>
 

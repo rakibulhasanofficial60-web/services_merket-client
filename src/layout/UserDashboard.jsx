@@ -10,9 +10,54 @@ import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlinePayments } from "react-icons/md";
 import { FaWallet } from "react-icons/fa6";
 import { IoMdShare } from "react-icons/io";
+import { RiLogoutCircleLine } from "react-icons/ri";
 
 
 const UserDashboard = () => {
+    // const user = true;
+    // const admin = false;
+
+
+    // const links = (
+    //     <>
+    //         {/* just user  */}
+    //         {user && !admin && (
+    //             <ul>
+
+
+    //             </ul>
+    //         )}
+
+    //         {/* just admin  */}
+    //         {admin && !user && (
+    //             <ul>
+    //                 <li>
+    //                     <NavLink to="/dashboard/admin/users" className="text-[14px] font-medium px-3 py-2 text-[#157D91]">
+    //                         Manage Users
+    //                     </NavLink>
+    //                 </li>
+
+    //                 <li>
+    //                     <NavLink to="/dashboard/admin/services" className="text-[14px] font-medium px-3 py-2 text-[#157D91]">
+    //                         Manage Services
+    //                     </NavLink>
+    //                 </li>
+
+    //                 <li>
+    //                     <NavLink to="/dashboard/admin/orders" className="text-[14px] font-medium px-3 py-2 text-[#157D91]">
+    //                         All Orders
+    //                     </NavLink>
+    //                 </li>
+    //             </ul>
+    //         )}
+    //     </>
+    // );
+
+
+
+
+
+
     const links =
         <ul>
             {/* My Bookings */}
@@ -87,18 +132,6 @@ const UserDashboard = () => {
                 </NavLink>
             </li>
 
-            {/* Support */}
-            {/* <li className="list-none border-b border-dashed hover:bg-gray-50">
-                <NavLink
-                    to="/dashboard/support"
-                    className={({ isActive }) =>
-                        `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
-                        ${isActive ? "font-extrabold" : ""}`
-                    }>
-                    <FaCalendarAlt /> Support
-                </NavLink>
-            </li> */}
-
             {/* My Wallet */}
             <li className="list-none border-b border-dashed hover:bg-gray-50">
                 <NavLink
@@ -140,10 +173,11 @@ const UserDashboard = () => {
             </li>
 
             {/* Logout */}
-            <li className="list-none py-3 px-3 hover:underline cursor-pointer text-[#157D91]">
-                Logout
+            <li className="list-none flex items-center gap-1.5 py-3 px-3 hover:underline cursor-pointer text-[#157D91]">
+                <RiLogoutCircleLine />  Logout
             </li>
-        </ul>;
+        </ul>
+
 
     return (
         <div className="drawer lg:drawer-open max-w-7xl mx-auto mt-10 px-4">
@@ -193,7 +227,6 @@ const UserDashboard = () => {
                             <p className="font-medium text-[#01788E]">Al Bada'a, Dubai</p>
                         </div>
                     </div>
-
                     {links}
                 </div>
             </div>

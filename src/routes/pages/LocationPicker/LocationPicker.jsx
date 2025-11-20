@@ -21,7 +21,7 @@ const defaultCenter = {
 
 export default function LocationPicker({ onLocationSelect }) {
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+        googleMapsApiKey: 'AIzaSyA2R2g_kkWrMSzEKMzDm9LxBnVFDdzjQcU',
         libraries: ["places"],
     });
 
@@ -103,7 +103,7 @@ export default function LocationPicker({ onLocationSelect }) {
                     onClick={() => map?.setZoom(map.getZoom() - 1)}
                     className="bg-white shadow p-2 rounded-lg"
                 >
-                   <FaMinus className="font-bold" />
+                    <FaMinus className="font-bold" />
                 </button>
 
                 {/* GPS Location */}
