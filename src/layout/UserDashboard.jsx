@@ -169,9 +169,25 @@ const UserDashboard = () => {
                         </NavLink>
                     </li>
 
-                    <li>
-                        <NavLink to="/dashboard" className="text-[14px] font-medium px-3 py-2 text-[#157D91]">
-                            All Orders
+                    <li className="list-none border-y border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/add-service-type"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                        ${isActive ? "font-extrabold" : ""}`
+                            }>
+                            <FaCalendarAlt /> Add Services Type
+                        </NavLink>
+                    </li>
+
+                    <li className="list-none border-y border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/add-property-type"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                        ${isActive ? "font-extrabold" : ""}`
+                            }>
+                            <FaCalendarAlt /> Add Property Type
                         </NavLink>
                     </li>
                 </ul>

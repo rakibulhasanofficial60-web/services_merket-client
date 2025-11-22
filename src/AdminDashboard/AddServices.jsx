@@ -182,10 +182,11 @@ const AddServices = () => {
 
                 {/* Submit Button */}
                 <button
+                    disabled={loading}
                     type="submit"
                     className="w-full bg-[#01788E] text-white py-3 rounded-xl font-semibold text-lg transition-all shadow-md hover:shadow-lg cursor-pointer"
                 >
-                    Submit
+                    {loading ? 'Submitting...' : 'Submit'}
                 </button>
             </form>
         </div>

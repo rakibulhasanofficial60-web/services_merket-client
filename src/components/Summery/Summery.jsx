@@ -2,7 +2,7 @@ import { useState } from "react";
 import dirhum from "../../assets/icon/dirhum.png";
 import NextBtn from "../NextBtn/NextBtn";
 
-export default function Summery({ total, showInput, setShowInput, vat, itemSummary, serviceCharge, address, date, time }) {
+export default function Summery({ total, showInput, setShowInput, vat, itemSummary, serviceCharge, address, date, time, serviceTitle }) {
     const [promo, setPromo] = useState("");
     const [open, setOpen] = useState(false);
 
@@ -15,10 +15,6 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
         setPromo("");
         setShowInput(false);
     };
-
-    const serviceTitle = itemSummary.map(item =>
-        item?.propertyType?.serviceType?.title || null
-    );
 
     return (
         <>

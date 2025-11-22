@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+import { useSummary } from "../provider/SummaryProvider";
 
 const AdminBooking = () => {
+    const { serviceTitle } = useSummary();
 
     const { data: booking = [], isLoading } = useQuery({
         queryKey: ["booking"],
@@ -9,7 +11,7 @@ const AdminBooking = () => {
             return res.json();
         },
     });
-    
+
     if (isLoading) return <p className="text-center mt-10">Loading...</p>;
     return (
         <div className="p-5">
@@ -32,7 +34,7 @@ const AdminBooking = () => {
                         {booking.map((item, idx) => (
                             <tr key={idx} className="hover:bg-gray-50">
                                 <td className="p-3 border">{idx + 1}</td>
-                                <td className="p-3 border">{item.serviceName}</td>
+                                <td className="p-3 border">{item.serviceName} <br />{serviceTitle[idx]}</td>
                                 <td className="p-3 border">
                                     {item.date} <br /> {item.timeRange}
                                 </td>

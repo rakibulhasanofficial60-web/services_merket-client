@@ -20,10 +20,6 @@ export const SummaryProvider = ({ children }) => {
     const [time, setTime] = useState("");
 
 
-    const serviceIdMatched = services.map(c => c.id);
-    const contentIdMatched = content.map(c => c.serviceId);
-
-
     useEffect(() => {
         const sections = document.querySelectorAll("[id^='content-']");
         observer.current = new IntersectionObserver(
@@ -61,13 +57,17 @@ export const SummaryProvider = ({ children }) => {
 
     const itemSummary = itemQueries.map((q) => q.data).filter(Boolean);
 
+    const serviceTitle = itemSummary.map(item =>
+        item?.propertyType?.serviceType?.title || null
+    );
+
     const subtotal = itemSummary.reduce((acc, item) => acc + Number(item?.price || 0), 0);
     const serviceCharge = Number((subtotal > 0 ? 20 : 0).toFixed(2));
     //    const vat = (subtotal * 0.05).toFixed(2);
     const vat = Number((subtotal * 0.05).toFixed(2));
     const total = Number((subtotal + serviceCharge + vat).toFixed(2));
 
-    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime, serviceIdMatched, contentIdMatched };
+    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime, serviceTitle };
 
     return (
         <SummaryContext.Provider value={summeryInfo}>
@@ -76,4 +76,5 @@ export const SummaryProvider = ({ children }) => {
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSummary = () => useContext(SummaryContext);
