@@ -17,6 +17,7 @@ import DeleteAccount from "../UserDashboard/DeleteAccount";
 import InviteFriend from "../UserDashboard/InviteFriend";
 import BookingDetails from "./pages/BookingDetails/BookingDetails";
 import AddServices from "../AdminDashboard/AddServices";
+import AdminBooking from "../AdminDashboard/AdminBooking";
 
 export const router = createBrowserRouter([
     {
@@ -47,6 +48,7 @@ export const router = createBrowserRouter([
 
             // admin routes 
             { path: 'add-services', element: <AddServices /> },
+            { path: 'admin-booking', element: <AdminBooking /> },
         ]
     }
 ]);

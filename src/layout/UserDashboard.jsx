@@ -11,6 +11,8 @@ import { MdOutlinePayments } from "react-icons/md";
 import { FaWallet } from "react-icons/fa6";
 import { IoMdShare } from "react-icons/io";
 import { RiLogoutCircleLine } from "react-icons/ri";
+import { RiMacbookFill } from "react-icons/ri";
+
 
 
 const UserDashboard = () => {
@@ -147,18 +149,23 @@ const UserDashboard = () => {
                 <ul>
                     <li className="list-none border-y border-dashed hover:bg-gray-50">
                         <NavLink
+                            to="/dashboard/admin-booking"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                        ${isActive ? "font-extrabold" : ""}`
+                            }>
+                            <RiMacbookFill /> Booking
+                        </NavLink>
+                    </li>
+
+                    <li className="list-none border-y border-dashed hover:bg-gray-50">
+                        <NavLink
                             to="/dashboard/add-services"
                             className={({ isActive }) =>
                                 `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                             }>
                             <FaCalendarAlt /> Add Services
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink to="/dashboard" className="text-[14px] font-medium px-3 py-2 text-[#157D91]">
-                            Manage Services
                         </NavLink>
                     </li>
 
