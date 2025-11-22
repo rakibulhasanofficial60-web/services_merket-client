@@ -1,42 +1,47 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import useAllServices from "../hooks/useAllServices";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
-const AddServices = () => {
+export default function AddServices() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [loading, setLoading] = useState(false);
+    const [services, isLoading] = useAllServices();
+    const [openModal, setOpenModal] = useState(false);
 
     const handleFormSubmit = async (data) => {
         setLoading(true);
         const formData = new FormData();
         formData.append("image", data.image[0]);
+
         try {
             const res = await fetch(image_hosting_api, {
                 method: "POST",
-                body: formData
+                body: formData,
             });
+
             const result = await res.json();
             if (result.success) {
                 const imageUrl = result.data.url;
-                const finalData = {
-                    ...data,
-                    image: imageUrl,
-                };
+                const finalData = { ...data, image: imageUrl };
 
-                const postData = await fetch("https://job-task-nu.vercel.app/api/v1/service/create", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(finalData),
-                });
+                const postData = await fetch(
+                    "https://job-task-nu.vercel.app/api/v1/service/create",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(finalData),
+                    }
+                );
 
                 const postResult = await postData.json();
-                if (postResult.success === true) {
-                    toast.success('Service added successfully');
+                if (postResult.success) {
+                    toast.success("Service added successfully");
+                    setOpenModal(false);
                 }
-
             } else {
                 toast.error("Image upload failed");
             }
@@ -47,150 +52,165 @@ const AddServices = () => {
         }
     };
 
-
-    //  const uploadImageToVPS = async (file) => {
-    //         const data = new FormData();
-    //         data.append("image", file);
-    //         try {
-    //             const res = await fetch(`${process.env.VITE_BACKEND_API_URL}/upload-image`, {
-    //                 method: "POST",
-    //                 body: data,
-    //             });
-
-    //             if (!res.ok) {
-    //                 throw new Error("Failed to upload image");
-    //             }
-
-    //             const result = await res.json();
-    //             return result.url;
-    //         } catch (err) {
-    //             toast.error("Image upload failed");
-    //             throw err;
-    //         }
-    //     };
+    if (isLoading) return <p className="text-center mt-10">Loading...</p>;
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center py-10 px-4">
-            <form
-                onSubmit={handleSubmit(handleFormSubmit)}
-                className="w-full max-w-3xl bg-white p-8 rounded-2xl shadow-xl space-y-6 border border-gray-100"
-            >
-                <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-                    Add New Service
-                </h2>
+        <div>
+            <div className="md:flex items-center justify-between my-10 px-4">
+                <p className="text-xl md:text-3xl font-bold">
+                    Total service: {services.length}
+                </p>
+                <button
+                    className="btn bg-[#01788E] text-white"
+                    onClick={() => setOpenModal(true)}
+                >
+                    Add Service
+                </button>
+            </div>
 
-                {/* Grid Layout */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Data Table */}
+            <div className="overflow-x-auto px-4">
+                <table className="table w-full">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Service Name</th>
+                            <th>Job</th>
+                            <th>Favorite Color</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {services.map((service, idx) => (
+                            <tr key={idx}>
+                                <th>{idx + 1}</th>
+                                <td>
+                                    <div className="flex items-center gap-3">
+                                        <div className="avatar">
+                                            <div className="mask mask-squircle w-12 h-12">
+                                                <img src={service.image} alt={service.title} />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="font-bold">{service.title}</div>
+                                            <div className="text-sm opacity-50">
+                                                Total Booking: {service.totalBooking}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Random Job</td>
+                                <td>Purple</td>
+                                <th>
+                                    <button className="btn btn-ghost btn-xs">Details</button>
+                                </th>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
-                    {/* Image Upload */}
-                    <div className="space-y-2 md:col-span-2">
-                        <label className="font-medium text-gray-700">Service Image</label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            {...register("image", { required: true })}
-                            className="border border-gray-300 p-3 w-full rounded-lg bg-gray-50 cursor-pointer"
-                        />
-                        {errors.image && (
-                            <p className="text-red-500 text-sm">Image is required</p>
-                        )}
-                    </div>
+            {/* Modal */}
+            {openModal && (
+                <div
+                    className="fixed inset-0 flex items-center justify-center z-50 p-4"
+                    onClick={() => setOpenModal(false)}
+                >
+                    <div
+                        className="bg-white w-full max-w-3xl p-8 rounded-2xl shadow-xl relative"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            className="absolute right-4 top-4 text-xl"
+                            onClick={() => setOpenModal(false)}
+                        >
+                            ✕
+                        </button>
 
-                    {/* Title */}
-                    <div className="space-y-2">
-                        <label className="font-medium text-gray-700">Title</label>
-                        <input
-                            type="text"
-                            placeholder="Enter title..."
-                            {...register("title", { required: true })}
-                            className="border border-gray-300 p-3 w-full rounded-lg"
-                        />
-                        {errors.title && (
-                            <p className="text-red-500 text-sm">Title is required</p>
-                        )}
-                    </div>
+                        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+                            <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+                                Add New Service
+                            </h2>
 
-                    {/* Description 1 */}
-                    <div className="space-y-2">
-                        <label className="font-medium text-gray-700">Description 1</label>
-                        <input
-                            type="text"
-                            placeholder="Short description..."
-                            {...register("des1", { required: true })}
-                            className="border border-gray-300 p-3 w-full rounded-lg"
-                        />
-                        {errors.des1 && (
-                            <p className="text-red-500 text-sm">Description is required</p>
-                        )}
-                    </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="md:col-span-2 space-y-2">
+                                    <label>Service Image</label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        {...register("image", { required: true })}
+                                        className="border p-3 w-full rounded-lg bg-gray-50"
+                                    />
+                                    {errors.image && (
+                                        <p className="text-red-500 text-sm">Image is required</p>
+                                    )}
+                                </div>
 
-                    {/* Description 2 */}
-                    <div className="space-y-2">
-                        <label className="font-medium text-gray-700">Description 2</label>
-                        <input
-                            type="text"
-                            placeholder="Short description..."
-                            {...register("des2", { required: true })}
-                            className="border border-gray-300 p-3 w-full rounded-lg"
-                        />
-                        {errors.des2 && (
-                            <p className="text-red-500 text-sm">Description is required</p>
-                        )}
-                    </div>
+                                <div className="space-y-2">
+                                    <label>Title</label>
+                                    <input
+                                        type="text"
+                                        {...register("title", { required: true })}
+                                        className="border p-3 w-full rounded-lg"
+                                    />
+                                </div>
 
-                    {/* Description 3 */}
-                    <div className="space-y-2">
-                        <label className="font-medium text-gray-700">Description 3</label>
-                        <input
-                            type="text"
-                            placeholder="Short description..."
-                            {...register("des3", { required: true })}
-                            className="border border-gray-300 p-3 w-full rounded-lg"
-                        />
-                        {errors.des3 && (
-                            <p className="text-red-500 text-sm">Description is required</p>
-                        )}
-                    </div>
+                                <div className="space-y-2">
+                                    <label>Description 1</label>
+                                    <input
+                                        type="text"
+                                        {...register("des1", { required: true })}
+                                        className="border p-3 w-full rounded-lg"
+                                    />
+                                </div>
 
-                    {/* Rated */}
-                    <div className="space-y-2">
-                        <label className="font-medium text-gray-700">Rated</label>
-                        <input
-                            type="text"
-                            placeholder="e.g. 4.5"
-                            {...register("rated", { required: true })}
-                            className="border border-gray-300 p-3 w-full rounded-lg"
-                        />
-                        {errors.rated && (
-                            <p className="text-red-500 text-sm">Rating is required</p>
-                        )}
-                    </div>
+                                <div className="space-y-2">
+                                    <label>Description 2</label>
+                                    <input
+                                        type="text"
+                                        {...register("des2", { required: true })}
+                                        className="border p-3 w-full rounded-lg"
+                                    />
+                                </div>
 
-                    {/* Total Booking */}
-                    <div className="space-y-2">
-                        <label className="font-medium text-gray-700">Total Booking</label>
-                        <input
-                            type="text"
-                            placeholder="e.g. 350"
-                            {...register("totalBooking", { required: true })}
-                            className="border border-gray-300 p-3 w-full rounded-lg"
-                        />
-                        {errors.totalBooking && (
-                            <p className="text-red-500 text-sm">Total booking is required</p>
-                        )}
+                                <div className="space-y-2">
+                                    <label>Description 3</label>
+                                    <input
+                                        type="text"
+                                        {...register("des3", { required: true })}
+                                        className="border p-3 w-full rounded-lg"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label>Rated</label>
+                                    <input
+                                        type="text"
+                                        {...register("rated", { required: true })}
+                                        className="border p-3 w-full rounded-lg"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label>Total Booking</label>
+                                    <input
+                                        type="text"
+                                        {...register("totalBooking", { required: true })}
+                                        className="border p-3 w-full rounded-lg"
+                                    />
+                                </div>
+                            </div>
+
+                            <button
+                                disabled={loading}
+                                type="submit"
+                                className="w-full bg-[#01788E] text-white py-3 rounded-xl font-semibold text-lg shadow-md hover:shadow-lg"
+                            >
+                                {loading ? "Submitting..." : "Submit"}
+                            </button>
+                        </form>
                     </div>
                 </div>
-
-                {/* Submit Button */}
-                <button
-                    disabled={loading}
-                    type="submit"
-                    className="w-full bg-[#01788E] text-white py-3 rounded-xl font-semibold text-lg transition-all shadow-md hover:shadow-lg cursor-pointer"
-                >
-                    {loading ? 'Submitting...' : 'Submit'}
-                </button>
-            </form>
+            )}
         </div>
     );
-};
-
-export default AddServices;
+}

@@ -165,7 +165,7 @@ const UserDashboard = () => {
                                 `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                             }>
-                            <FaCalendarAlt /> Add Services
+                            <FaCalendarAlt />  Services
                         </NavLink>
                     </li>
 
@@ -176,7 +176,7 @@ const UserDashboard = () => {
                                 `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                             }>
-                            <FaCalendarAlt /> Add Services Type
+                            <FaCalendarAlt />  Services Type
                         </NavLink>
                     </li>
 
@@ -187,7 +187,7 @@ const UserDashboard = () => {
                                 `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                             }>
-                            <FaCalendarAlt /> Add Property Type
+                            <FaCalendarAlt />  Property Type
                         </NavLink>
                     </li>
 
@@ -198,7 +198,7 @@ const UserDashboard = () => {
                                 `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                             }>
-                            <FaCalendarAlt /> Add Property Item
+                            <FaCalendarAlt />  Property Item
                         </NavLink>
                     </li>
                 </ul>
