@@ -20,6 +20,10 @@ export const SummaryProvider = ({ children }) => {
     const [time, setTime] = useState("");
 
 
+    const serviceIdMatched = services.map(c => c.id);
+    const contentIdMatched = content.map(c => c.serviceId);
+
+
     useEffect(() => {
         const sections = document.querySelectorAll("[id^='content-']");
         observer.current = new IntersectionObserver(
@@ -63,7 +67,7 @@ export const SummaryProvider = ({ children }) => {
     const vat = Number((subtotal * 0.05).toFixed(2));
     const total = Number((subtotal + serviceCharge + vat).toFixed(2));
 
-    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime };
+    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime, serviceIdMatched, contentIdMatched };
 
     return (
         <SummaryContext.Provider value={summeryInfo}>

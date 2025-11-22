@@ -51,7 +51,7 @@ const ContentModal = ({ setShowModal, property }) => {
     }
 
     const handelDetails = item => {
-        console.log(item);
+        // console.log(item);
     }
 
     const items = Array.isArray(property.propertyItems) ? property.propertyItems : [];

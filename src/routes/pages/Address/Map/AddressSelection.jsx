@@ -22,7 +22,7 @@ const AddressSelection = ({ setAddress }) => {
   const handleBackToAddressList = () => setShowMap(false);
 
   const handleMapLocationSelect = (newLocation) => {
-    console.log("Selected from Map:", newLocation);
+    // console.log("Selected from Map:", newLocation);
   };
 
   return (

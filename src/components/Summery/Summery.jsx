@@ -16,6 +16,10 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
         setShowInput(false);
     };
 
+    const serviceTitle = itemSummary.map(item =>
+        item?.propertyType?.serviceType?.title || null
+    );
+
     return (
         <>
             {/* DESKTOP SUMMARY */}
@@ -27,9 +31,11 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                     <div className="border-b border-gray-400 pb-1.5">
                         <h3 className="font-semibold text-sm mb-2">Service Details</h3>
                         <ul className="space-y-1">
-                            {itemSummary.map((item) => (
+                            {itemSummary.map((item, index) => (
                                 <li key={item.id} className="flex justify-between text-sm">
-                                    <span className="font-medium text-[14px]">{item.title} X 1</span>
+                                    <span className="font-medium text-[14px]">
+                                        {item.title} - {serviceTitle[index]} X 1
+                                    </span>
                                     <span className="flex items-center gap-1 font-semibold">
                                         <img src={dirhum} alt="" className="w-3.5 h-3.5 mt-px" />
                                         {item.price}
@@ -138,7 +144,7 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                         <span className="text-[18px]">^</span>
                     </p>
                 </div>
-                
+
                 <NextBtn />
             </div>
 

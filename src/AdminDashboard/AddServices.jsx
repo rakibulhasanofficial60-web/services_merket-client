@@ -25,7 +25,6 @@ const AddServices = () => {
                     ...data,
                     image: imageUrl,
                 };
-                console.log(typeof (finalData));
 
                 const postData = await fetch("https://job-task-nu.vercel.app/api/v1/service/create", {
                     method: "POST",
@@ -42,8 +41,7 @@ const AddServices = () => {
                 toast.error("Image upload failed");
             }
         } catch (error) {
-            toast.error("Image Upload Error");
-            console.error("Image Upload Error:", error);
+            toast.error("Image Upload Error", error?.message);
         } finally {
             setLoading(false);
         }

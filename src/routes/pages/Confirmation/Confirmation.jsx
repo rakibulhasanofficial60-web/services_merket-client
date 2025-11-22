@@ -21,7 +21,7 @@ export default function Confirmation() {
 
     const handelBookingConfirmation = () => {
         navigate('/booking-success');
-        console.table( total, vat, serviceCharge, date, time, address);
+        // console.table( total, vat, serviceCharge, date, time, address);
     }
 
     return (

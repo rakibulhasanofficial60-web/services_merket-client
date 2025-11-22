@@ -8,7 +8,7 @@ const Address = () => {
     const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, setAddress } = useSummary();
 
     const handleLocation = (coords) => {
-        console.log("Selected Location:", coords);
+        // console.log("Selected Location:", coords);
         setAddress('ECB Chattar, Dhaka')
     };
 

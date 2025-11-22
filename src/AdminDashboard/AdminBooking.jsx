@@ -9,9 +9,8 @@ const AdminBooking = () => {
             return res.json();
         },
     });
-
+    
     if (isLoading) return <p className="text-center mt-10">Loading...</p>;
-
     return (
         <div className="p-5">
             <h2 className="text-2xl font-semibold mb-4">Bookings</h2>
@@ -31,7 +30,7 @@ const AdminBooking = () => {
 
                     <tbody>
                         {booking.map((item, idx) => (
-                            <tr key={item.id} className="hover:bg-gray-50">
+                            <tr key={idx} className="hover:bg-gray-50">
                                 <td className="p-3 border">{idx + 1}</td>
                                 <td className="p-3 border">{item.serviceName}</td>
                                 <td className="p-3 border">
