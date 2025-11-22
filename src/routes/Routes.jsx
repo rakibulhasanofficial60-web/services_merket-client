@@ -20,6 +20,7 @@ import AddServices from "../AdminDashboard/AddServices";
 import AdminBooking from "../AdminDashboard/AdminBooking";
 import AddServiceType from "../AdminDashboard/AddServiceType";
 import AddPropertyType from "../AdminDashboard/AddPropertyType";
+import AddPropertyItem from "../AdminDashboard/AddPropertyItem";
 
 export const router = createBrowserRouter([
     {
@@ -53,6 +54,7 @@ export const router = createBrowserRouter([
             { path: 'admin-booking', element: <AdminBooking /> },
             { path: 'add-service-type', element: <AddServiceType /> },
             { path: 'add-property-type', element: <AddPropertyType /> },
+            { path: 'add-property-item', element: <AddPropertyItem /> },
         ]
     }
 ]);

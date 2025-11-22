@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { FaLocationCrosshairs, FaPlus, FaMinus } from "react-icons/fa6";
 import { FaSatellite } from "react-icons/fa";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import {
     GoogleMap,
     Marker,
@@ -164,25 +165,16 @@ export default function LocationPicker({ onLocationSelect }) {
                     fullscreenControl: false,
                     streetViewControl: false,
                     keyboardShortcuts: false,
-                    gestureHandling: "none",
-                    scrollwheel: false
+                    gestureHandling: "greedy",   // ← ম্যাপ ড্র্যাগ করা যাবে
+                    scrollwheel: false            // ← স্ক্রল zoom হবে না (ইচ্ছা হলে true)
                 }}
             >
                 <Marker
                     position={selectedPos}
                     draggable={false}
-                    onDragEnd={async (e) => {
-                        const pos = {
-                            lat: e.latLng.lat(),
-                            lng: e.latLng.lng(),
-                        };
-                        setSelectedPos(pos);
-                        const address = await getAddressFromLatLng(pos.lat, pos.lng);
-                        onLocationSelect?.({ ...pos, address });
-                    }}
                     icon={{
-                        url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                        scaledSize: new window.google.maps.Size(40, 40),   // Marker বড় দেখাবে
+                        url: "https://i.postimg.cc/sgdZ7ZLp/location-picker-doodle-icon-vector-48907141.webp",
+                        scaledSize: new window.google.maps.Size(40, 40)
                     }}
                 />
             </GoogleMap>

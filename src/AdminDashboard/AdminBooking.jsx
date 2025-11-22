@@ -21,25 +21,25 @@ const AdminBooking = () => {
                 <table className="min-w-full border border-gray-300">
                     <thead>
                         <tr className="bg-gray-100 text-left">
-                            <th className="p-3 border">No</th>
-                            <th className="p-3 border">Service Name</th>
-                            <th className="p-3 border">Date & Time</th>
-                            <th className="p-3 border">Location</th>
-                            <th className="p-3 border">Status</th>
-                            <th className="p-3 border">Action</th>
+                            <th className="p-3 shadow-md">No</th>
+                            <th className="p-3 shadow-md">Service Name</th>
+                            <th className="p-3 shadow-md">Date & Time</th>
+                            <th className="p-3 shadow-md">Location</th>
+                            <th className="p-3 shadow-md">Status</th>
+                            <th className="p-3 shadow-md">Action</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {booking.map((item, idx) => (
                             <tr key={idx} className="hover:bg-gray-50">
-                                <td className="p-3 border">{idx + 1}</td>
-                                <td className="p-3 border">{item.serviceName} <br />{serviceTitle[idx]}</td>
-                                <td className="p-3 border">
+                                <td className="p-3 shadow-md">{idx + 1}</td>
+                                <td className="p-3 shadow-md">{item.serviceName} <br />{serviceTitle[idx]}</td>
+                                <td className="p-3 shadow-md">
                                     {item.date} <br /> {item.timeRange}
                                 </td>
-                                <td className="p-3 border">{item.location || "N/A"}</td>
-                                <td className="p-3 border">
+                                <td className="p-3 shadow-md">{item.location || "N/A"}</td>
+                                <td className="p-3 shadow-md">
                                     <span
                                         className={`
                                             px-3 py-1 rounded text-white text-sm
@@ -52,7 +52,7 @@ const AdminBooking = () => {
                                         {item.status}
                                     </span>
                                 </td>
-                                <td className="p-3 border">
+                                <td className="p-3 shadow-md">
                                     <button className="px-3 py-1 text-sm bg-blue-500 text-white rounded">
                                         View
                                     </button>

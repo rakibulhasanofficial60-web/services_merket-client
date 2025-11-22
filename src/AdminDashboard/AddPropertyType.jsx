@@ -11,32 +11,21 @@ const AddPropertyType = () => {
     const propertyItems = content[0]?.propertyType?.[0] || [];
 
     console.log(propertyItems);
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-    } = useForm();
-
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [loading, setLoading] = useState(false);
 
     const handleFormSubmit = async (data) => {
         setLoading(true);
-
         const formData = new FormData();
         formData.append("image", data.image[0]);
-
         try {
             const uploadRes = await fetch(image_hosting_api, {
                 method: "POST",
                 body: formData,
             });
-
             const uploadResult = await uploadRes.json();
-
             if (uploadResult.success) {
                 const imageUrl = uploadResult.data.url;
-
                 const finalData = {
                     title: data.title,
                     description: data.description,
@@ -44,7 +33,6 @@ const AddPropertyType = () => {
                     serviceTypeId: propertyItems?.serviceTypeId,
                     image: imageUrl,
                 };
-
                 const postRes = await fetch(
                     "https://job-task-nu.vercel.app/api/v1/property-type/create",
                     {
@@ -53,9 +41,7 @@ const AddPropertyType = () => {
                         body: JSON.stringify(finalData),
                     }
                 );
-
                 const result = await postRes.json();
-
                 if (result.success) {
                     toast.success("Property Type added successfully");
                     reset();

@@ -190,6 +190,17 @@ const UserDashboard = () => {
                             <FaCalendarAlt /> Add Property Type
                         </NavLink>
                     </li>
+
+                    <li className="list-none border-y border-dashed hover:bg-gray-50">
+                        <NavLink
+                            to="/dashboard/add-property-item"
+                            className={({ isActive }) =>
+                                `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
+                        ${isActive ? "font-extrabold" : ""}`
+                            }>
+                            <FaCalendarAlt /> Add Property Item
+                        </NavLink>
+                    </li>
                 </ul>
             )}
         </>
