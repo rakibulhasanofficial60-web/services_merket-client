@@ -14,7 +14,6 @@ import { RiLogoutCircleLine } from "react-icons/ri";
 import { RiMacbookFill } from "react-icons/ri";
 
 
-
 const UserDashboard = () => {
     const user = false;
     const admin = true;
@@ -165,7 +164,7 @@ const UserDashboard = () => {
                                 `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                             }>
-                            <FaCalendarAlt /> Add Services
+                            <FaCalendarAlt /> Services
                         </NavLink>
                     </li>
 
