@@ -24,7 +24,7 @@ const Card = ({ service }) => {
                     {/* Left Side Info */}
                     <div>
                         <h2 className="block mt-2 text-xl font-semibold text-gray-700">
-                            {title} at Home
+                            {title}
                         </h2>
                         <div className="flex items-center gap-2 text-gray-600 text-sm">
                             <FaStar />

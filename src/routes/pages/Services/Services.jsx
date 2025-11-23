@@ -180,7 +180,6 @@ const Services = () => {
 
     const sectionRefs = useRef({});
 
-    /** Scroll to item when activeId updates */
     useEffect(() => {
         if (activeId && sectionRefs.current[activeId]) {
             const section = sectionRefs.current[activeId];
