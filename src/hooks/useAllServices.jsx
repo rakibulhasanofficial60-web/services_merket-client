@@ -10,7 +10,7 @@ const useAllServices = () => {
         },
     });
 
-    return [services, isLoading, error, refetch];
+    return [services, isLoading, refetch, error];
 };
 
 export default useAllServices;

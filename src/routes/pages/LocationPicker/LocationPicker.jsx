@@ -1,7 +1,6 @@
 import { useState, useCallback } from "react";
 import { FaLocationCrosshairs, FaPlus, FaMinus } from "react-icons/fa6";
 import { FaSatellite } from "react-icons/fa";
-import { FaMapMarkerAlt } from "react-icons/fa";
 import {
     GoogleMap,
     Marker,
@@ -165,8 +164,8 @@ export default function LocationPicker({ onLocationSelect }) {
                     fullscreenControl: false,
                     streetViewControl: false,
                     keyboardShortcuts: false,
-                    gestureHandling: "greedy",   // ← ম্যাপ ড্র্যাগ করা যাবে
-                    scrollwheel: false            // ← স্ক্রল zoom হবে না (ইচ্ছা হলে true)
+                    gestureHandling: "greedy",
+                    scrollwheel: false
                 }}
             >
                 <Marker
