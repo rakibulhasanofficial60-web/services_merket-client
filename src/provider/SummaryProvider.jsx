@@ -61,6 +61,10 @@ export const SummaryProvider = ({ children }) => {
         item?.propertyType?.serviceType?.title || null
     );
 
+    // const serviceType = itemSummary.map(item =>
+    //     item?.propertyType?.serviceType?.title || null
+    // );
+
     const subtotal = itemSummary.reduce((acc, item) => acc + Number(item?.price || 0), 0);
     const serviceCharge = Number((subtotal > 0 ? 20 : 0).toFixed(2));
     //    const vat = (subtotal * 0.05).toFixed(2);

@@ -22,7 +22,7 @@ export default function UserBooking() {
 
   // Fetch Data
   const { data: booking = {}, isLoading } = useQuery({
-    queryKey: ["booking"],
+    queryKey: ["bookingUser"],
     queryFn: async () => {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/booking`);
       return res.json();

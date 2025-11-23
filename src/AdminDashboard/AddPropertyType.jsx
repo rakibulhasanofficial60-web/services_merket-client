@@ -10,6 +10,7 @@ const AddPropertyType = () => {
     const [content] = useCoverContent();
     const propertyItems = content[0]?.propertyType?.[0] || [];
 
+
     console.log(propertyItems);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [loading, setLoading] = useState(false);

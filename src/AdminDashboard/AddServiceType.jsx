@@ -23,6 +23,7 @@ const AddServiceType = () => {
       const result = await res.json();
       if (result.success) {
         const imageUrl = result.data.url;
+        
         const finalData = {
           ...data,
           image: imageUrl,

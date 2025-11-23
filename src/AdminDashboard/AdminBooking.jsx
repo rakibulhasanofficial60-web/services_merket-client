@@ -1,24 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSummary } from "../provider/SummaryProvider";
 
 const AdminBooking = () => {
-    const { serviceTitle } = useSummary();
-
     const { data: booking = [], isLoading } = useQuery({
-        queryKey: ["booking"],
+        queryKey: ["bookingAdmin"],
         queryFn: async () => {
-            const res = await fetch("/booking-card.json");
-            return res.json();
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/booking`);
+            const bookingRes = await res.json();
+            return bookingRes.Data;
         },
     });
+
     console.log(booking);
+
+
     if (isLoading) return <p className="text-center md:mt-10">Loading...</p>;
     return (
         <div className="">
             <div className="mx-auto md:flex items-center justify-around md:my-6">
                 <p className="text-xl font-medium md:text-3xl md:font-bold">Total Booking: {booking.length}</p>
             </div>
-            {/*             
+
             <div>
                 <div className="overflow-x-auto">
                     <table className="table">
@@ -26,42 +27,34 @@ const AdminBooking = () => {
                             <tr>
                                 <th>No</th>
                                 <th>Service Name</th>
-                                <th>Description</th>
+                                <th>Date & Time</th>
                                 <th>Total Booking</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {services.map((service, idx) => (
+                            {booking.map((book, idx) => (
                                 <tr key={idx}>
                                     <th>{idx + 1}</th>
                                     <td>
-                                        <div className="flex items-center gap-3">
-                                            <div className="avatar">
-                                                <div className="mask mask-squircle h-12 w-12">
-                                                    <img
-                                                        src={service.image}
-                                                        alt="Avatar Tailwind CSS Component" />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="font-bold">{service.title}</div>
-                                                <div className="text-sm opacity-50">Rated: {service.rated}</div>
-                                            </div>
+                                        <div className="">
+                                            <p className="font-medium">{book.serviceName}</p>
+                                            <p className="text-xs font-semibold">Service Charge: {book.serviceCharge}</p>
                                         </div>
                                     </td>
                                     <td>
-                                        {service.des1}
+                                        <p>{book.date}</p>
+                                        <p>{book.time}</p>
                                         <br />
                                     </td>
-                                    <td>Total Booking: {service.totalBooking}</td>
-                                    <th>
+                                    <td>Total Booking: {book.totalBooking}</td>
+                                    {/* <th>
                                         <button
                                             title="Edit"
                                             className="btn btn-ghost btn-xs"
                                             onClick={() => {
-                                                setSelectedService(service);
+                                                setSelectedService(book);
                                                 setIsModalOpenEdit(true);
                                             }}
                                         >
@@ -70,13 +63,13 @@ const AdminBooking = () => {
                                     </th>
                                     <th>
                                         <button title="Delete" className="btn btn-ghost btn-xs"><RiDeleteBin5Line className="text-xl" /></button>
-                                    </th>
+                                    </th> */}
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 };
