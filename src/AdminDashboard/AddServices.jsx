@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import useAllServices from "../hooks/useAllServices";
 import { RiEditBoxLine } from "react-icons/ri";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import EditModal from "../components/EditModal/EditModal";
 
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
@@ -13,7 +14,10 @@ const AddServices = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [loading, setLoading] = useState(false);
     const [services, isLoading, refetch] = useAllServices();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
+    const [selectedService, setSelectedService] = useState(null);
+    const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
+
 
     const handleFormSubmit = async (data) => {
         setLoading(true);
@@ -43,7 +47,7 @@ const AddServices = () => {
                 const postResult = await postData.json();
                 if (postResult.success === true) {
                     toast.success("Service added successfully");
-                    setIsModalOpen(false);
+                    setIsModalOpenAdd(false);
                     refetch();
                 }
             } else {
@@ -56,7 +60,7 @@ const AddServices = () => {
             setLoading(false);
         }
     };
-    
+
     if (isLoading) return <p className="text-center mt-10">Loading...</p>;
     return (
         <div>
@@ -64,7 +68,7 @@ const AddServices = () => {
             <div className="mx-auto md:flex items-center justify-around my-10">
                 <p className="text-xl font-medium md:text-3xl md:font-bold">Total Services: {services.length}</p>
                 <button
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => setIsModalOpenAdd(true)}
                     className="btn btn-outline"
                 >
                     Add services
@@ -110,7 +114,16 @@ const AddServices = () => {
                                     </td>
                                     <td>Total Booking: {service.totalBooking}</td>
                                     <th>
-                                        <button title="Edit" className="btn btn-ghost btn-xs"><RiEditBoxLine className="text-xl" /></button>
+                                        <button
+                                            title="Edit"
+                                            className="btn btn-ghost btn-xs"
+                                            onClick={() => {
+                                                setSelectedService(service);
+                                                setIsModalOpenEdit(true);
+                                            }}
+                                        >
+                                            <RiEditBoxLine className="text-xl" />
+                                        </button>
                                     </th>
                                     <th>
                                         <button title="Delete" className="btn btn-ghost btn-xs"><RiDeleteBin5Line className="text-xl" /></button>
@@ -122,20 +135,19 @@ const AddServices = () => {
                 </div>
             </div>
 
-            {/* ------------------ MODAL ------------------ */}
-            {isModalOpen && (
+            {/* ------------------ MODAL ADD SERVICE ------------------ */}
+            {isModalOpenAdd && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={() => setIsModalOpenAdd(false)}
                 >
                     <div
                         className="relative bg-white p-8 rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto w-full max-w-3xl"
                         onClick={(e) => e.stopPropagation()}
                     >
 
-                        {/* ❌ Close Button */}
                         <button
-                            onClick={() => setIsModalOpen(false)}
+                            onClick={() => setIsModalOpenAdd(false)}
                             className="cursor-pointer absolute top-3 right-3 text-gray-600 hover:text-red-500 text-2xl font-bold"
                         >
                             ×
@@ -236,6 +248,14 @@ const AddServices = () => {
                         </form>
                     </div>
                 </div>
+            )}
+
+            {/* ------------------ MODAL Edit SERVICE ------------------ */}
+            {isModalOpenEdit && (
+                <EditModal
+                    service={selectedService}
+                    onClose={() => setIsModalOpenEdit(false)}
+                />
             )}
 
         </div>
