@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import useCoverContent from "../hooks/useCoverContent";
 
-
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
@@ -11,10 +10,15 @@ const AddPropertyItem = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [loading, setLoading] = useState(false);
     const [content] = useCoverContent();
-    // const propertyItems = content[0]?.propertyType?.[0] || [];
-    const propertyItems = content[0] || [];
 
-    console.log(propertyItems);
+    const propertyTypes = content.flatMap(c =>
+        c.propertyType?.map(pt => ({
+            id: pt.id,
+            title: pt.title
+        })) || []
+    );
+
+
     const handleFormSubmit = async (data) => {
         setLoading(true);
 
@@ -37,20 +41,24 @@ const AddPropertyItem = () => {
 
             // 2. Final data
             const finalData = {
+                image: imgResult.data.url,
                 title: data.title,
                 description: data.description,
                 price: Number(data.price),
-                featured1: data.featured1,
-                featured2: data.featured2,
-                featured3: data.featured3,
-                featured4: data.featured4,
+                serviceCharge: 0,
+                vat: 0,
+                feature1: data.featured1,
+                feature2: data.featured2,
+                feature3: data.featured3,
+                feature4: data.featured4,
                 propertyTypeId: data.propertyTypeId,
-                image: imgResult.data.url,
             };
+
+            console.log(finalData);
 
             // 3. Save to DB
             const postRes = await fetch(
-                "https://job-task-nu.vercel.app/api/v1/property-item/create",
+                "https://job-task-nu.vercel.app/api/v1/property-items/create",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -174,12 +182,14 @@ const AddPropertyItem = () => {
                         className="w-full border p-2 rounded"
                     >
                         <option value="">Select Property Type</option>
-                        {/* {propertyTypes?.map((type) => (
-                            <option key={type.id} value={type.id}>
-                                {type.title}
+
+                        {propertyTypes.map(pt => (
+                            <option key={pt.id} value={pt.id}>
+                                {pt.title}
                             </option>
-                        ))} */}
+                        ))}
                     </select>
+
                     {errors.propertyTypeId && (
                         <p className="text-red-500 text-sm">Property Type is required</p>
                     )}

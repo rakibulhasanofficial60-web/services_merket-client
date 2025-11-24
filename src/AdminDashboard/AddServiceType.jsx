@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAllServices from "../hooks/useAllServices";
 import toast from "react-hot-toast";
+import useCoverContent from "../hooks/useCoverContent";
+import { RiDeleteBin5Line, RiEditBoxLine } from "react-icons/ri";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -10,6 +12,7 @@ const AddServiceType = () => {
   const [services] = useAllServices();
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [loading, setLoading] = useState(false);
+  const [content, isLoading] = useCoverContent();
 
   const handleFormSubmit = async (data) => {
     setLoading(true);
@@ -23,7 +26,7 @@ const AddServiceType = () => {
       const result = await res.json();
       if (result.success) {
         const imageUrl = result.data.url;
-        
+
         const finalData = {
           ...data,
           image: imageUrl,
@@ -55,12 +58,89 @@ const AddServiceType = () => {
     }
   };
 
+console.log(content);
+
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-2xl shadow">
+    <div>
+      <div className="mx-auto md:flex items-center justify-around my-10">
+        <p className="text-xl font-medium md:text-3xl md:font-bold">Service Type: {services.length}</p>
+        <button
+          // onClick={() => setIsModalOpenAdd(true)}
+          className="btn btn-outline"
+        >
+          Add service Type
+        </button>
+      </div>
+
+      <div>
+        <div className="overflow-x-auto">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Service Name</th>
+                <th>Description</th>
+                <th>Total Booking</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {content.map((con, idx) => (
+                <tr key={idx}>
+                  <th>{idx + 1}</th>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle h-12 w-12">
+                          <img
+                            src={con.image}
+                            alt="Avatar Tailwind CSS Component" />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold">{con?.title} - {con?.service?.title}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    {con.des1}
+                    <br />
+                  </td>
+                  <td>Total Booking: {con.totalBooking}</td>
+                  <th>
+                    <button
+                      title="Edit"
+                      className="btn btn-ghost btn-xs"
+                      onClick={() => {
+                        setSelectedService(con);
+                        setIsModalOpenEdit(true);
+                      }}
+                    >
+                      <RiEditBoxLine className="text-xl" />
+                    </button>
+                  </th>
+                  <th>
+                    <button title="Delete" className="btn btn-ghost btn-xs"><RiDeleteBin5Line className="text-xl" /></button>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AddServiceType;
+
+
+
+{/* <div className="max-w-md mx-auto p-6 bg-white rounded-2xl shadow">
       <h2 className="text-xl font-bold mb-4">Add Service Type</h2>
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-        {/* Title */}
         <div>
           <label className="block mb-1 font-medium">Title</label>
           <input
@@ -74,7 +154,6 @@ const AddServiceType = () => {
           )}
         </div>
 
-        {/* Dropdown */}
         <div>
           <label className="block mb-1 font-medium">Select Option</label>
           <select
@@ -93,7 +172,6 @@ const AddServiceType = () => {
           )}
         </div>
 
-        {/* Image Upload */}
         <div>
           <label className="block mb-1 font-medium">Image</label>
           <input
@@ -115,8 +193,4 @@ const AddServiceType = () => {
           {loading ? "Submitting..." : "Submit"}
         </button>
       </form>
-    </div>
-  );
-};
-
-export default AddServiceType;
+    </div> */}

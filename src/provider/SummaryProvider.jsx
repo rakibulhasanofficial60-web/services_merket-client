@@ -54,9 +54,9 @@ export const SummaryProvider = ({ children }) => {
             enabled: !!id,
         })),
     });
+    
 
     const itemSummary = itemQueries.map((q) => q.data).filter(Boolean);
-
     const serviceTitle = itemSummary.map(item =>
         item?.propertyType?.serviceType?.title || null
     );
