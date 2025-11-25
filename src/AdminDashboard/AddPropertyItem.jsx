@@ -14,8 +14,6 @@ const AddPropertyItem = () => {
     const [propertyType] = useDashboardPropertyType();
     const [loading, setLoading] = useState(false);
 
-    console.log(propertyType.map(p => p.title));
-
     // React Hook Form
     const {
         register,
@@ -96,6 +94,8 @@ const AddPropertyItem = () => {
 
         setLoading(false);
     };
+
+    console.log(propertyItem);
 
     // Edit Save
     const handleEditItem = () => {
@@ -371,11 +371,17 @@ const AddPropertyItem = () => {
             {/* ---------------------- Edit Modal ---------------------- */}
             {isEditModalOpen && editItem && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
                     onClick={closeEditModal}
                 >
                     <div
-                        className="bg-white rounded-xl p-6 w-11/12 max-w-md relative"
+                        className="relative bg-white 
+                                    w-full 
+                                    max-w-md sm:max-w-lg md:max-w-2xl
+                                    p-3 sm:p-5 md:p-8 
+                                    rounded-lg sm:rounded-md md:rounded-xl
+                                    shadow-xl 
+                                    max-h-[90vh] overflow-y-auto"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Close Button */}
@@ -386,20 +392,166 @@ const AddPropertyItem = () => {
                             <IoClose />
                         </button>
 
-                        <h2 className="text-xl font-bold mb-4">Edit Property Item</h2>
+                        <h2 className="text-xl md:text-2xl  font-bold text-center mb-6 text-gray-800">
+                            Edit Property Item
+                        </h2>
 
-                        <input
-                            type="text"
-                            className="input input-bordered w-full mb-4"
-                            value={editItem.title}
-                            onChange={(e) =>
-                                setEditItem({ ...editItem, title: e.target.value })
-                            }
-                        />
+                        {/* Form */}
+                        <form
+                            onSubmit={handleSubmit(handleAddFormSubmit)}
+                            className="flex flex-col gap-5 p-4"
+                        >
+                            {/* Image */}
+                            <div className="md:col-span-2">
+                                <label className="font-medium">Image</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    {...register("image", { required: true })}
+                                    className="border p-3 w-full rounded-md"
+                                />
 
-                        <button className="btn btn-primary w-full" onClick={handleEditItem}>
-                            Save Changes
-                        </button>
+                                <img className="w-28 h-18" src={propertyItem?.map(p => p?.image)} alt="" />
+                            </div>
+
+                            {/* Title */}
+                            <div>
+                                <label className="font-medium">Title</label>
+                                <input
+                                    type="text"
+                                    defaultValue={propertyItem.map(p => p.title)}
+                                    placeholder="Enter title"
+                                    className="input input-bordered w-full mt-1"
+                                    {...register("title", { required: "Title is required" })}
+                                />
+                                {errors.title && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
+                                )}
+                            </div>
+
+                            {/* Description */}
+                            <div>
+                                <label className="font-medium">Description</label>
+                                <textarea
+                                    defaultValue={propertyItem.map(p => p.description)}
+                                    placeholder="Enter description"
+                                    className="textarea textarea-bordered w-full mt-1"
+                                    {...register("description", { required: "Description is required" })}
+                                />
+                                {errors.description && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+                                )}
+                            </div>
+
+                            {/* dropdown */}
+                            <div>
+                                <label className="block font-medium mb-1">Property Type</label>
+                                <select
+                                    defaultValue={propertyType?.map(p => p.title)}
+                                    {...register("propertyTypeId", { required: true })}
+                                    className="border p-3 w-full rounded-md"
+                                >
+                                    <option value="">Select Service Type</option>
+                                    {propertyType?.map(p => (
+                                        <option key={p?.id} value={p?.id}>
+                                            {p?.title}
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.propertyTypeId && <p className="text-red-500 text-sm">Required</p>}
+                            </div>
+
+                            {/* Price - Service Charge - VAT */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label className="font-medium">Price</label>
+                                    <input
+                                        defaultValue={propertyItem?.map(p => p.price)}
+                                        type="number"
+                                        placeholder="Price"
+                                        className="input input-bordered w-full mt-1"
+                                        {...register("price", { required: "Price is required", valueAsNumber: true })}
+                                    />
+                                    {errors.price && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
+                                    )}
+                                </div>
+
+                                {/* service charge  */}
+                                <div>
+                                    <label className="font-medium">Service Charge</label>
+                                    <input
+                                        defaultValue={propertyItem?.map(p => p.serviceCharge)}
+                                        type="number"
+                                        placeholder="Service Charge"
+                                        className="input input-bordered w-full mt-1"
+                                        {...register("serviceCharge", { required: "Service charge is required", valueAsNumber: true })}
+                                    />
+                                    {errors.serviceCharge && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.serviceCharge.message}</p>
+                                    )}
+                                </div>
+
+                                {/* vat  */}
+                                <div>
+                                    <label className="font-medium">Vat</label>
+                                    <input
+                                        defaultValue={propertyItem?.map(p => p?.vat)}
+                                        type="number"
+                                        placeholder="VAT"
+                                        className="input input-bordered w-full mt-1"
+                                        {...register("vat", { required: "VAT is required", valueAsNumber: true })}
+                                    />
+                                    {errors.vat && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.vat.message}</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Features Section - Scrollable */}
+                            <div>
+                                <label className="font-medium block mb-2">Features</label>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-32 overflow-y-auto pr-2">
+
+                                    <input
+                                        defaultValue={propertyItem?.map(p => p.feature1)}
+                                        type="text"
+                                        placeholder="Feature 1"
+                                        className="input input-bordered w-full"
+                                        {...register("feature1")}
+                                    />
+
+                                    <input
+                                        defaultValue={propertyItem?.map(p => p.feature2)}
+                                        type="text"
+                                        placeholder="Feature 2"
+                                        className="input input-bordered w-full"
+                                        {...register("feature2")}
+                                    />
+
+                                    <input
+                                        defaultValue={propertyItem?.map(p => p.feature3)}
+                                        type="text"
+                                        placeholder="Feature 3"
+                                        className="input input-bordered w-full"
+                                        {...register("feature3")}
+                                    />
+
+                                    <input
+                                        defaultValue={propertyItem?.map(p => p.feature4)}
+                                        type="text"
+                                        placeholder="Feature 4"
+                                        className="input input-bordered w-full"
+                                        {...register("feature4")}
+                                    />
+
+                                </div>
+                            </div>
+
+                            {/* Submit */}
+                            <button type="submit" disabled={loading} className="btn btn-primary w-full mt-3">{loading ? 'Submitting' : 'Submit'}</button>
+                        </form>
                     </div>
                 </div>
             )}

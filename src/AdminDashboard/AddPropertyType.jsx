@@ -107,7 +107,7 @@ export default function AddPropertyType() {
 
         const updatedData = {
             title: data.title,
-            description: data.description,
+            // description: data.description,
             startFrom: data.startFrom,
             serviceTypeId: data.serviceTypeId,
             image: imageUrl,
@@ -117,7 +117,7 @@ export default function AddPropertyType() {
             const res = await fetch(
                 `https://job-task-nu.vercel.app/api/v1/property-type/update/${selectedItem.id}`,
                 {
-                    method: "PUT",
+                    method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(updatedData),
                 }

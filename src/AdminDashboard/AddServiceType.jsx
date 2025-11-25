@@ -107,10 +107,11 @@ export default function AddServiceType() {
         image: updatedImage,
       };
 
+      // https://job-task-nu.vercel.app/api/v1/service/update/${service.id}
       const updateRes = await fetch(
-        `https://job-task-nu.vercel.app/api/v1/service-type/${selectedItem.id}`,
+        `https://job-task-nu.vercel.app/api/v1/service-type/update/${selectedItem.id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(finalData),
         }
@@ -169,12 +170,12 @@ export default function AddServiceType() {
                     className="btn btn-ghost btn-xs"
                     onClick={() => openEditModal(con)}
                   >
-                    <RiEditBoxLine className="text-xl" />
+                    <RiEditBoxLine className="text-xl text-green-500" />
                   </button>
                 </td>
                 <td>
                   <button className="btn btn-ghost btn-xs">
-                    <RiDeleteBin5Line className="text-xl" />
+                    <RiDeleteBin5Line className="text-xl text-red-500" />
                   </button>
                 </td>
               </tr>
@@ -202,6 +203,7 @@ export default function AddServiceType() {
             <TextInput label="Title" register={registerEdit("title", { required: true })} error={editErrors.title} />
             <ServiceSelect services={services} register={registerEdit("serviceId", { required: true })} error={editErrors.serviceId} />
             <ImageInput register={registerEdit("image")} error={editErrors.image} />
+            <img className="w-12 h-8" src={serviceType.map(s => s.image)} alt="" />
             <SubmitButton loading={loading} label="Update" />
           </form>
         </Modal>
