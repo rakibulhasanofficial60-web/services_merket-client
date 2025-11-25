@@ -61,15 +61,42 @@ const AddServices = () => {
         }
     };
 
+    const handelDelete = async (service) => {
+        try {
+            const res = await fetch(
+                `https://job-task-nu.vercel.app/api/v1/service/delete/${service.id}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+            const result = await res.json();
+
+            if (result.success) {
+                toast.success("Service deleted successfully");
+                refetch(); // list reload
+            } else {
+                toast.error("Failed to delete service");
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Something went wrong");
+        }
+    };
+
+
     if (isLoading) return <p className="text-center mt-10">Loading...</p>;
     return (
         <div>
             {/* Header */}
-            <div className="mx-auto md:flex items-center justify-around my-10">
-                <p className="text-xl font-medium md:text-3xl md:font-bold">Total Services: {services.length}</p>
+            <div className="mx-auto flex flex-col items-center justify-center text-center md:flex-row md:justify-around md:items-center md:my-10">
+                <p className="text-xl font-medium md:text-3xl md:font-bold">
+                    Total Services: {services.length}
+                </p>
+
                 <button
                     onClick={() => setIsModalOpenAdd(true)}
-                    className="btn btn-outline"
+                    className="btn btn-outline mt-3 md:mt-0"
                 >
                     Add services
                 </button>
@@ -122,11 +149,11 @@ const AddServices = () => {
                                                 setIsModalOpenEdit(true);
                                             }}
                                         >
-                                            <RiEditBoxLine className="text-xl" />
+                                            <RiEditBoxLine className="text-xl text-green-500" />
                                         </button>
                                     </th>
                                     <th>
-                                        <button title="Delete" className="btn btn-ghost btn-xs"><RiDeleteBin5Line className="text-xl" /></button>
+                                        <button onClick={() => handelDelete(service)} title="Delete" className="btn btn-ghost btn-xs"><RiDeleteBin5Line className="text-xl text-red-400" /></button>
                                     </th>
                                 </tr>
                             ))}
@@ -138,14 +165,29 @@ const AddServices = () => {
             {/* ------------------ MODAL ADD SERVICE ------------------ */}
             {isModalOpenAdd && (
                 <div
-                    className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
+                    className="
+                                fixed inset-0 
+                                bg-black/50 
+                                flex justify-center items-center 
+                                z-50 
+                                p-2 sm:p-4 md:p-6
+                            "
                     onClick={() => setIsModalOpenAdd(false)}
                 >
                     <div
-                        className="relative bg-white p-8 rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto w-full max-w-3xl"
+                        className="
+                                    relative bg-white 
+                                    w-full 
+                                    max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl
+                                    p-3 sm:p-5 md:p-8 
+                                    rounded-lg sm:rounded-xl md:rounded-2xl
+                                    shadow-xl 
+                                    max-h-[90vh] overflow-y-auto
+                                "
                         onClick={(e) => e.stopPropagation()}
                     >
 
+                        {/* Close button */}
                         <button
                             onClick={() => setIsModalOpenAdd(false)}
                             className="cursor-pointer absolute top-3 right-3 text-gray-600 hover:text-red-500 text-2xl font-bold"
@@ -153,7 +195,7 @@ const AddServices = () => {
                             ×
                         </button>
 
-                        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 text-gray-800">
                             Add New Service
                         </h2>
 
@@ -167,7 +209,7 @@ const AddServices = () => {
                                         type="file"
                                         accept="image/*"
                                         {...register("image", { required: true })}
-                                        className="border p-3 w-full rounded-lg"
+                                        className="border p-3 w-full rounded-md"
                                     />
                                     {errors.image && (
                                         <p className="text-red-500 text-sm">Image is required</p>
@@ -179,7 +221,7 @@ const AddServices = () => {
                                     <input
                                         type="text"
                                         {...register("title", { required: true })}
-                                        className="border p-3 w-full rounded-lg"
+                                        className="border p-3 w-full rounded-md"
                                         placeholder="Enter title"
                                     />
                                     {errors.title && (
@@ -192,7 +234,7 @@ const AddServices = () => {
                                     <input
                                         type="text"
                                         {...register("des1", { required: true })}
-                                        className="border p-3 w-full rounded-lg"
+                                        className="border p-3 w-full rounded-md"
                                         placeholder="Short description..."
                                     />
                                 </div>
@@ -202,7 +244,7 @@ const AddServices = () => {
                                     <input
                                         type="text"
                                         {...register("des2", { required: true })}
-                                        className="border p-3 w-full rounded-lg"
+                                        className="border p-3 w-full rounded-md"
                                         placeholder="Short description..."
                                     />
                                 </div>
@@ -212,7 +254,7 @@ const AddServices = () => {
                                     <input
                                         type="text"
                                         {...register("des3", { required: true })}
-                                        className="border p-3 w-full rounded-lg"
+                                        className="border p-3 w-full rounded-md"
                                         placeholder="Short description..."
                                     />
                                 </div>
@@ -222,7 +264,7 @@ const AddServices = () => {
                                     <input
                                         type="text"
                                         {...register("rated", { required: true })}
-                                        className="border p-3 w-full rounded-lg"
+                                        className="border p-3 w-full rounded-md"
                                         placeholder="e.g. 4.5"
                                     />
                                 </div>
@@ -232,7 +274,7 @@ const AddServices = () => {
                                     <input
                                         type="text"
                                         {...register("totalBooking", { required: true })}
-                                        className="border p-3 w-full rounded-lg"
+                                        className="border p-3 w-full rounded-md"
                                         placeholder="e.g. 350"
                                     />
                                 </div>
@@ -248,6 +290,7 @@ const AddServices = () => {
                         </form>
                     </div>
                 </div>
+
             )}
 
             {/* ------------------ MODAL Edit SERVICE ------------------ */}

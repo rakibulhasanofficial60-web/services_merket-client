@@ -54,16 +54,12 @@ export const SummaryProvider = ({ children }) => {
             enabled: !!id,
         })),
     });
-    
+
 
     const itemSummary = itemQueries.map((q) => q.data).filter(Boolean);
     const serviceTitle = itemSummary.map(item =>
         item?.propertyType?.serviceType?.title || null
     );
-
-    // const serviceType = itemSummary.map(item =>
-    //     item?.propertyType?.serviceType?.title || null
-    // );
 
     const subtotal = itemSummary.reduce((acc, item) => acc + Number(item?.price || 0), 0);
     const serviceCharge = Number((subtotal > 0 ? 20 : 0).toFixed(2));

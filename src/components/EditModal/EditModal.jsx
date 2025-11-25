@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import useAllServices from "../../hooks/useAllServices";
 
 const EditModal = ({ service, onClose }) => {
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -10,10 +11,11 @@ const EditModal = ({ service, onClose }) => {
             des2: service?.des2,
             des3: service?.des3,
             rated: service?.rated,
-            totalBooking: service?.totalBooking,
+            totalBooking: service?.totalBooking
         }
     });
     const [loading, setLoading] = useState(false);
+    const [, , refetch] = useAllServices();
 
     const handleFormSubmit = async (data) => {
         setLoading(true);
@@ -33,7 +35,7 @@ const EditModal = ({ service, onClose }) => {
                 if (imgResult.success) {
                     imageUrl = imgResult.data.url;
                 } else {
-                    toast.error("Image upload failed");
+                    toast.error("Something is wrong");
                     return;
                 }
             }
@@ -44,7 +46,7 @@ const EditModal = ({ service, onClose }) => {
             };
 
             const updateRes = await fetch(
-                `https://job-task-nu.vercel.app/api/v1/service/update/${service._id}`,
+                `https://job-task-nu.vercel.app/api/v1/service/update/${service.id}`,
                 {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
@@ -57,6 +59,7 @@ const EditModal = ({ service, onClose }) => {
             if (result.success) {
                 toast.success("Service updated successfully");
                 onClose(false);
+                refetch();
             } else {
                 toast.error("Failed to update");
             }
@@ -72,26 +75,44 @@ const EditModal = ({ service, onClose }) => {
 
     return (
         <div
-            className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
+            className="
+        fixed inset-0 
+        bg-black/50      /* uniform, cleaner overlay */
+        flex justify-center items-center 
+        z-50 
+        p-3 sm:p-4 md:p-6
+    "
             onClick={() => onClose(false)}
         >
             <div
-                className="relative bg-white p-8 rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto w-full max-w-3xl"
+                className="
+            relative bg-white 
+            w-full 
+            max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl
+            p-3 sm:p-5 md:p-8 
+            rounded-lg sm:rounded-xl md:rounded-2xl 
+            shadow-xl 
+            max-h-[90vh] overflow-y-auto
+        "
                 onClick={(e) => e.stopPropagation()}
             >
-
+                {/* Close Button */}
                 <button
                     onClick={() => onClose(false)}
-                    className="cursor-pointer absolute top-3 right-3 text-gray-600 hover:text-red-500 text-2xl font-bold"
+                    className="
+                cursor-pointer absolute 
+                top-3 right-3 
+                text-gray-600 hover:text-red-500 
+                text-2xl font-bold
+            "
                 >
                     ×
                 </button>
 
-                <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 text-gray-800">
                     Edit Service
                 </h2>
 
-                {/* Form */}
                 <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -106,6 +127,14 @@ const EditModal = ({ service, onClose }) => {
                             <p className="text-gray-500 text-sm mt-1">
                                 (Leave empty to keep old image)
                             </p>
+                            {service?.image && (
+                                <img
+                                    src={service.image}
+                                    alt="Service Preview"
+                                    className="w-32 h-20 object-cover rounded-lg mt-2 border"
+                                />
+                            )}
+
                         </div>
 
                         <div>
@@ -116,7 +145,9 @@ const EditModal = ({ service, onClose }) => {
                                 className="border p-3 w-full rounded-lg"
                                 placeholder="Enter title"
                             />
-                            {errors.title && <p className="text-red-500 text-sm">Title is required</p>}
+                            {errors.title && (
+                                <p className="text-red-500 text-sm">Title is required</p>
+                            )}
                         </div>
 
                         <div>
@@ -173,13 +204,19 @@ const EditModal = ({ service, onClose }) => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-[#01788E] text-white py-3 rounded-xl font-semibold text-lg"
+                        className="
+                    w-full 
+                    bg-[#01788E] text-white 
+                    py-3 rounded-xl 
+                    font-semibold text-lg
+                "
                     >
                         {loading ? "Updating..." : "Update"}
                     </button>
                 </form>
             </div>
         </div>
+
     );
 };
 
