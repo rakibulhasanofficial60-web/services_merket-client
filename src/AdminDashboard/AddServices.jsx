@@ -14,8 +14,8 @@ const AddServices = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [loading, setLoading] = useState(false);
     const [services, isLoading, refetch] = useAllServices();
-    const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
+    const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
     const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
 
 
@@ -162,7 +162,7 @@ const AddServices = () => {
                 </div>
             </div>
 
-            {/* ------------------ MODAL ADD SERVICE ------------------ */}
+            {/* Add service  */}
             {isModalOpenAdd && (
                 <div
                     className="
@@ -293,7 +293,7 @@ const AddServices = () => {
 
             )}
 
-            {/* ------------------ MODAL Edit SERVICE ------------------ */}
+            {/* edit service  */}
             {isModalOpenEdit && (
                 <EditModal
                     service={selectedService}

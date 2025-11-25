@@ -1,374 +1,145 @@
-// import { useState } from "react";
-// import { useForm } from "react-hook-form";
-// import toast from "react-hot-toast";
-// import useCoverContent from "../hooks/useCoverContent";
-// import useDashboardPropertyItem from "../hooks/useDashboardPropertyItem";
-// import { RiDeleteBin5Line, RiEditBoxLine } from "react-icons/ri";
-
-// const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
-// const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
-
-// const AddPropertyItem = () => {
-//     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-//     const [loading, setLoading] = useState(false);
-//     const [content] = useCoverContent();
-//     const [propertyItem] = useDashboardPropertyItem();
-
-//     const propertyTypes = content.flatMap(c =>
-//         c.propertyType?.map(pt => ({
-//             id: pt.id,
-//             title: pt.title
-//         })) || []
-//     );
-
-
-//     const handleFormSubmit = async (data) => {
-//         setLoading(true);
-
-//         const formData = new FormData();
-//         formData.append("image", data.image[0]);
-
-//         try {
-//             // 1. Upload image
-//             const res = await fetch(image_hosting_api, {
-//                 method: "POST",
-//                 body: formData,
-//             });
-//             const imgResult = await res.json();
-
-//             if (!imgResult.success) {
-//                 toast.error("Image upload failed");
-//                 setLoading(false);
-//                 return;
-//             }
-
-//             // 2. Final data
-//             const finalData = {
-//                 image: imgResult.data.url,
-//                 title: data.title,
-//                 description: data.description,
-//                 price: Number(data.price),
-//                 serviceCharge: 0,
-//                 vat: 0,
-//                 feature1: data.featured1,
-//                 feature2: data.featured2,
-//                 feature3: data.featured3,
-//                 feature4: data.featured4,
-//                 propertyTypeId: data.propertyTypeId,
-//             };
-
-//             console.log(finalData);
-
-//             // 3. Save to DB
-//             const postRes = await fetch(
-//                 "https://job-task-nu.vercel.app/api/v1/property-items/create",
-//                 {
-//                     method: "POST",
-//                     headers: { "Content-Type": "application/json" },
-//                     body: JSON.stringify(finalData),
-//                 }
-//             );
-
-//             const postResult = await postRes.json();
-
-//             if (postResult.success) {
-//                 toast.success("Property item added successfully!");
-//                 reset();
-//             }
-//         } catch (error) {
-//             toast.error("Error submitting form", error?.message);
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
-
-
-//     console.log(propertyItem.map(p => p.propertyType.serviceType.service.title));
-//     return (
-
-//         <div className="overflow-x-auto rounded-xl shadow">
-//             <table className="table w-full">
-//                 <thead>
-//                     <tr>
-//                         <th>No</th>
-//                         <th>Service Type</th>
-//                         <th>Edit</th>
-//                         <th>Delete</th>
-//                     </tr>
-//                 </thead>
-
-//                 <tbody>
-//                     {propertyItem.map((propitem, idx) => (
-//                         <tr key={idx}>
-//                             <td>{idx + 1}</td>
-
-//                             <td>
-//                                 <div className="flex items-center gap-3">
-//                                     <div className="avatar">
-//                                         <div className="mask mask-squircle h-12 w-12">
-//                                             <img src={propitem.image} />
-//                                         </div>
-//                                     </div>
-//                                     <div>
-//                                         {propitem.title} - {propitem.propertyType.title} - {propitem.propertyType.serviceType.title} - {propitem.propertyType.serviceType.service.title}
-//                                     </div>
-//                                 </div>
-//                             </td>
-
-//                             <td>
-//                                 <button
-//                                     className="btn btn-ghost btn-xs"
-//                                     onClick={() => openEditModal(propitem)}
-//                                 >
-//                                     <RiEditBoxLine className="text-xl" />
-//                                 </button>
-//                             </td>
-
-//                             <td>
-//                                 <button className="btn btn-ghost btn-xs">
-//                                     <RiDeleteBin5Line className="text-xl" />
-//                                 </button>
-//                             </td>
-//                         </tr>
-//                     ))}
-//                 </tbody>
-//             </table>
-//         </div>
-
-
-//         // <div className="max-w-lg mx-auto p-6 bg-white rounded-2xl shadow">
-//         //     <h2 className="text-xl font-bold mb-4">Add Property Item</h2>
-
-//         //     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-//         //         {/* Image */}
-//         //         <div>
-//         //             <label className="block mb-1 font-medium">Image</label>
-//         //             <input
-//         //                 type="file"
-//         //                 accept="image/*"
-//         //                 {...register("image", { required: true })}
-//         //                 className="w-full border p-2 rounded"
-//         //             />
-//         //             {errors.image && <p className="text-red-500 text-sm">Image is required</p>}
-//         //         </div>
-
-//         //         {/* Title */}
-//         //         <div>
-//         //             <label className="block mb-1 font-medium">Title</label>
-//         //             <input
-//         //                 type="text"
-//         //                 {...register("title", { required: true })}
-//         //                 className="w-full border p-2 rounded"
-//         //                 placeholder="Title"
-//         //             />
-//         //             {errors.title && <p className="text-red-500 text-sm">Title is required</p>}
-//         //         </div>
-
-//         //         {/* Description */}
-//         //         <div>
-//         //             <label className="block mb-1 font-medium">Description</label>
-//         //             <textarea
-//         //                 {...register("description", { required: true })}
-//         //                 className="w-full border p-2 rounded"
-//         //                 placeholder="Description"
-//         //             ></textarea>
-//         //             {errors.description && <p className="text-red-500 text-sm">Description is required</p>}
-//         //         </div>
-
-//         //         {/* Price */}
-//         //         <div>
-//         //             <label className="block mb-1 font-medium">Price</label>
-//         //             <input
-//         //                 type="number"
-//         //                 {...register("price", { required: true })}
-//         //                 className="w-full border p-2 rounded"
-//         //                 placeholder="Price"
-//         //             />
-//         //             {errors.price && <p className="text-red-500 text-sm">Price is required</p>}
-//         //         </div>
-
-//         //         {/* Features */}
-//         //         <div className="grid grid-cols-2 gap-3">
-//         //             <div>
-//         //                 <label className="block mb-1 font-medium">Featured 1</label>
-//         //                 <input
-//         //                     type="text"
-//         //                     {...register("featured1")}
-//         //                     className="w-full border p-2 rounded"
-//         //                     placeholder="Feature 1"
-//         //                 />
-//         //             </div>
-
-//         //             <div>
-//         //                 <label className="block mb-1 font-medium">Featured 2</label>
-//         //                 <input
-//         //                     type="text"
-//         //                     {...register("featured2")}
-//         //                     className="w-full border p-2 rounded"
-//         //                     placeholder="Feature 2"
-//         //                 />
-//         //             </div>
-
-//         //             <div>
-//         //                 <label className="block mb-1 font-medium">Featured 3</label>
-//         //                 <input
-//         //                     type="text"
-//         //                     {...register("featured3")}
-//         //                     className="w-full border p-2 rounded"
-//         //                     placeholder="Feature 3"
-//         //                 />
-//         //             </div>
-
-//         //             <div>
-//         //                 <label className="block mb-1 font-medium">Featured 4</label>
-//         //                 <input
-//         //                     type="text"
-//         //                     {...register("featured4")}
-//         //                     className="w-full border p-2 rounded"
-//         //                     placeholder="Feature 4"
-//         //                 />
-//         //             </div>
-//         //         </div>
-
-//         //         {/* Property Type ID */}
-//         //         <div>
-//         //             <label className="block mb-1 font-medium">Property Type</label>
-//         //             <select
-//         //                 {...register("propertyTypeId", { required: true })}
-//         //                 className="w-full border p-2 rounded"
-//         //             >
-//         //                 <option value="">Select Property Type</option>
-
-//         //                 {propertyTypes.map(pt => (
-//         //                     <option key={pt.id} value={pt.id}>
-//         //                         {pt.title}
-//         //                     </option>
-//         //                 ))}
-//         //             </select>
-
-//         //             {errors.propertyTypeId && (
-//         //                 <p className="text-red-500 text-sm">Property Type is required</p>
-//         //             )}
-//         //         </div>
-
-//         //         {/* Submit */}
-//         //         <button
-//         //             type="submit"
-//         //             disabled={loading}
-//         //             className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold disabled:opacity-50"
-//         //         >
-//         //             {loading ? "Submitting..." : "Submit"}
-//         //         </button>
-//         //     </form>
-//         // </div>
-//     );
-// };
-
-// export default AddPropertyItem;
-
-
-
-
-
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import useCoverContent from "../hooks/useCoverContent";
 import useDashboardPropertyItem from "../hooks/useDashboardPropertyItem";
 import { RiDeleteBin5Line, RiEditBoxLine } from "react-icons/ri";
 import { IoClose } from "react-icons/io5";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import useDashboardPropertyType from "../hooks/userDashboardPropertyType";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddPropertyItem = () => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const { register: registerComment, handleSubmit: handleCommentSubmit, reset: resetComment, formState: { errors: commentErrors } } = useForm();
-
+    const [propertyItem, refetch] = useDashboardPropertyItem();
+    const [propertyType] = useDashboardPropertyType();
     const [loading, setLoading] = useState(false);
-    const [content] = useCoverContent();
-    const [propertyItem] = useDashboardPropertyItem();
 
-    // MODAL STATES
-    const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
+    console.log(propertyType.map(p => p.title));
 
-    const openCommentModal = (item) => {
-        setSelectedItem(item);
-        setIsCommentModalOpen(true);
+    // React Hook Form
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm();
+
+    // Add Modal State
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+    // Edit Modal State
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editItem, setEditItem] = useState(null);
+
+    // Open / Close Add Modal
+    const openAddModal = () => setIsAddModalOpen(true);
+    const closeAddModal = () => {
+        reset();
+        setIsAddModalOpen(false);
     };
 
-    const closeCommentModal = () => {
-        setIsCommentModalOpen(false);
-        setSelectedItem(null);
-        resetComment();
+    // Open / Close Edit Modal
+    const openEditModal = (item) => {
+        setEditItem(item);
+        setIsEditModalOpen(true);
     };
+    const closeEditModal = () => setIsEditModalOpen(false);
 
-    const handleFormSubmit = async (data) => {
+    // Add Form Submit
+    const handleAddFormSubmit = async (data) => {
         setLoading(true);
+        // console.log("Form Submitted:", data);
+
 
         const formData = new FormData();
         formData.append("image", data.image[0]);
-
         try {
             const res = await fetch(image_hosting_api, {
                 method: "POST",
                 body: formData,
             });
 
-            const imgResult = await res.json();
-            if (!imgResult.success) {
-                toast.error("Image upload failed");
-                setLoading(false);
-                return;
-            }
+            const result = await res.json();
+            if (result.success) {
+                const imageUrl = result.data.url;
 
-            const finalData = {
-                image: imgResult.data.url,
-                title: data.title,
-                description: data.description,
-                price: Number(data.price),
-                serviceCharge: 0,
-                vat: 0,
-                feature1: data.feature1,
-                feature2: data.feature2,
-                feature3: data.feature3,
-                feature4: data.feature4,
-                propertyTypeId: data.propertyTypeId,
-            };
+                const finalData = {
+                    ...data,
+                    image: imageUrl,
+                };
 
-            const postRes = await fetch(
-                "https://job-task-nu.vercel.app/api/v1/property-items/create",
-                {
+
+                console.log(finalData);
+                const postData = await fetch("https://job-task-nu.vercel.app/api/v1/property-items/create", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(finalData),
+                });
+
+                const postResult = await postData.json();
+                if (postResult.success === true) {
+                    toast.success("Service added successfully");
+                    closeAddModal();
+                    // refetch();
                 }
-            );
-
-            const result = await postRes.json();
-
-            if (result.success) {
-                toast.success("Property item added successfully");
-                reset();
+            } else {
+                toast.error("Image upload failed");
             }
         } catch (error) {
-            toast.error("Error submitting form");
+            toast.error(`Something wrong: ${error?.message || error}`);
+            console.log(error);
         } finally {
             setLoading(false);
         }
+
+
+
+        setLoading(false);
     };
 
-    const submitComment = async (data) => {
-        console.log("COMMENT SUBMITTED:", data.comment);
-        toast.success("Comment saved!");
-
-        closeCommentModal();
+    // Edit Save
+    const handleEditItem = () => {
+        console.log("Edited Item:", editItem);
+        closeEditModal();
     };
+
+    const handelDeleteItem = async (item) => {
+        try {
+            const res = await fetch(
+                `https://job-task-nu.vercel.app/api/v1/property-items/delete/${item.id}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+            const result = await res.json();
+
+            if (result.success) {
+                toast.success("Service deleted successfully");
+                refetch();
+            } else {
+                toast.error("Failed to delete service");
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Something went wrong");
+        }
+    }
 
     return (
         <div>
-            {/* TABLE */}
+            {/* Header */}
+            <div className="mx-auto flex flex-col items-center justify-center text-center md:flex-row md:justify-around md:items-center md:my-10">
+                <p className="text-xl font-medium md:text-3xl md:font-bold">
+                    Property Item: {propertyItem.length}
+                </p>
+
+                <button className="btn btn-outline mt-3 md:mt-0" onClick={openAddModal}>
+                    Add Property Item
+                </button>
+            </div>
+
+            {/* Table */}
             <div className="overflow-x-auto rounded-xl shadow">
                 <table className="table w-full">
                     <thead>
@@ -403,14 +174,14 @@ const AddPropertyItem = () => {
                                 <td>
                                     <button
                                         className="btn btn-ghost btn-xs"
-                                        onClick={() => openCommentModal(item)}
+                                        onClick={() => openEditModal(item)}
                                     >
                                         <RiEditBoxLine className="text-xl" />
                                     </button>
                                 </td>
 
                                 <td>
-                                    <button className="btn btn-ghost btn-xs">
+                                    <button onClick={() => handelDeleteItem(item)} className="btn btn-ghost btn-xs">
                                         <RiDeleteBin5Line className="text-xl" />
                                     </button>
                                 </td>
@@ -420,63 +191,217 @@ const AddPropertyItem = () => {
                 </table>
             </div>
 
-            {/* COMMENT / EDIT MODAL */}
-            {isCommentModalOpen && (
-                <>
-                    {/* Overlay */}
+            {/* ---------------------- Add Modal ---------------------- */}
+            {isAddModalOpen && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+                    onClick={closeAddModal}
+                >
                     <div
-                        onClick={closeCommentModal}
-                        className="fixed inset-0 bg-black bg-opacity-40 z-40"
-                    />
+                        className="relative bg-white 
+                                    w-full 
+                                    max-w-md sm:max-w-lg md:max-w-2xl
+                                    p-3 sm:p-5 md:p-8 
+                                    rounded-lg sm:rounded-md md:rounded-xl
+                                    shadow-xl 
+                                    max-h-[90vh] overflow-y-auto"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Close Button */}
+                        <button
+                            className="absolute top-3 right-3 text-xl text-gray-600 hover:text-gray-900"
+                            onClick={closeAddModal}
+                        >
+                            <IoClose />
+                        </button>
 
-                    {/* Modal Box */}
-                    <div className="fixed inset-0 z-50 flex justify-center items-center px-3">
-                        <div className="bg-white w-full max-w-md p-6 rounded-2xl shadow relative animate-scaleIn">
+                        <h2 className="text-xl md:text-2xl  font-bold text-center mb-6 text-gray-800">
+                            Add Property Item
+                        </h2>
 
-                            {/* Close button */}
-                            <button
-                                className="absolute top-3 right-3 text-xl"
-                                onClick={closeCommentModal}
-                            >
-                                <IoClose size={26} />
-                            </button>
+                        {/* Form */}
+                        <form
+                            onSubmit={handleSubmit(handleAddFormSubmit)}
+                            className="flex flex-col gap-5 p-4"
+                        >
+                            {/* Image */}
+                            <div className="md:col-span-2">
+                                <label className="font-medium">Image</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    {...register("image", { required: true })}
+                                    className="border p-3 w-full rounded-md"
+                                />
+                                {errors.image && (
+                                    <p className="text-red-500 text-sm">Image is required</p>
+                                )}
+                            </div>
 
-                            <h2 className="text-xl font-bold mb-4">
-                                Edit: {selectedItem?.title}
-                            </h2>
+                            {/* Title */}
+                            <div>
+                                <label className="font-medium">Title</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter title"
+                                    className="input input-bordered w-full mt-1"
+                                    {...register("title", { required: "Title is required" })}
+                                />
+                                {errors.title && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
+                                )}
+                            </div>
 
-                            <form
-                                onSubmit={handleCommentSubmit(submitComment)}
-                                className="space-y-4"
-                            >
-                                {/* COMMENT INPUT */}
+                            {/* Description */}
+                            <div>
+                                <label className="font-medium">Description</label>
+                                <textarea
+                                    placeholder="Enter description"
+                                    className="textarea textarea-bordered w-full mt-1"
+                                    {...register("description", { required: "Description is required" })}
+                                />
+                                {errors.description && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+                                )}
+                            </div>
+
+                            {/* dropdown */}
+                            <div>
+                                <label className="block font-medium mb-1">Property Type</label>
+                                <select
+                                    {...register("propertyTypeId", { required: true })}
+                                    className="border p-3 w-full rounded-md"
+                                >
+                                    <option value="">Select Service Type</option>
+                                    {propertyType?.map(p => (
+                                        <option key={p?.id} value={p?.id}>
+                                            {p?.title}
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.propertyTypeId && <p className="text-red-500 text-sm">Required</p>}
+                            </div>
+
+                            {/* Price - Service Charge - VAT */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
-                                    <label className="block mb-1 font-medium">Comment</label>
-                                    <textarea
-                                        {...registerComment("comment", { required: true })}
-                                        className="w-full border p-2 rounded"
-                                        placeholder="Write your comment..."
-                                        rows="4"
-                                    ></textarea>
-
-                                    {commentErrors.comment && (
-                                        <p className="text-red-500 text-sm">
-                                            Comment is required
-                                        </p>
+                                    <label className="font-medium">Price</label>
+                                    <input
+                                        type="number"
+                                        placeholder="Price"
+                                        className="input input-bordered w-full mt-1"
+                                        {...register("price", { required: "Price is required", valueAsNumber: true })}
+                                    />
+                                    {errors.price && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
                                     )}
                                 </div>
 
-                                {/* SUBMIT */}
-                                <button
-                                    type="submit"
-                                    className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold"
-                                >
-                                    Save Comment
-                                </button>
-                            </form>
-                        </div>
+                                <div>
+                                    <label className="font-medium">Service Charge</label>
+                                    <input
+                                        type="number"
+                                        placeholder="Service Charge"
+                                        className="input input-bordered w-full mt-1"
+                                        {...register("serviceCharge", { required: "Service charge is required", valueAsNumber: true })}
+                                    />
+                                    {errors.serviceCharge && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.serviceCharge.message}</p>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <label className="font-medium">VAT</label>
+                                    <input
+                                        type="number"
+                                        placeholder="VAT"
+                                        className="input input-bordered w-full mt-1"
+                                        {...register("vat", { required: "VAT is required", valueAsNumber: true })}
+                                    />
+                                    {errors.vat && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.vat.message}</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Features Section - Scrollable */}
+                            <div>
+                                <label className="font-medium block mb-2">Features</label>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-32 overflow-y-auto pr-2">
+
+                                    <input
+                                        type="text"
+                                        placeholder="Feature 1"
+                                        className="input input-bordered w-full"
+                                        {...register("feature1")}
+                                    />
+
+                                    <input
+                                        type="text"
+                                        placeholder="Feature 2"
+                                        className="input input-bordered w-full"
+                                        {...register("feature2")}
+                                    />
+
+                                    <input
+                                        type="text"
+                                        placeholder="Feature 3"
+                                        className="input input-bordered w-full"
+                                        {...register("feature3")}
+                                    />
+
+                                    <input
+                                        type="text"
+                                        placeholder="Feature 4"
+                                        className="input input-bordered w-full"
+                                        {...register("feature4")}
+                                    />
+
+                                </div>
+                            </div>
+
+                            {/* Submit */}
+                            <button disabled={loading} className="btn btn-primary w-full mt-3">{loading ? 'Submitting' : 'Submit'}</button>
+                        </form>
                     </div>
-                </>
+                </div>
+            )}
+
+            {/* ---------------------- Edit Modal ---------------------- */}
+            {isEditModalOpen && editItem && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                    onClick={closeEditModal}
+                >
+                    <div
+                        className="bg-white rounded-xl p-6 w-11/12 max-w-md relative"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Close Button */}
+                        <button
+                            className="absolute top-3 right-3 text-xl text-gray-600 hover:text-gray-900"
+                            onClick={closeEditModal}
+                        >
+                            <IoClose />
+                        </button>
+
+                        <h2 className="text-xl font-bold mb-4">Edit Property Item</h2>
+
+                        <input
+                            type="text"
+                            className="input input-bordered w-full mb-4"
+                            value={editItem.title}
+                            onChange={(e) =>
+                                setEditItem({ ...editItem, title: e.target.value })
+                            }
+                        />
+
+                        <button className="btn btn-primary w-full" onClick={handleEditItem}>
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
             )}
         </div>
     );

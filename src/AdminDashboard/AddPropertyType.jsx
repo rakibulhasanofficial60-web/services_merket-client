@@ -295,7 +295,7 @@ export default function AddPropertyType() {
                                     disabled={loading}
                                     className="btn w-full"
                                 >
-                                    {loading ? "Updating..." : "Update"}
+                                    {loading ? "Submitting..." : "Submit"}
                                 </button>
                             </form>
                         </div>
