@@ -5,13 +5,15 @@ import useAllServices from "../hooks/useAllServices";
 import { RiEditBoxLine } from "react-icons/ri";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import EditModal from "../components/EditModal/EditModal";
+import { GoBrowser } from "react-icons/go";
+
 
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddServices = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [loading, setLoading] = useState(false);
     const [services, isLoading, refetch] = useAllServices();
     const [selectedService, setSelectedService] = useState(null);
@@ -58,6 +60,7 @@ const AddServices = () => {
             console.log(error);
         } finally {
             setLoading(false);
+            reset();
         }
     };
 
@@ -87,13 +90,11 @@ const AddServices = () => {
 
     if (isLoading) return <p className="text-center mt-10">Loading...</p>;
     return (
-        <div>
-            {/* Header */}
-            <div className="mx-auto flex flex-col items-center justify-center text-center md:flex-row md:justify-around md:items-center md:my-10">
-                <p className="text-xl font-medium md:text-3xl md:font-bold">
-                    Total Services: {services.length}
-                </p>
-
+        <div className="border border-[#E5E7EB] px-2 md:px-6 py-4 rounded-lg bg-white w-full max-w-4xl mx-auto">
+            <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
+                <h2 className="flex items-center gap-2.5 text-xl font-semibold text-[#5D4F52]">
+                    <GoBrowser className="text-[#01788E]" />Services: {services.length}
+                </h2>
                 <button
                     onClick={() => setIsModalOpenAdd(true)}
                     className="btn btn-outline mt-3 md:mt-0"
@@ -102,66 +103,66 @@ const AddServices = () => {
                 </button>
             </div>
 
-            {/* Service Table */}
-            <div>
-                <div className="overflow-x-auto">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Service Name</th>
-                                <th>Description</th>
-                                <th>Total Booking</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {services.map((service, idx) => (
-                                <tr key={idx}>
-                                    <th>{idx + 1}</th>
-                                    <td>
-                                        <div className="flex items-center gap-3">
-                                            <div className="avatar">
-                                                <div className="mask mask-squircle h-12 w-12">
-                                                    <img
-                                                        src={service.image}
-                                                        alt="Avatar Tailwind CSS Component" />
+            <div className="mt-2 md:mt-10 flex flex-col items-center">
+                <div className="w-full">
+                    <div className="overflow-x-auto">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Service Name</th>
+                                    <th>Description</th>
+                                    <th>Total Booking</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {services.map((service, idx) => (
+                                    <tr key={idx}>
+                                        <th>{idx + 1}</th>
+                                        <td>
+                                            <div className="flex items-center gap-3">
+                                                <div className="avatar">
+                                                    <div className="mask mask-squircle h-12 w-12">
+                                                        <img
+                                                            src={service.image}
+                                                            alt="Avatar Tailwind CSS Component" />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div className="font-bold">{service.title}</div>
+                                                    <div className="text-sm opacity-50">Rated: {service.rated}</div>
                                                 </div>
                                             </div>
-                                            <div>
-                                                <div className="font-bold">{service.title}</div>
-                                                <div className="text-sm opacity-50">Rated: {service.rated}</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {service.des1}
-                                        <br />
-                                    </td>
-                                    <td>Total Booking: {service.totalBooking}</td>
-                                    <th>
-                                        <button
-                                            title="Edit"
-                                            className="btn btn-ghost btn-xs"
-                                            onClick={() => {
-                                                setSelectedService(service);
-                                                setIsModalOpenEdit(true);
-                                            }}
-                                        >
-                                            <RiEditBoxLine className="text-xl text-green-500" />
-                                        </button>
-                                    </th>
-                                    <th>
-                                        <button onClick={() => handelDelete(service)} title="Delete" className="btn btn-ghost btn-xs"><RiDeleteBin5Line className="text-xl text-red-400" /></button>
-                                    </th>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                        </td>
+                                        <td>
+                                            {service.des1}
+                                            <br />
+                                        </td>
+                                        <td>Total Booking: {service.totalBooking}</td>
+                                        <th>
+                                            <button
+                                                title="Edit"
+                                                className="btn btn-ghost btn-xs"
+                                                onClick={() => {
+                                                    setSelectedService(service);
+                                                    setIsModalOpenEdit(true);
+                                                }}
+                                            >
+                                                <RiEditBoxLine className="text-xl text-green-500" />
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button onClick={() => handelDelete(service)} title="Delete" className="btn btn-ghost btn-xs"><RiDeleteBin5Line className="text-xl text-red-400" /></button>
+                                        </th>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-
             {/* Add service  */}
             {isModalOpenAdd && (
                 <div
@@ -180,7 +181,7 @@ const AddServices = () => {
                                     w-full 
                                     max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl
                                     p-3 sm:p-5 md:p-8 
-                                    rounded-lg sm:rounded-xl md:rounded-2xl
+                                    rounded-lg
                                     shadow-xl 
                                     max-h-[90vh] overflow-y-auto
                                 "
@@ -283,7 +284,7 @@ const AddServices = () => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full bg-[#01788E] text-white py-3 rounded-xl font-semibold text-lg"
+                                className="w-full bg-[#01788E] text-white py-3 rounded-lg font-semibold text-lg"
                             >
                                 {loading ? "Submitting..." : "Submit"}
                             </button>
@@ -300,7 +301,6 @@ const AddServices = () => {
                     onClose={() => setIsModalOpenEdit(false)}
                 />
             )}
-
         </div>
     );
 };

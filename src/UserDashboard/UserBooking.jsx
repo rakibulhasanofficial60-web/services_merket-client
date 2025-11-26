@@ -55,17 +55,7 @@ export default function UserBooking() {
 
       <div className="mt-10 flex flex-col items-center">
         <nav
-          className="
-            hide-scroll-shadow 
-            no-scrollbar 
-            flex flex-nowrap 
-            items-center 
-            gap-3 
-            w-full 
-            overflow-x-auto 
-            px-2
-            justify-start 
-            md:justify-center
+          className=" hide-scroll-shadow  no-scrollbar  flex flex-nowrap  items-center  gap-3  w-full  overflow-x-auto  px-2 justify-start  md:justify-center
           "
         >
           {tabs.map((tab) => (

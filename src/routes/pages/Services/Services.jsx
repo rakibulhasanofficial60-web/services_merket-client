@@ -9,21 +9,7 @@ import NextBtn from "../../../components/NextBtn/NextBtn";
 import { useEffect, useRef } from "react";
 
 const Services = () => {
-    const {
-        services,
-        button,
-        setActiveId,
-        activeId,
-        content,
-        itemSummary,
-        total,
-        vat,
-        serviceCharge,
-        showInput,
-        setShowInput,
-        serviceTitle
-
-    } = useSummary();
+    const { services, button, setActiveId, activeId, content, itemSummary, total, vat, serviceCharge, showInput, setShowInput, serviceTitle } = useSummary();
 
     const sectionRefs = useRef({});
     console.log(itemSummary);

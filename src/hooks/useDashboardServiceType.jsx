@@ -1,6 +1,3 @@
-
-
-
 import { useQuery } from "@tanstack/react-query";
 
 const useDashboardServiceType = () => {

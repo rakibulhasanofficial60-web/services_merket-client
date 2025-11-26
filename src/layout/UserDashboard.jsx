@@ -361,9 +361,9 @@ const UserDashboard = () => {
                         ✕
                     </label>
 
-                    <div className="flex flex-col justify-center mb-4">
-                        <Link to='/' className="text-5xl">
-                            <img src={logo} alt="logo" />
+                    <div className="flex flex-col items-center justify-center mb-4">
+                        <Link to='/'>
+                            <img className="w-52 md:mt-4" src={logo} alt="logo" />
                         </Link>
 
                         <div className="text-center flex flex-col items-center mt-5 space-y-3">
