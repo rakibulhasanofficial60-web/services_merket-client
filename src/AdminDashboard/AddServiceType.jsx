@@ -109,6 +109,29 @@ export default function AddServiceType() {
     }
   };
 
+  const handelDeleteServiceType = async (service) => {
+    try {
+      const res = await fetch(
+        `https://job-task-nu.vercel.app/api/v1/service-type/delete/${service.id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const result = await res.json();
+
+      if (result.success) {
+        toast.success("Service deleted successfully");
+        refetch(); // list reload
+      } else {
+        toast.error("Failed to delete service");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
     <>
       {/* ------------------- Table ------------------- */}
@@ -172,7 +195,7 @@ export default function AddServiceType() {
                       </button>
                     </td>
                     <td>
-                      <button className="btn btn-ghost btn-xs">
+                      <button onClick={() => handelDeleteServiceType(service)} className="btn btn-ghost btn-xs">
                         <RiDeleteBin5Line className="text-xl text-red-500" />
                       </button>
                     </td>

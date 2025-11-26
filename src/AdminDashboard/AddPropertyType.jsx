@@ -137,6 +137,29 @@ export default function AddPropertyType() {
         }
     };
 
+    const handelDeleteServiceType = async (service) => {
+        try {
+            const res = await fetch(
+                `https://job-task-nu.vercel.app/api/v1/property-type/delete/${service.id}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+            const result = await res.json();
+
+            if (result.success) {
+                toast.success("Service deleted successfully");
+                refetch(); // list reload
+            } else {
+                toast.error("Failed to delete service");
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Something went wrong");
+        }
+    };
+
     return (
         <div className="md:p-6 border border-[#E5E7EB]">
             {/* <div className="mx-auto flex flex-col items-center justify-center text-center md:flex-row md:justify-around md:items-center space-y-3 md:my-10">
@@ -154,7 +177,6 @@ export default function AddPropertyType() {
                     onClick={() => {
                         setIsModalOpen(true);
                         reset({ title: "", serviceId: "" });
-                        setSelectedValue(null);
                     }}
                     className="btn btn-outline mt-3 md:mt-0"
                 >
@@ -201,7 +223,7 @@ export default function AddPropertyType() {
                                 </td>
 
                                 <td>
-                                    <button className="btn btn-ghost btn-xs">
+                                    <button onClick={() => handelDeleteServiceType(prop)} className="btn btn-ghost btn-xs">
                                         <RiDeleteBin5Line className="text-xl text-red-500" />
                                     </button>
                                 </td>
