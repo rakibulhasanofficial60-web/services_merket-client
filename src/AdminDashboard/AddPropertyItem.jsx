@@ -5,6 +5,7 @@ import { IoClose } from "react-icons/io5";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import useDashboardPropertyType from "../hooks/userDashboardPropertyType";
+import { GoBrowser } from "react-icons/go";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -78,7 +79,7 @@ const AddPropertyItem = () => {
                 if (postResult.success === true) {
                     toast.success("Service added successfully");
                     closeAddModal();
-                    // refetch();
+                    refetch();
                 }
             } else {
                 toast.error("Image upload failed");
@@ -89,9 +90,6 @@ const AddPropertyItem = () => {
         } finally {
             setLoading(false);
         }
-
-
-
         setLoading(false);
     };
 
@@ -127,9 +125,9 @@ const AddPropertyItem = () => {
     }
 
     return (
-        <div>
+        <div className="md:p-6 border border-[#E5E7EB]">
             {/* Header */}
-            <div className="mx-auto flex flex-col items-center justify-center text-center md:flex-row md:justify-around md:items-center md:my-10">
+            {/* <div className="mx-auto flex flex-col items-center justify-center text-center md:flex-row md:justify-around md:items-center md:my-10">
                 <p className="text-xl font-medium md:text-3xl md:font-bold">
                     Property Item: {propertyItem.length}
                 </p>
@@ -137,10 +135,24 @@ const AddPropertyItem = () => {
                 <button className="btn btn-outline mt-3 md:mt-0" onClick={openAddModal}>
                     Add Property Item
                 </button>
+            </div> */}
+
+
+            <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3 mb-7">
+                <h2 className="flex items-center gap-2.5 text-xl font-semibold text-[#5D4F52]">
+                    <GoBrowser className="text-[#01788E]" />Property Item: {propertyItem.length}
+                </h2>
+                <button
+                    onClick={openAddModal}
+                    className="btn btn-outline mt-3 md:mt-0"
+                >
+                    Add Property Item
+                </button>
             </div>
 
+
             {/* Table */}
-            <div className="overflow-x-auto rounded-xl shadow">
+            <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
                         <tr>
@@ -176,13 +188,13 @@ const AddPropertyItem = () => {
                                         className="btn btn-ghost btn-xs"
                                         onClick={() => openEditModal(item)}
                                     >
-                                        <RiEditBoxLine className="text-xl" />
+                                        <RiEditBoxLine className="text-xl text-green-500" />
                                     </button>
                                 </td>
 
                                 <td>
                                     <button onClick={() => handelDeleteItem(item)} className="btn btn-ghost btn-xs">
-                                        <RiDeleteBin5Line className="text-xl" />
+                                        <RiDeleteBin5Line className="text-xl text-red-500" />
                                     </button>
                                 </td>
                             </tr>
@@ -329,7 +341,6 @@ const AddPropertyItem = () => {
                                 <label className="font-medium block mb-2">Features</label>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-32 overflow-y-auto pr-2">
-
                                     <input
                                         type="text"
                                         placeholder="Feature 1"
@@ -362,7 +373,7 @@ const AddPropertyItem = () => {
                             </div>
 
                             {/* Submit */}
-                            <button disabled={loading} className="btn btn-primary w-full mt-3">{loading ? 'Submitting' : 'Submit'}</button>
+                            <button disabled={loading} className="w-full bg-[#01788E] text-white py-3 rounded-lg font-semibold text-lg">{loading ? 'Submitting' : 'Submit'}</button>
                         </form>
                     </div>
                 </div>
@@ -411,7 +422,7 @@ const AddPropertyItem = () => {
                                     className="border p-3 w-full rounded-md"
                                 />
 
-                                <img className="w-28 h-18" src={propertyItem?.map(p => p?.image)} alt="" />
+                                <img className="w-28 h-18 pt-3" src={propertyItem?.map(p => p?.image)} alt="" />
                             </div>
 
                             {/* Title */}
@@ -550,7 +561,7 @@ const AddPropertyItem = () => {
                             </div>
 
                             {/* Submit */}
-                            <button type="submit" disabled={loading} className="btn btn-primary w-full mt-3">{loading ? 'Submitting' : 'Submit'}</button>
+                            <button type="submit" disabled={loading} className="w-full bg-[#01788E] text-white py-3 rounded-lg font-semibold text-lg">{loading ? 'Submitting' : 'Submit'}</button>
                         </form>
                     </div>
                 </div>

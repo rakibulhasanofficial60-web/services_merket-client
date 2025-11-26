@@ -21,6 +21,7 @@ import AdminBooking from "../AdminDashboard/AdminBooking";
 import AddServiceType from "../AdminDashboard/AddServiceType";
 import AddPropertyType from "../AdminDashboard/AddPropertyType";
 import AddPropertyItem from "../AdminDashboard/AddPropertyItem";
+import AdminDateTime from "../AdminDashboard/AdminDateTime";
 
 export const router = createBrowserRouter([
     {
@@ -55,6 +56,7 @@ export const router = createBrowserRouter([
             { path: 'add-service-type', element: <AddServiceType /> },
             { path: 'add-property-type', element: <AddPropertyType /> },
             { path: 'add-property-item', element: <AddPropertyItem /> },
+            { path: 'admin-date-time', element: <AdminDateTime /> },
         ]
     }
 ]);

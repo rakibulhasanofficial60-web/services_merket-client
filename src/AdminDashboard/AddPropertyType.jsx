@@ -158,7 +158,7 @@ export default function AddPropertyType() {
                     }}
                     className="btn btn-outline mt-3 md:mt-0"
                 >
-                    Add Service Type
+                    Add Property Type
                 </button>
             </div>
 
@@ -310,7 +310,7 @@ export default function AddPropertyType() {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="btn w-full"
+                                    className="w-full bg-[#01788E] text-white py-3 rounded-lg font-semibold text-lg"
                                 >
                                     {loading ? "Submitting..." : "Submit"}
                                 </button>
