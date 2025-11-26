@@ -3,15 +3,15 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
 import { RiDeleteBin5Line, RiEditBoxLine } from "react-icons/ri";
-
-import useCoverContent from "../hooks/useCoverContent";
 import useDashboardPropertyType from "../hooks/userDashboardPropertyType";
+import useDashboardServiceType from "../hooks/useDashboardServiceType";
+import { GoBrowser } from "react-icons/go";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 export default function AddPropertyType() {
-    const [content] = useCoverContent();
+    const [serviceType] = useDashboardServiceType();
     const [propertyType, refetch] = useDashboardPropertyType();
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -107,12 +107,12 @@ export default function AddPropertyType() {
 
         const updatedData = {
             title: data.title,
-            // description: data.description,
+            description: data.description,
             startFrom: data.startFrom,
             serviceTypeId: data.serviceTypeId,
             image: imageUrl,
         };
-
+        console.log(updatedData);
         try {
             const res = await fetch(
                 `https://job-task-nu.vercel.app/api/v1/property-type/update/${selectedItem.id}`,
@@ -128,6 +128,7 @@ export default function AddPropertyType() {
             if (result.success) {
                 toast.success("Updated successfully");
                 setIsEditModalOpen(false);
+                refetch()
             }
         } catch (error) {
             toast.error("Update failed", error?.message);
@@ -137,15 +138,31 @@ export default function AddPropertyType() {
     };
 
     return (
-        <div className="md:p-6">
-            <div className="mx-auto flex flex-col items-center justify-center text-center md:flex-row md:justify-around md:items-center space-y-3 md:my-10">
+        <div className="md:p-6 border border-[#E5E7EB]">
+            {/* <div className="mx-auto flex flex-col items-center justify-center text-center md:flex-row md:justify-around md:items-center space-y-3 md:my-10">
                 <h1 className="text-xl md:text-2xl font-bold">Property Types: {propertyType.length}</h1>
                 <button onClick={() => setIsModalOpen(true)} className="btn btn-outline">
                     Add Property Type
                 </button>
+            </div> */}
+
+            <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3 mb-4">
+                <h2 className="flex items-center gap-2.5 text-xl font-semibold text-[#5D4F52]">
+                    <GoBrowser className="text-[#01788E]" /> Property Type: {propertyType.length}
+                </h2>
+                <button
+                    onClick={() => {
+                        setIsModalOpen(true);
+                        reset({ title: "", serviceId: "" });
+                        setSelectedValue(null);
+                    }}
+                    className="btn btn-outline mt-3 md:mt-0"
+                >
+                    Add Service Type
+                </button>
             </div>
 
-            <div className="overflow-x-auto rounded-xl shadow">
+            <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
                         <tr>
@@ -157,7 +174,7 @@ export default function AddPropertyType() {
                     </thead>
 
                     <tbody>
-                        {propertyType.map((con, idx) => (
+                        {propertyType.map((prop, idx) => (
                             <tr key={idx}>
                                 <td>{idx + 1}</td>
 
@@ -165,11 +182,11 @@ export default function AddPropertyType() {
                                     <div className="flex items-center gap-3">
                                         <div className="avatar">
                                             <div className="mask mask-squircle h-12 w-12">
-                                                <img src={con.image} />
+                                                <img src={prop.image} />
                                             </div>
                                         </div>
                                         <div className="font-bold">
-                                            {con.title} - {con.serviceType.title} - {con.serviceType.service.title}
+                                            {prop.title} - {prop.serviceType.title} - {prop.serviceType.service.title}
                                         </div>
                                     </div>
                                 </td>
@@ -177,7 +194,7 @@ export default function AddPropertyType() {
                                 <td>
                                     <button
                                         className="btn btn-ghost btn-xs"
-                                        onClick={() => openEditModal(con)}
+                                        onClick={() => openEditModal(prop)}
                                     >
                                         <RiEditBoxLine className="text-xl text-green-500" />
                                     </button>
@@ -271,7 +288,7 @@ export default function AddPropertyType() {
                                         className="border p-3 w-full rounded-md"
                                     >
                                         <option value="">Select Service Type</option>
-                                        {content.map((c) => (
+                                        {serviceType.map((c) => (
                                             <option key={c.id} value={c.id}>{c.title}</option>
                                         ))}
                                     </select>
@@ -378,7 +395,7 @@ export default function AddPropertyType() {
                                         className="border p-3 w-full rounded-md"
                                     >
                                         <option value="">Select Service Type</option>
-                                        {content.map((c) => (
+                                        {serviceType.map((c) => (
                                             <option key={c.id} value={c.id}>{c.title}</option>
                                         ))}
                                     </select>
@@ -399,7 +416,7 @@ export default function AddPropertyType() {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="btn w-full"
+                                    className="w-full bg-[#01788E] text-white py-3 rounded-lg font-semibold text-lg"
                                 >
                                     {loading ? "Updating..." : "Update"}
                                 </button>
@@ -411,149 +428,3 @@ export default function AddPropertyType() {
         </div>
     );
 }
-// import { useForm } from "react-hook-form";
-// import toast from "react-hot-toast";
-// import useCoverContent from "../hooks/useCoverContent";
-
-// const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
-// const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
-
-// const AddPropertyType = () => {
-//     const [content] = useCoverContent();
-
-//     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-//     const [loading, setLoading] = useState(false);
-
-//     const handleFormSubmit = async (data) => {
-//         setLoading(true);
-//         const formData = new FormData();
-//         formData.append("image", data.image[0]);
-
-//         try {
-//             const uploadRes = await fetch(image_hosting_api, {
-//                 method: "POST",
-//                 body: formData,
-//             });
-
-//             const uploadResult = await uploadRes.json();
-//             if (uploadResult.success) {
-//                 const imageUrl = uploadResult.data.url;
-
-//                 const finalData = {
-//                     title: data.title,
-//                     description: data.description,
-//                     startFrom: data.startFrom,
-//                     serviceTypeId: data.serviceTypeId,
-//                     image: imageUrl,
-//                 };
-
-//                 const postRes = await fetch(
-//                     "https://job-task-nu.vercel.app/api/v1/property-type/create",
-//                     {
-//                         method: "POST",
-//                         headers: { "Content-Type": "application/json" },
-//                         body: JSON.stringify(finalData),
-//                     }
-//                 );
-
-//                 const result = await postRes.json();
-//                 if (result.success) {
-//                     toast.success("Property Type added successfully");
-//                     reset();
-//                 }
-//             } else {
-//                 toast.error("Image upload failed");
-//             }
-//         } catch (error) {
-//             toast.error("Error uploading image", error?.message);
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
-
-//     return (
-//         <div className="max-w-md mx-auto p-6 bg-white rounded-2xl shadow">
-//             <h2 className="text-xl font-bold mb-4">Add Property Type</h2>
-
-//             <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-
-//                 {/* Title */}
-//                 <div>
-//                     <label className="block mb-1 font-medium">Title</label>
-//                     <input
-//                         type="text"
-//                         {...register("title", { required: true })}
-//                         className="w-full border p-2 rounded"
-//                         placeholder="Enter title"
-//                     />
-//                     {errors.title && <p className="text-red-500 text-sm">Title is required</p>}
-//                 </div>
-
-//                 {/* Description */}
-//                 <div>
-//                     <label className="block mb-1 font-medium">Description</label>
-//                     <textarea
-//                         {...register("description", { required: true })}
-//                         className="w-full border p-2 rounded"
-//                         placeholder="Enter description"
-//                     />
-//                     {errors.description && <p className="text-red-500 text-sm">Description is required</p>}
-//                 </div>
-
-//                 {/* Start From */}
-//                 <div>
-//                     <label className="block mb-1 font-medium">Start From</label>
-//                     <input
-//                         type="number"
-//                         {...register("startFrom", { required: true })}
-//                         className="w-full border p-2 rounded"
-//                         placeholder="Starting price"
-//                     />
-//                     {errors.startFrom && <p className="text-red-500 text-sm">Start price is required</p>}
-//                 </div>
-
-//                 {/* Dropdown (Service Type) */}
-//                 <div>
-//                     <label className="block mb-1 font-medium">Select Service Type</label>
-//                     <select
-//                         {...register("serviceTypeId", { required: true })}
-//                         className="w-full border p-2 rounded"
-//                     >
-//                         <option value="">Select Service Type</option>
-
-//                         {content.map((c) => (
-//                             <option key={c.id} value={c.id}>
-//                                 {c.title}
-//                             </option>
-//                         ))}
-//                     </select>
-//                     {errors.serviceTypeId && (
-//                         <p className="text-red-500 text-sm">Service Type is required</p>
-//                     )}
-//                 </div>
-
-//                 {/* Image Upload */}
-//                 <div>
-//                     <label className="block mb-1 font-medium">Image</label>
-//                     <input
-//                         type="file"
-//                         accept="image/*"
-//                         {...register("image", { required: true })}
-//                         className="w-full border p-2 rounded"
-//                     />
-//                     {errors.image && <p className="text-red-500 text-sm">Image is required</p>}
-//                 </div>
-
-//                 <button
-//                     type="submit"
-//                     disabled={loading}
-//                     className="w-full bg-black-600 text-white py-2 rounded-lg font-semibold disabled:opacity-50"
-//                 >
-//                     {loading ? "Submitting..." : "Submit"}
-//                 </button>
-//             </form>
-//         </div>
-//     );
-// };
-
-// export default AddPropertyType;
