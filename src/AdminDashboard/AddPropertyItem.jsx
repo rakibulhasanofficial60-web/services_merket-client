@@ -373,7 +373,7 @@ const AddPropertyItem = () => {
                             </div>
 
                             {/* Submit */}
-                            <button disabled={loading} className="w-full bg-[#01788E] text-white py-3 rounded-lg font-semibold text-lg">{loading ? 'Submitting' : 'Submit'}</button>
+                            <button disabled={loading} className="w-full bg-[#01788E] text-white py-3 rounded-lg font-semibold text-lg">{loading ? 'Submitting...' : 'Submit'}</button>
                         </form>
                     </div>
                 </div>
@@ -561,7 +561,7 @@ const AddPropertyItem = () => {
                             </div>
 
                             {/* Submit */}
-                            <button type="submit" disabled={loading} className="w-full bg-[#01788E] text-white py-3 rounded-lg font-semibold text-lg">{loading ? 'Submitting' : 'Submit'}</button>
+                            <button type="submit" disabled={loading} className="w-full bg-[#01788E] text-white py-3 rounded-lg font-semibold text-lg">{loading ? 'Submitting...' : 'Submit'}</button>
                         </form>
                     </div>
                 </div>
