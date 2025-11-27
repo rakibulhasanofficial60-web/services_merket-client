@@ -7,6 +7,10 @@ import {
     useJsApiLoader,
     Autocomplete,
 } from "@react-google-maps/api";
+import NextBtn from "../../../components/NextBtn/NextBtn";
+import Summery from "../../../components/Summery/Summery";
+import { useSummary } from "../../../provider/SummaryProvider";
+import ServiceDetails from "../../../components/ServiceDetails/ServiceDetails";
 
 const containerStyle = {
     width: "100%",
@@ -23,6 +27,8 @@ export default function LocationPicker({ onLocationSelect }) {
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
         libraries: ["places"],
     });
+
+    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, setAddress, serviceTitle } = useSummary();
 
     const [selectedPos, setSelectedPos] = useState(defaultCenter);
     const [map, setMap] = useState(null);
@@ -95,88 +101,104 @@ export default function LocationPicker({ onLocationSelect }) {
             onLocationSelect?.({ ...pos, address });
         });
     };
+
+    const handleLocation = (coords) => {
+        console.log(coords.address);
+        setAddress(coords.address)
+    };
+
     if (!isLoaded) return <div>Loading map…</div>;
-
     return (
-        <div className="w-full relative space-y-3">
+        <div>
+            <ServiceDetails title="Address" currentStep={2} />
+            <div className="flex gap-8 mt-5">
+                <div className="md:w-[60%] mb-4 space-y-4 relative shadow-md">
+                    <h2 className="text-[27px] font-semibold ml-12">Where do you need the service?</h2>
+                   
+                    {/* Search Input */}
+                    <div className="absolute md:top-18 left-1/2 -translate-x-1/2 z-20 w-11/12">
+                        <div className="shadow-lg bg-white rounded-md">
+                            <Autocomplete
+                                onLoad={onLoadAutocomplete}
+                                onPlaceChanged={onPlaceChanged}
+                            >
+                                <input
+                                    type="text"
+                                    placeholder="Search for your address…"
+                                    className="w-full p-3 border rounded-md focus:outline-none"
+                                />
+                            </Autocomplete>
+                        </div>
+                    </div>
 
-            {/* Search Input */}
-            <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 w-11/12">
-                <div className="shadow-lg bg-white rounded-xl">
-                    <Autocomplete
-                        onLoad={onLoadAutocomplete}
-                        onPlaceChanged={onPlaceChanged}
+                    {/* Buttons */}
+                    <div className="absolute top-80 right-3 z-20 flex flex-col space-y-2">
+                        <button
+                            onClick={() => map?.setZoom(map.getZoom() + 1)}
+                            className="bg-white shadow p-2 rounded-lg"
+                        >
+                            <FaPlus />
+                        </button>
+
+                        <button
+                            onClick={() => map?.setZoom(map.getZoom() - 1)}
+                            className="bg-white shadow p-2 rounded-lg"
+                        >
+                            <FaMinus className="font-bold" />
+                        </button>
+
+                        <button
+                            onClick={gotoMyLocation}
+                            className="bg-white shadow p-2 rounded-lg flex items-center justify-center"
+                        >
+                            <FaLocationCrosshairs />
+                        </button>
+
+                        <button
+                            onClick={() =>
+                                setMapType(mapType === "roadmap" ? "hybrid" : "roadmap")
+                            }
+                            className="bg-white shadow p-2 rounded-lg"
+                        >
+                            <FaSatellite />
+                        </button>
+                    </div>
+
+                    {/* Google Map */}
+                    <GoogleMap
+                        mapContainerStyle={containerStyle}
+                        center={selectedPos}
+                        zoom={15}
+                        onLoad={setMap}
+                        onClick={handleMapClick}
+                        mapTypeId={mapType}
+                        options={{
+                            disableDefaultUI: true,
+                            zoomControl: false,
+                            mapTypeControl: false,
+                            fullscreenControl: false,
+                            streetViewControl: false,
+                            keyboardShortcuts: false,
+                            gestureHandling: "greedy",
+                            scrollwheel: false
+                        }}
                     >
-                        <input
-                            type="text"
-                            placeholder="Search for your address…"
-                            className="w-full p-3 border rounded-xl focus:outline-none"
+                        <Marker
+                            position={selectedPos}
+                            draggable={false}
+                            icon={{
+                                url: "https://i.postimg.cc/sgdZ7ZLp/location-picker-doodle-icon-vector-48907141.webp",
+                                scaledSize: new window.google.maps.Size(40, 40)
+                            }}
                         />
-                    </Autocomplete>
+                    </GoogleMap>
                 </div>
+
+                <Summery serviceTitle={serviceTitle} address={address} itemSummary={itemSummary} total={total} showInput={showInput} setShowInput={setShowInput} vat={vat} serviceCharge={serviceCharge}></Summery>
             </div>
-
-            {/* Buttons */}
-            <div className="absolute top-50 right-3 z-20 flex flex-col space-y-2">
-                <button
-                    onClick={() => map?.setZoom(map.getZoom() + 1)}
-                    className="bg-white shadow p-2 rounded-lg"
-                >
-                    <FaPlus />
-                </button>
-
-                <button
-                    onClick={() => map?.setZoom(map.getZoom() - 1)}
-                    className="bg-white shadow p-2 rounded-lg"
-                >
-                    <FaMinus className="font-bold" />
-                </button>
-
-                <button
-                    onClick={gotoMyLocation}
-                    className="bg-white shadow p-2 rounded-lg flex items-center justify-center"
-                >
-                    <FaLocationCrosshairs />
-                </button>
-
-                <button
-                    onClick={() =>
-                        setMapType(mapType === "roadmap" ? "hybrid" : "roadmap")
-                    }
-                    className="bg-white shadow p-2 rounded-lg"
-                >
-                    <FaSatellite />
-                </button>
+            <div className="hidden md:block">
+                <NextBtn />
             </div>
-
-            {/* Google Map */}
-            <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={selectedPos}
-                zoom={15}
-                onLoad={setMap}
-                onClick={handleMapClick}
-                mapTypeId={mapType}
-                options={{
-                    disableDefaultUI: true,
-                    zoomControl: false,
-                    mapTypeControl: false,
-                    fullscreenControl: false,
-                    streetViewControl: false,
-                    keyboardShortcuts: false,
-                    gestureHandling: "greedy",
-                    scrollwheel: false
-                }}
-            >
-                <Marker
-                    position={selectedPos}
-                    draggable={false}
-                    icon={{
-                        url: "https://i.postimg.cc/sgdZ7ZLp/location-picker-doodle-icon-vector-48907141.webp",
-                        scaledSize: new window.google.maps.Size(40, 40)
-                    }}
-                />
-            </GoogleMap>
         </div>
     );
 }

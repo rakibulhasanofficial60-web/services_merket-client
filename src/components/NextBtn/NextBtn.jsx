@@ -11,6 +11,7 @@ const NextBtn = ({ name = "Next", disabled, onClick }) => {
     let isDisabled = disabled ?? false;
 
     if (pathname === "/services" && itemSummary.length === 0) isDisabled = true;
+    // if (pathname === "/location" && !address) isDisabled = true;
     if (pathname === "/address" && !address) isDisabled = true;
     if (pathname === "/date-time" && (!date || !time)) isDisabled = true;
 
@@ -31,7 +32,7 @@ const NextBtn = ({ name = "Next", disabled, onClick }) => {
                 disabled={isDisabled}
                 className={`
                     flex items-center justify-center gap-2
-                    px-6 py-3 rounded-sm cursor-pointer font-semibold 
+                    px-6 py-3 rounded-sm cursor-pointer font-semibold
                     text-white transition-all duration-200 text-xl uppercase
                     w-[90%] md:w-[60%] lg:w-60
                     ${isDisabled ? "bg-gray-300" : "bg-[#ED6329] hover:bg-[#d4541f]"}

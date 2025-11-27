@@ -22,6 +22,7 @@ import AddServiceType from "../AdminDashboard/AddServiceType";
 import AddPropertyType from "../AdminDashboard/AddPropertyType";
 import AddPropertyItem from "../AdminDashboard/AddPropertyItem";
 import AdminDateTime from "../AdminDashboard/AdminDateTime";
+import LocationPicker from "./pages/LocationPicker/LocationPicker";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
         element: <Main />,
         children: [
             { path: '/', element: <Home /> },
+            { path: 'location', element: <LocationPicker /> },
             { path: 'address', element: <Address /> },
             { path: 'date-time', element: <DateTime /> },
             { path: 'confirmation', element: <Confirmation /> },
