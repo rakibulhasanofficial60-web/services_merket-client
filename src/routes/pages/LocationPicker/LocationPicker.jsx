@@ -1,26 +1,14 @@
 import { useState, useCallback } from "react";
 import { FaLocationCrosshairs, FaPlus, FaMinus } from "react-icons/fa6";
 import { FaSatellite } from "react-icons/fa";
-import {
-    GoogleMap,
-    Marker,
-    useJsApiLoader,
-    Autocomplete,
-} from "@react-google-maps/api";
+import { GoogleMap, Marker, useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import NextBtn from "../../../components/NextBtn/NextBtn";
 import Summery from "../../../components/Summery/Summery";
 import { useSummary } from "../../../provider/SummaryProvider";
 import ServiceDetails from "../../../components/ServiceDetails/ServiceDetails";
 
-const containerStyle = {
-    width: "100%",
-    height: "500px",
-};
-
-const defaultCenter = {
-    lat: 23.8103,
-    lng: 90.4125, // Dhaka default
-};
+const containerStyle = { width: "100%", height: "500px" };
+const defaultCenter = { lat: 23.8103, lng: 90.4125 };
 
 export default function LocationPicker({ onLocationSelect }) {
     const { isLoaded } = useJsApiLoader({
@@ -114,7 +102,7 @@ export default function LocationPicker({ onLocationSelect }) {
             <div className="flex gap-8 mt-5">
                 <div className="md:w-[60%] mb-4 space-y-4 relative shadow-md">
                     <h2 className="text-[27px] font-semibold ml-12">Where do you need the service?</h2>
-                   
+
                     {/* Search Input */}
                     <div className="absolute md:top-18 left-1/2 -translate-x-1/2 z-20 w-11/12">
                         <div className="shadow-lg bg-white rounded-md">
@@ -183,12 +171,18 @@ export default function LocationPicker({ onLocationSelect }) {
                             scrollwheel: false
                         }}
                     >
-                        <Marker
-                            position={selectedPos}
-                            draggable={false}
-                            icon={{
-                                url: "https://i.postimg.cc/sgdZ7ZLp/location-picker-doodle-icon-vector-48907141.webp",
-                                scaledSize: new window.google.maps.Size(40, 40)
+                        <img
+                            src="https://servicemarket.com/dist/images/map-marker.svg"
+                            alt="center marker"
+                            className="pointer-events-none"
+                            style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -100%)",
+                                width: "80px",
+                                height: "80px",
+                                zIndex: 20,
                             }}
                         />
                     </GoogleMap>

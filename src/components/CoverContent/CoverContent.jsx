@@ -17,7 +17,7 @@ const CoverContent = ({ content }) => {
     };
 
     return (
-        <div className="">
+        <div className="md:mt-6">
             {properties.map((property, idx) => (
                 <div
                     key={idx}

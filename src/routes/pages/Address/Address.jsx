@@ -11,6 +11,7 @@ const Address = () => {
             <ServiceDetails title="Address" currentStep={2} />
             <div className="flex gap-8 mt-5">
                 <div className="md:w-[60%] mb-4 space-y-4">
+                    
                     <div className="bg-white rounded-xl shadow-lg w-full p-8">
                         <div className="flex space-x-2 mb-6">
                             <button className="flex items-center px-4 py-2 text-white bg-teal-600 rounded-full shadow-md transition duration-300">
@@ -85,6 +86,7 @@ const Address = () => {
                         </div>
                     </div>
                 </div>
+
                 <Summery serviceTitle={serviceTitle} address={address} itemSummary={itemSummary} total={total} showInput={showInput} setShowInput={setShowInput} vat={vat} serviceCharge={serviceCharge}></Summery>
             </div>
 
