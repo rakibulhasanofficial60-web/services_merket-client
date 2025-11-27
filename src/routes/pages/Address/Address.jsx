@@ -5,7 +5,7 @@ import NextBtn from "../../../components/NextBtn/NextBtn";
 import LocationPicker from "../LocationPicker/LocationPicker";
 
 const Address = () => {
-    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, setAddress,serviceTitle } = useSummary();
+    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, setAddress, serviceTitle } = useSummary();
 
     const handleLocation = (coords) => {
         // console.log("Selected Location:", coords);

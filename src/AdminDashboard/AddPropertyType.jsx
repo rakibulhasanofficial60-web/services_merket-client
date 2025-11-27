@@ -207,7 +207,7 @@ export default function AddPropertyType() {
                                                 <img src={prop.image} />
                                             </div>
                                         </div>
-                                        <div className="font-bold">
+                                        <div className="font-semibold">
                                             {prop.title} - {prop.serviceType.title} - {prop.serviceType.service.title}
                                         </div>
                                     </div>
@@ -432,6 +432,9 @@ export default function AddPropertyType() {
                                         {...registerEdit("image")}
                                         className="w-full border p-2 rounded"
                                     />
+                                    {selectedItem?.image && (
+                                        <img className="h-14 w-28 mt-3.5 object-cover" src={selectedItem.image} alt={selectedItem.title} />
+                                    )}
                                 </div>
 
                                 {/* Submit Button */}

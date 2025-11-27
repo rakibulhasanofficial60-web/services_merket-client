@@ -96,10 +96,10 @@ const AddPropertyItem = () => {
     console.log(propertyItem);
 
     // Edit Save
-    const handleEditItem = () => {
-        console.log("Edited Item:", editItem);
-        closeEditModal();
-    };
+    // const handleEditItem = () => {
+    //     console.log("Edited Item:", editItem);
+    //     closeEditModal();
+    // };
 
     const handelDeleteItem = async (item) => {
         try {
@@ -175,7 +175,7 @@ const AddPropertyItem = () => {
                                                 <img src={item.image} />
                                             </div>
                                         </div>
-                                        <div>
+                                        <div className="font-semibold">
                                             {item.title} - {item.propertyType.title} -{" "}
                                             {item.propertyType.serviceType.title} -{" "}
                                             {item.propertyType.serviceType.service.title}

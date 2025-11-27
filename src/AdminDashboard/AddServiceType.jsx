@@ -174,7 +174,7 @@ export default function AddServiceType() {
                             <img src={service.image} alt="" />
                           </div>
                         </div>
-                        <div className="font-bold">
+                        <div className="font-semibold">
                           {service.title} - {service?.service?.title ?? "No Service"}
                         </div>
                       </div>
