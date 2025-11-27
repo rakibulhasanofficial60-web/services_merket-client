@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dirhum from "../../assets/icon/dirhum.png";
 import NextBtn from "../NextBtn/NextBtn";
 
 export default function Summery({ total, showInput, setShowInput, vat, itemSummary, serviceCharge, address, date, time, serviceTitle }) {
     const [promo, setPromo] = useState("");
     const [open, setOpen] = useState(false);
+    const [localAddress, setLocalAddress] = useState("");
+
+console.log(localAddress);
 
     const handleApply = () => {
         if (promo.trim() === "") {
@@ -15,6 +18,17 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
         setPromo("");
         setShowInput(false);
     };
+
+    useEffect(() => {
+        const saved = localStorage.getItem("addressInfo");
+        if (saved) {
+            const data = JSON.parse(saved);
+            // Example: "Dubai, Marina, Skyline, 101"
+            const fullAddress = `${data.city}, ${data.area}, ${data.buildingName}, ${data.apartmentNo}`;
+            setLocalAddress(fullAddress);
+        }
+    }, []);
+
 
     return (
         <>
@@ -63,10 +77,10 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                     </div>
 
                     {/* Address */}
-                    {address && (
+                    {localAddress && (
                         <div className="border-b border-gray-400 mt-2">
                             <h3 className="font-semibold text-sm mb-2">Address</h3>
-                            <p className="text-[14px] font-medium text-gray-700">{address}</p>
+                            <p className="text-[14px] font-medium text-gray-700">{localAddress}</p>
                         </div>
                     )}
 

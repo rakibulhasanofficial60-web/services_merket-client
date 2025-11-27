@@ -2,16 +2,29 @@ import ServiceDetails from "../../../components/ServiceDetails/ServiceDetails";
 import Summery from "../../../components/Summery/Summery";
 import { useSummary } from "../../../provider/SummaryProvider";
 import NextBtn from "../../../components/NextBtn/NextBtn";
+import { useForm } from "react-hook-form";
 
 const Address = () => {
-    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, serviceTitle } = useSummary();
+    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address,  serviceTitle } = useSummary();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm();
+
+    const onSubmit = (data) => {
+        localStorage.setItem("addressInfo", JSON.stringify(data));
+        console.log("Form Data:", data);
+    };
+
 
     return (
         <div>
             <ServiceDetails title="Address" currentStep={2} />
             <div className="flex gap-8 mt-5">
                 <div className="md:w-[60%] mb-4 space-y-4">
-                    
+
                     <div className="bg-white rounded-xl shadow-lg w-full p-8">
                         <div className="flex space-x-2 mb-6">
                             <button className="flex items-center px-4 py-2 text-white bg-teal-600 rounded-full shadow-md transition duration-300">
@@ -35,20 +48,31 @@ const Address = () => {
                             </button>
                         </div>
 
-                        <div className="space-y-6">
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 
                             {/* Select City */}
                             <div>
                                 <label className="block text-gray-700 font-medium mb-1">Select City</label>
                                 <div className="relative">
-                                    <select className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white pr-10">
-                                        <option>Dubai</option>
+                                    <select
+                                        {...register("city", { required: "City is required" })}
+                                        className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 
+                        focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white pr-10"
+                                    >
+                                        <option value="">Select City</option>
+                                        <option value="Dubai">Dubai</option>
+                                        <option value="Abu Dhabi">Abu Dhabi</option>
+                                        <option value="Sharjah">Sharjah</option>
                                     </select>
 
                                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
                                     </div>
                                 </div>
+                                {errors.city && <p className="text-red-500 text-sm">{errors.city.message}</p>}
                             </div>
 
                             {/* Area */}
@@ -56,34 +80,51 @@ const Address = () => {
                                 <label className="block text-gray-700 font-medium mb-1">Area</label>
                                 <div className="relative">
                                     <input
+                                        {...register("area", { required: "Area is required" })}
                                         type="text"
                                         placeholder="Start typing to find your area"
-                                        className="block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white placeholder-gray-400 pr-10"
+                                        className="block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 
+                        focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white placeholder-gray-400 pr-10"
                                     />
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </div>
                                 </div>
+                                {errors.area && <p className="text-red-500 text-sm">{errors.area.message}</p>}
                             </div>
+
+                            {/* Building Name */}
                             <div>
                                 <label className="block text-gray-700 font-medium mb-1">Building Name</label>
                                 <input
+                                    {...register("buildingName", { required: "Building name is required" })}
                                     type="text"
                                     placeholder="Enter Building Name"
-                                    className="block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                                    className="block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 
+                    focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
                                 />
+                                {errors.buildingName && <p className="text-red-500 text-sm">{errors.buildingName.message}</p>}
                             </div>
 
+                            {/* Apartment No */}
                             <div>
                                 <label className="block text-gray-700 font-medium mb-1">Apartment No.</label>
                                 <input
+                                    {...register("apartmentNo", { required: "Apartment number is required" })}
                                     type="text"
                                     placeholder="Enter Apartment No."
-                                    className="block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                                    className="block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 
+                    focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
                                 />
+                                {errors.apartmentNo && <p className="text-red-500 text-sm">{errors.apartmentNo.message}</p>}
                             </div>
 
-                        </div>
+                            {/* Submit Button */}
+                            <button
+                                type="submit"
+                                className="mt-4 w-full py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition font-medium"
+                            >
+                                Save & Continue
+                            </button>
+
+                        </form>
                     </div>
                 </div>
 

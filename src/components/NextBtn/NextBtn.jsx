@@ -10,9 +10,11 @@ const NextBtn = ({ name = "Next", disabled, onClick }) => {
     const nextPath = steps[currentIndex + 1];
     let isDisabled = disabled ?? false;
 
+
+    
     if (pathname === "/services" && itemSummary.length === 0) isDisabled = true;
     // if (pathname === "/location" && !address) isDisabled = true;
-    if (pathname === "/address" && !address) isDisabled = true;
+    // if (pathname === "/address" && !address) isDisabled = true;
     if (pathname === "/date-time" && (!date || !time)) isDisabled = true;
 
     const isLastStep = !nextPath;
