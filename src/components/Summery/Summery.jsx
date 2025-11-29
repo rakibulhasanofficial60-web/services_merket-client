@@ -50,14 +50,14 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                             <div className="space-y-1">
                                 {date && (
                                     <div className="flex items-center justify-between">
-                                        <p className="text-[14px] text-gray-700">Date</p>
-                                        <p className="text-[14px] text-gray-700">{date}</p>
+                                        <p className="text-[15px] font-semibold text-gray-700">Date</p>
+                                        <p className="text-[15px] font-semibold text-gray-700">{date}</p>
                                     </div>
                                 )}
                                 {time && (
                                     <div className="flex items-center justify-between">
-                                        <p className="text-[14px] text-gray-700">Time</p>
-                                        <p className="text-[14px] text-gray-700">{time}</p>
+                                        <p className="text-[15px] font-semibold text-gray-700">Time</p>
+                                        <p className="text-[15px] font-semibold text-gray-700">{time}</p>
                                     </div>
                                 )}
                             </div>
@@ -166,7 +166,7 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                         </div>
                     )}
 
-                    {address && <p className="pt-2 border-t">Address: {address?.buildingName}</p>}
+                    {address && <p className="pt-2 border-t">Address: {address?.apartmentNo} - {address?.buildingName} - {address?.area} - {address?.city}</p>}
 
                     <div className="pt-2 border-t space-y-1">
                         <p className="flex justify-between"><span>Service Charge:</span><span className="flex items-center gap-1"><img src={dirhum} className="w-3.5 h-3.5" /> {serviceCharge}</span></p>

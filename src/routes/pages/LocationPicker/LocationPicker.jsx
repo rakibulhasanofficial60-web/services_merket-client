@@ -49,7 +49,7 @@ export default function LocationPicker() {
         setMapLongitude(pos.lng);
 
         // Console latitude and longitude
-        // console.log("Latitude:", pos.lat, "Longitude:", pos.lng);
+        console.log("Latitude:", pos.lat, "Longitude:", pos.lng);
         // console.log("Address:", addr);
     };
 

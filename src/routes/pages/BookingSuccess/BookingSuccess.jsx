@@ -81,7 +81,7 @@ const BookingSuccess = () => {
 
                         {/* MODAL TITLE */}
                         <h2 className="text-center text-xl font-semibold mt-2 mb-6">
-                            Job Status
+                            Booking Status
                         </h2>
 
                         <div className="relative pl-12">

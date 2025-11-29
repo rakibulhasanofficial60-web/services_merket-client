@@ -10,8 +10,10 @@ import { RxCrossCircled } from "react-icons/rx";
 import dirhum from "../../../assets/icon/color_dirhum.png";
 import { SiTicktick } from "react-icons/si";
 import { useSummary } from "../../../provider/SummaryProvider";
-import dirhum1 from '../../../assets/icon/dirhum.png'
+import dirhum1 from '../../../assets/icon/dirhum.png';
 import { useNavigate } from "react-router-dom";
+
+
 
 export default function Confirmation() {
     const [openModal, setOpenModal] = useState(false);
@@ -20,12 +22,14 @@ export default function Confirmation() {
     const navigate = useNavigate();
 
 
-    console.log(mapLatitude,- mapLongitude);
+    console.log(mapLatitude, - mapLongitude);
+    // console.log(address);
 
     const handelBookingConfirmation = () => {
         navigate('/booking-success');
         console.table(total, vat, serviceCharge, date, time, address);
     }
+
 
     return (
         <div className="pb-24">
@@ -46,15 +50,22 @@ export default function Confirmation() {
 
                 <div className="flex items-start gap-3 mb-3">
                     <IoLocation className="text-2xl" />
-                    <p className="font-medium">{address.buildingName}</p>
+                    <p className="font-medium">{address?.apartmentNo} - {address?.buildingName} - {address?.area} - {address?.city}</p>
                 </div>
 
-                <div className="w-full h-44 mt-8 overflow-hidden rounded-lg border">
-                    <img src="/mapsample.png" className="w-full h-full object-cover" />
+
+                {/* map hare  */}
+                <div className="w-full h-64 rounded-lg overflow-hidden">
+                    <iframe
+                        width="100%"
+                        height="100%"
+                        loading="lazy"
+                        src={`https://www.google.com/maps?q=${mapLatitude},${mapLongitude}&z=16&output=embed`}
+                        style={{ pointerEvents: "none" }}
+                    ></iframe>
                 </div>
 
                 <div className="h-4 w-full my-8 bg-[#F5F5F5]"></div>
-
                 <h2 className="text-lg font-semibold mb-3">Offers</h2>
                 <div className="flex items-center justify-between p-3 bg-[#FDFDFD]">
                     <div className="text-sm font-medium text-gray-600 flex items-center gap-2">Discount</div>
