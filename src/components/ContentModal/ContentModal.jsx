@@ -59,11 +59,11 @@ const ContentModal = ({ setShowModal, property }) => {
     return (
         <div
             className="fixed cursor-pointer inset-0 bg-black/50 flex items-center justify-center z-50 mb-[49px]"
-            onClick={() => setShowModal(false)}   // 🔹 Backdrop click → close modal
+            onClick={() => setShowModal(false)}
         >
             <div
                 className="bg-white rounded-lg shadow-lg w-[90%] md:w-[600px] p-6 relative"
-                onClick={(e) => e.stopPropagation()}  // 🔹 Modal box click → do NOT close
+                onClick={(e) => e.stopPropagation()}
             >
 
                 {/* Close Button */}
