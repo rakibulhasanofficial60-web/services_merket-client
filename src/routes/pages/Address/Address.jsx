@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 const Address = () => {
-    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, serviceTitle, saveAddress } = useSummary();
+    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, serviceTitle, setAddress, saveAddress } = useSummary();
     const [selectedType, setSelectedType] = useState("Apartment");
     const buttons = ["Apartment", "Villa", "Office", "Other"];
 
@@ -16,6 +16,7 @@ const Address = () => {
     const onSubmit = (data) => {
         const finalData = { type: selectedType, ...data };
         saveAddress(finalData);
+        setAddress(finalData);
         console.log("Saved Address:", finalData);
     };
 
@@ -47,7 +48,7 @@ const Address = () => {
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 
                             {/* City */}
-                            <div>
+                            {/* <div>
                                 <label className="block text-gray-700 font-medium mb-1">Select City</label>
                                 <select {...register("city", { required: true })} className="w-full px-4 py-3 border border-gray-300 rounded-lg">
                                     <option value="">Select City</option>
@@ -56,7 +57,14 @@ const Address = () => {
                                     <option value="Sharjah">Sharjah</option>
                                 </select>
                                 {errors.city && <p className="text-red-500 text-sm">City is required</p>}
+                            </div> */}
+
+                            <div>
+                                <label className="block text-gray-700 font-medium mb-1">City</label>
+                                <input {...register("City", { required: true })} type="text" placeholder="Enter City" className="w-full px-4 py-3 border border-gray-300 rounded-lg" />
+                                {errors.city && <p className="text-red-500 text-sm">City is required</p>}
                             </div>
+
 
                             {/* Area */}
                             <div>

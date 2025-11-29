@@ -2,7 +2,6 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { MdDeleteSweep, MdMenu } from "react-icons/md";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import logo from '../assets/logo/logo.png';
-import dirhum from '../assets/icon/dirhum.png';
 import { LuMenu } from "react-icons/lu";
 import { FaUser } from "react-icons/fa";
 import { MdPayments } from "react-icons/md";
@@ -12,11 +11,14 @@ import { FaWallet } from "react-icons/fa6";
 import { IoMdShare } from "react-icons/io";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { RiMacbookFill } from "react-icons/ri";
+import { SiServerless } from "react-icons/si";
+import { LuProportions } from "react-icons/lu";
+import { IoMdTime } from "react-icons/io";
 
 
 const UserDashboard = () => {
-    const user = false;
-    const admin = true;
+    const user = true;
+    const admin = false;
 
 
     const links = (
@@ -37,7 +39,7 @@ const UserDashboard = () => {
                     </li>
 
                     {/* My Quotes */}
-                    <li className="list-none border-b border-dashed hover:bg-gray-50">
+                    {/* <li className="list-none border-b border-dashed hover:bg-gray-50">
                         <NavLink
                             to="/dashboard/quotes"
                             className={({ isActive }) =>
@@ -46,7 +48,7 @@ const UserDashboard = () => {
                             }>
                             <LuMenu className="text-[17px]" /> My Quotes
                         </NavLink>
-                    </li>
+                    </li> */}
 
                     {/* My Profile */}
                     <li className="list-none border-b border-dashed hover:bg-gray-50">
@@ -157,7 +159,7 @@ const UserDashboard = () => {
                         </NavLink>
                     </li>
 
-                    <li className="list-none border-y border-dashed hover:bg-gray-50">
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
                         <NavLink
                             to="/dashboard/add-services"
                             className={({ isActive }) =>
@@ -168,29 +170,29 @@ const UserDashboard = () => {
                         </NavLink>
                     </li>
 
-                    <li className="list-none border-y border-dashed hover:bg-gray-50">
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
                         <NavLink
                             to="/dashboard/add-service-type"
                             className={({ isActive }) =>
                                 `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                             }>
-                            <FaCalendarAlt /> Services Type
+                            <SiServerless /> Services Type
                         </NavLink>
                     </li>
 
-                    <li className="list-none border-y border-dashed hover:bg-gray-50">
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
                         <NavLink
                             to="/dashboard/add-property-type"
                             className={({ isActive }) =>
                                 `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                             }>
-                            <FaCalendarAlt /> Property Type
+                            <LuProportions className="text-[16px]" /> Property Type
                         </NavLink>
                     </li>
 
-                    <li className="list-none border-y border-dashed hover:bg-gray-50">
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
                         <NavLink
                             to="/dashboard/add-property-item"
                             className={({ isActive }) =>
@@ -201,14 +203,14 @@ const UserDashboard = () => {
                         </NavLink>
                     </li>
 
-                    <li className="list-none border-y border-dashed hover:bg-gray-50">
+                    <li className="list-none border-b border-dashed hover:bg-gray-50">
                         <NavLink
                             to="/dashboard/admin-date-time"
                             className={({ isActive }) =>
                                 `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                             }>
-                            <FaCalendarAlt /> Date & Time Slot
+                            <IoMdTime className="text-[18px]" /> Date & Time Slot
                         </NavLink>
                     </li>
                 </ul>
@@ -364,7 +366,7 @@ const UserDashboard = () => {
 
                 <div className="md:w-72 bg-[#FFFFFF] p-2 relative">
 
-                    {/* 🔥 Mobile Close Button */}
+                    {/* Mobile Close Button */}
                     <label
                         htmlFor="dashboard-drawer"
                         className="btn btn-sm btn-circle absolute right-2 top-2 lg:hidden"
@@ -379,10 +381,10 @@ const UserDashboard = () => {
 
                         <div className="text-center flex flex-col items-center mt-5 space-y-3">
                             <h2 className="text-2xl text-[#5D4F52] font-bold">Rakib</h2>
-                            <div className="flex items-center justify-center gap-1.5 text-xl w-[70px] bg-[#ED6329] py-1 rounded-md">
+                            {/* <div className="flex items-center justify-center gap-1.5 text-xl w-[70px] bg-[#ED6329] py-1 rounded-md">
                                 <img className="h-4 w-4" src={dirhum} alt="dirhum" />
                                 <p>80</p>
-                            </div>
+                            </div> */}
                             <p className="font-medium text-[#01788E]">Al Bada'a, Dubai</p>
                         </div>
                     </div>

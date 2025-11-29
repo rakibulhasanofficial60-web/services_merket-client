@@ -41,15 +41,15 @@ export default function BookingDetails() {
                 </div>
 
                 {/* Job Details */}
-                <div className="mt-6 border rounded-lg p-4">
+                <div className="mt-6 shadow rounded-lg p-4">
                     <h2 className="font-semibold mb-2">Job Details</h2>
 
-                    <div className="flex justify-between border-b py-2">
+                    <div className="flex justify-between">
                         <p>Booking Ref.</p>
                         <p className="text-gray-500">20251119000426MPDXB</p>
                     </div>
 
-                    <div className="flex justify-between border-b py-2">
+                    <div className="flex justify-between py-2 border-4">
                         <p>Start time</p>
                         <p className="text-gray-500">{date}, {time}</p>
                     </div>
@@ -61,7 +61,7 @@ export default function BookingDetails() {
                 </div>
 
                 {/* Service */}
-                <div className="mt-6 border rounded-lg p-4">
+                <div className="mt-6 rounded-lg p-4 shadow-md">
                     <h2 className="font-semibold mb-2">Service</h2>
 
                     <div className="flex justify-between py-2">
@@ -76,7 +76,7 @@ export default function BookingDetails() {
                 </div>
 
                 {/* Payment Summary */}
-                <div className="mt-6 border rounded-lg p-4">
+                <div className="mt-6 rounded-lg p-4 shadow-md">
                     <h2 className="font-semibold mb-2">Payment Summary</h2>
 
                     <div className="flex justify-between py-2">

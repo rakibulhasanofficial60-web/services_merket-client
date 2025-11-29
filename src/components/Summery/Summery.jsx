@@ -30,15 +30,18 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                         <h3 className="font-semibold text-sm mb-2">Service Details</h3>
                         <ul className="space-y-1">
                             {itemSummary.map((item, index) => (
-                                <li key={item.id} className="flex justify-between text-sm">
-                                    <span className="font-medium text-[14px]">
-                                        {item.title} - {serviceTitle[index]} X 1
-                                    </span>
-                                    <span className="flex items-center gap-1 font-semibold">
-                                        <img src={dirhum} alt="" className="w-3.5 h-3.5 mt-px" />
-                                        {item.price}
-                                    </span>
-                                </li>
+                                <div key={index} className="relative">
+                                    <li key={item.id} className="flex justify-between text-sm rounded-sm">
+                                        <span className="font-medium text-[14px]">
+                                            {item.title} - {serviceTitle[index]} X 1
+                                        </span>
+                                        <span className="flex items-center gap-1 font-semibold">
+                                            <img src={dirhum} alt="" className="w-3.5 h-3.5 mt-px" />
+                                            {item.price}
+                                        </span>
+                                        {/* <span className="absolute top-0 right-0 text-red-400 rounded-full bg-gray-200 px-1 cursor-pointer">x</span> */}
+                                    </li>
+                                </div>
                             ))}
                         </ul>
                     </div>
@@ -139,7 +142,7 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                 <NextBtn />
             </div>
 
-            {/* SLIDE-UP PANEL */}
+
             <div
                 className={`md:hidden fixed left-0 w-full bg-white shadow-xl rounded-t-2xl transition-all duration-300 z-50 p-4
         ${open ? "bottom-0" : "-bottom-full"}`}
@@ -166,7 +169,7 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                         </div>
                     )}
 
-                    {address && <p className="pt-2 border-t">Address: {address?.apartmentNo} - {address?.buildingName} - {address?.area} - {address?.city}</p>}
+                    {address && <p className="pt-2 border-t">Address: {address?.apartmentNo} - {address?.buildingName} - {address?.area}</p>}
 
                     <div className="pt-2 border-t space-y-1">
                         <p className="flex justify-between"><span>Service Charge:</span><span className="flex items-center gap-1"><img src={dirhum} className="w-3.5 h-3.5" /> {serviceCharge}</span></p>

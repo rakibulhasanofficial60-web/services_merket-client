@@ -58,12 +58,12 @@ const Navbar = () => {
                                     My Booking
                                 </Link>
 
-                                <Link
+                                {/* <Link
                                     to="/dashboard/quotes"
                                     className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-[#01788E]"
                                 >
                                     My Quotes
-                                </Link>
+                                </Link> */}
 
                                 <Link
                                     to="/dashboard/profile"

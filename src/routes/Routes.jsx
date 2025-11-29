@@ -6,7 +6,6 @@ import DateTime from "./pages/DateTime/DateTime";
 import Confirmation from "./pages/Confirmation/Confirmation";
 import UserDashboard from "../layout/UserDashboard";
 import UserBooking from "../UserDashboard/UserBooking";
-import UserQuotes from "../UserDashboard/UserQuotes";
 import UserProfile from "../UserDashboard/UserProfile";
 import BookingSuccess from "./pages/BookingSuccess/BookingSuccess";
 import OutstandingPayments from "../UserDashboard/OutstandingPayments";
@@ -43,7 +42,7 @@ export const router = createBrowserRouter([
         element: <UserDashboard />,
         children: [
             { path: 'booking', element: <UserBooking /> },
-            { path: 'quotes', element: <UserQuotes /> },
+            // { path: 'quotes', element: <UserQuotes /> },
             { path: 'profile', element: <UserProfile /> },
             { path: 'outstanding-payments', element: <OutstandingPayments /> },
             { path: 'saved-locations', element: <SavedLocations /> },

@@ -3,7 +3,6 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { RiEditBoxLine } from "react-icons/ri";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
-
 const AdminBooking = () => {
     const { data: booking = [], isLoading } = useQuery({
         queryKey: ["bookingAdmin"],
@@ -15,7 +14,6 @@ const AdminBooking = () => {
     });
 
     console.log(booking);
-
 
     if (isLoading) return <p className="text-center md:mt-10">Loading...</p>;
     return (

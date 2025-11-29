@@ -67,7 +67,6 @@ const AdminDateTime = () => {
         }
     };
 
-    // get data server
     const fetchDateTimeData = async () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/date-time`);
@@ -83,8 +82,6 @@ const AdminDateTime = () => {
         fetchDateTimeData();
     }, []);
 
-
-    // console.log(appliedRecords);
 
     return (
         <div className="border border-[#E5E7EB] px-2 md:px-6 py-4 rounded-lg bg-white w-full max-w-4xl mx-auto">
