@@ -1,6 +1,8 @@
 import { FiEdit3, FiTrash2, FiPlus, FiMapPin } from "react-icons/fi";
 
 export default function SavedLocations() {
+
+    
     const locations = [
         {
             id: 1,
