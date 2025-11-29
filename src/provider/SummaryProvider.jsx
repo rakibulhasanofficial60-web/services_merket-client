@@ -15,9 +15,20 @@ export const SummaryProvider = ({ children }) => {
     const [activeId, setActiveId] = useState(null);
     const observer = useRef(null);
     const { data } = useItem();
-    const [address, setAddress] = useState("");
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+    const [addressLocation, setAddressLocation] = useState(null);
+    const [mapLatitude, setMapLatitude] = useState("");
+    const [mapLongitude, setMapLongitude] = useState("");
+    const [address, setAddress] = useState(() => {
+        const saved = localStorage.getItem("addressInfo");
+        return saved ? JSON.parse(saved) : null;
+    });
+
+    const saveAddress = (data) => {
+        setAddress(data);
+        localStorage.setItem("addressInfo", JSON.stringify(data));
+    };
 
 
     useEffect(() => {
@@ -67,7 +78,7 @@ export const SummaryProvider = ({ children }) => {
     const vat = Number((subtotal * 0.05).toFixed(2));
     const total = Number((subtotal + serviceCharge + vat).toFixed(2));
 
-    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime, serviceTitle };
+    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime, serviceTitle, saveAddress, mapLatitude, setMapLatitude, mapLongitude, setMapLongitude, addressLocation, setAddressLocation };
 
     return (
         <SummaryContext.Provider value={summeryInfo}>

@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { FaLocationCrosshairs, FaPlus, FaMinus } from "react-icons/fa6";
 import { FaSatellite } from "react-icons/fa";
-import { GoogleMap, Marker, useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import NextBtn from "../../../components/NextBtn/NextBtn";
 import Summery from "../../../components/Summery/Summery";
 import { useSummary } from "../../../provider/SummaryProvider";
@@ -10,23 +10,23 @@ import ServiceDetails from "../../../components/ServiceDetails/ServiceDetails";
 const containerStyle = { width: "100%", height: "500px" };
 const defaultCenter = { lat: 23.8103, lng: 90.4125 };
 
-export default function LocationPicker({ onLocationSelect }) {
+export default function LocationPicker() {
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
         libraries: ["places"],
     });
 
-    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, setAddress, serviceTitle } = useSummary();
+    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, serviceTitle, setMapLongitude, setMapLatitude, addressLocation, setAddressLocation } = useSummary();
 
     const [selectedPos, setSelectedPos] = useState(defaultCenter);
     const [map, setMap] = useState(null);
     const [autocomplete, setAutocomplete] = useState(null);
     const [mapType, setMapType] = useState("roadmap");
 
+
     // Reverse Geocoding Function
     const getAddressFromLatLng = (lat, lng) => {
         const geocoder = new window.google.maps.Geocoder();
-
         return new Promise((resolve, reject) => {
             geocoder.geocode({ location: { lat, lng } }, (results, status) => {
                 if (status === "OK" && results[0]) {
@@ -38,27 +38,37 @@ export default function LocationPicker({ onLocationSelect }) {
         });
     };
 
+    // Centralized handler
+    const handleLocation = async (pos) => {
+        setSelectedPos(pos);
+        map?.panTo(pos);
+
+        // const addr =
+        await getAddressFromLatLng(pos.lat, pos.lng);
+        setMapLatitude(pos.lat)
+        setMapLongitude(pos.lng);
+
+        // Console latitude and longitude
+        // console.log("Latitude:", pos.lat, "Longitude:", pos.lng);
+        // console.log("Address:", addr);
+    };
+
     // Autocomplete
     const onLoadAutocomplete = (auto) => setAutocomplete(auto);
 
     const onPlaceChanged = async () => {
         if (!autocomplete) return;
-
         const place = autocomplete.getPlace();
         if (!place.geometry) return;
 
-        const location = place.geometry.location;
         const pos = {
-            lat: location.lat(),
-            lng: location.lng(),
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng(),
         };
-
-        setSelectedPos(pos);
-        map?.panTo(pos);
-
-        const address = await getAddressFromLatLng(pos.lat, pos.lng);
-
-        onLocationSelect?.({ ...pos, address });
+        handleLocation(pos);
+        
+        const addressLocation = await getAddressFromLatLng(pos.lat, pos.lng);
+        setAddressLocation(addressLocation);
     };
 
     // Click on Map
@@ -68,31 +78,23 @@ export default function LocationPicker({ onLocationSelect }) {
                 lat: event.latLng.lat(),
                 lng: event.latLng.lng(),
             };
-            setSelectedPos(pos);
-            const address = await getAddressFromLatLng(pos.lat, pos.lng);
-            onLocationSelect?.({ ...pos, address });
+            handleLocation(pos);
+
+            const addressLocation = await getAddressFromLatLng(pos.lat, pos.lng);
+            setAddressLocation(addressLocation);
         },
-        [onLocationSelect]
+        [map]
     );
 
     // GPS Button
     const gotoMyLocation = () => {
-        navigator.geolocation.getCurrentPosition(async (position) => {
+        navigator.geolocation.getCurrentPosition((position) => {
             const pos = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
             };
-
-            setSelectedPos(pos);
-            map?.panTo(pos);
-            const address = await getAddressFromLatLng(pos.lat, pos.lng);
-            onLocationSelect?.({ ...pos, address });
+            handleLocation(pos);
         });
-    };
-
-    const handleLocation = (coords) => {
-        console.log(coords.address);
-        setAddress(coords.address)
     };
 
     if (!isLoaded) return <div>Loading map…</div>;
@@ -106,10 +108,7 @@ export default function LocationPicker({ onLocationSelect }) {
                     {/* Search Input */}
                     <div className="absolute md:top-18 left-1/2 -translate-x-1/2 z-20 w-11/12">
                         <div className="shadow-lg bg-white rounded-md">
-                            <Autocomplete
-                                onLoad={onLoadAutocomplete}
-                                onPlaceChanged={onPlaceChanged}
-                            >
+                            <Autocomplete onLoad={onLoadAutocomplete} onPlaceChanged={onPlaceChanged}>
                                 <input
                                     type="text"
                                     placeholder="Search for your address…"
@@ -121,33 +120,16 @@ export default function LocationPicker({ onLocationSelect }) {
 
                     {/* Buttons */}
                     <div className="absolute top-80 right-3 z-20 flex flex-col space-y-2">
-                        <button
-                            onClick={() => map?.setZoom(map.getZoom() + 1)}
-                            className="bg-white shadow p-2 rounded-lg"
-                        >
+                        <button onClick={() => map?.setZoom(map.getZoom() + 1)} className="bg-white shadow p-2 rounded-lg">
                             <FaPlus />
                         </button>
-
-                        <button
-                            onClick={() => map?.setZoom(map.getZoom() - 1)}
-                            className="bg-white shadow p-2 rounded-lg"
-                        >
+                        <button onClick={() => map?.setZoom(map.getZoom() - 1)} className="bg-white shadow p-2 rounded-lg">
                             <FaMinus className="font-bold" />
                         </button>
-
-                        <button
-                            onClick={gotoMyLocation}
-                            className="bg-white shadow p-2 rounded-lg flex items-center justify-center"
-                        >
+                        <button onClick={gotoMyLocation} className="bg-white shadow p-2 rounded-lg flex items-center justify-center">
                             <FaLocationCrosshairs />
                         </button>
-
-                        <button
-                            onClick={() =>
-                                setMapType(mapType === "roadmap" ? "hybrid" : "roadmap")
-                            }
-                            className="bg-white shadow p-2 rounded-lg"
-                        >
+                        <button onClick={() => setMapType(mapType === "roadmap" ? "hybrid" : "roadmap")} className="bg-white shadow p-2 rounded-lg">
                             <FaSatellite />
                         </button>
                     </div>
@@ -168,7 +150,7 @@ export default function LocationPicker({ onLocationSelect }) {
                             streetViewControl: false,
                             keyboardShortcuts: false,
                             gestureHandling: "greedy",
-                            scrollwheel: false
+                            scrollwheel: false,
                         }}
                     >
                         <img
@@ -188,7 +170,16 @@ export default function LocationPicker({ onLocationSelect }) {
                     </GoogleMap>
                 </div>
 
-                <Summery serviceTitle={serviceTitle} address={address} itemSummary={itemSummary} total={total} showInput={showInput} setShowInput={setShowInput} vat={vat} serviceCharge={serviceCharge}></Summery>
+                <Summery
+                    serviceTitle={serviceTitle}
+                    address={address}
+                    itemSummary={itemSummary}
+                    total={total}
+                    showInput={showInput}
+                    setShowInput={setShowInput}
+                    vat={vat}
+                    serviceCharge={serviceCharge}
+                />
             </div>
             <div className="hidden md:block">
                 <NextBtn />

@@ -56,7 +56,7 @@ export default function BookingDetails() {
 
                     <div className="flex justify-between py-2">
                         <p>Address</p>
-                        <p className="text-gray-500">{address}</p>
+                        <p className="text-gray-500">{address?.buildingName}</p>
                     </div>
                 </div>
 

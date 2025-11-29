@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import dirhum from "../../assets/icon/dirhum.png";
 import NextBtn from "../NextBtn/NextBtn";
 
 export default function Summery({ total, showInput, setShowInput, vat, itemSummary, serviceCharge, address, date, time, serviceTitle }) {
     const [promo, setPromo] = useState("");
     const [open, setOpen] = useState(false);
-    const [localAddress, setLocalAddress] = useState("");
 
-console.log(localAddress);
 
     const handleApply = () => {
         if (promo.trim() === "") {
@@ -18,16 +16,6 @@ console.log(localAddress);
         setPromo("");
         setShowInput(false);
     };
-
-    useEffect(() => {
-        const saved = localStorage.getItem("addressInfo");
-        if (saved) {
-            const data = JSON.parse(saved);
-            // Example: "Dubai, Marina, Skyline, 101"
-            const fullAddress = `${data.city}, ${data.area}, ${data.buildingName}, ${data.apartmentNo}`;
-            setLocalAddress(fullAddress);
-        }
-    }, []);
 
 
     return (
@@ -76,13 +64,6 @@ console.log(localAddress);
                         )}
                     </div>
 
-                    {/* Address */}
-                    {localAddress && (
-                        <div className="border-b border-gray-400 mt-2">
-                            <h3 className="font-semibold text-sm mb-2">Address</h3>
-                            <p className="text-[14px] font-medium text-gray-700">{localAddress}</p>
-                        </div>
-                    )}
 
                     {/* Discount Section */}
                     <div className="mt-2 border-b border-gray-400 pb-3">
@@ -185,7 +166,7 @@ console.log(localAddress);
                         </div>
                     )}
 
-                    {address && <p className="pt-2 border-t">Address: {address}</p>}
+                    {address && <p className="pt-2 border-t">Address: {address?.buildingName}</p>}
 
                     <div className="pt-2 border-t space-y-1">
                         <p className="flex justify-between"><span>Service Charge:</span><span className="flex items-center gap-1"><img src={dirhum} className="w-3.5 h-3.5" /> {serviceCharge}</span></p>

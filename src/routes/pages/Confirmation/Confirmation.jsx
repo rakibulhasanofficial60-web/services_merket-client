@@ -15,13 +15,16 @@ import { useNavigate } from "react-router-dom";
 
 export default function Confirmation() {
     const [openModal, setOpenModal] = useState(false);
-    const { services, total, vat, serviceCharge, date, time, address } = useSummary();
+    const { services, total, vat, serviceCharge, date, time, address, mapLongitude, mapLatitude } = useSummary();
     const [paymentMethod, setPaymentMethod] = useState("");
     const navigate = useNavigate();
 
+
+    console.log(mapLatitude,- mapLongitude);
+
     const handelBookingConfirmation = () => {
         navigate('/booking-success');
-        console.table( total, vat, serviceCharge, date, time, address);
+        console.table(total, vat, serviceCharge, date, time, address);
     }
 
     return (
@@ -43,7 +46,7 @@ export default function Confirmation() {
 
                 <div className="flex items-start gap-3 mb-3">
                     <IoLocation className="text-2xl" />
-                    <p className="font-medium">{address}</p>
+                    <p className="font-medium">{address.buildingName}</p>
                 </div>
 
                 <div className="w-full h-44 mt-8 overflow-hidden rounded-lg border">

@@ -140,7 +140,7 @@ const Services = () => {
 
             {/* ---------- Bottom NEXT Button ---------- */}
             <div className="hidden md:block">
-                <NextBtn />
+                <NextBtn disabled={itemSummary.length === 0} />
             </div>
         </div>
     );
