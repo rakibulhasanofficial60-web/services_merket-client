@@ -16,16 +16,20 @@ import { useNavigate } from "react-router-dom";
 
 export default function Confirmation() {
     const [openModal, setOpenModal] = useState(false);
-    const { services, total, vat, serviceCharge, date, time, address, mapLongitude, mapLatitude, itemSummary } = useSummary();
+    const { services, total, vat, serviceCharge, date, time, address, mapLongitude, mapLatitude, itemSummary, liveAddress } = useSummary();
     const [paymentMethod, setPaymentMethod] = useState("");
     const navigate = useNavigate();
-    console.log(itemSummary.map(i => i.id));
+
+
+    console.log(address);
+
+
     const handelBookingConfirmation = async () => {
         try {
             const payload = {
-                propertyItemid: itemSummary.map(i => i.id),
+                // propertyItemid: itemSummary.map(i => i.id),
                 serviceName: services[0]?.title || "",
-                address: `${address?.apartmentNo || ""} - ${address?.buildingName || ""} - ${address?.area || ""} - ${address?.city || ""}`,
+                address: `${liveAddress?.apartmentNo || ""} - ${liveAddress?.buildinpgName || ""} - ${liveAddress?.area || ""} - ${liveAddress?.city || ""}`,
                 offer: "30% off",
                 serviceFee: Number(serviceCharge) || 0,
                 discount: 30,
@@ -81,7 +85,7 @@ export default function Confirmation() {
 
                 <div className="flex items-start gap-3 mb-3">
                     <IoLocation className="text-2xl" />
-                    <p className="font-medium">{address?.apartmentNo} - {address?.buildingName} - {address?.area} - {address?.city}</p>
+                    <p className="font-medium">{liveAddress?.apartmentNo} - {liveAddress?.buildingName} - {liveAddress?.area} - {liveAddress?.city}</p>
                 </div>
 
 
