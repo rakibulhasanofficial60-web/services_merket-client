@@ -14,13 +14,13 @@ const NextBtn = ({ name = "Next", disabled, onClick }) => {
     if (pathname === "/date-time" && (!date || !time)) isDisabled = true;
 
     const handleClick = async () => {
-        console.log("NextBtn clicked, current path:", pathname);
+        // console.log("NextBtn clicked, current path:", pathname);
 
         let shouldNavigate = true;
         if (onClick) {
             try {
                 const result = await onClick();
-                console.log("onClick result:", result);
+                // console.log("onClick result:", result);
                 if (result === false) {
                     shouldNavigate = false;
                 }
@@ -31,10 +31,10 @@ const NextBtn = ({ name = "Next", disabled, onClick }) => {
         }
 
         if (shouldNavigate && nextPath) {
-            console.log("Navigating to:", nextPath);
+            // console.log("Navigating to:", nextPath);
             navigate(nextPath);
         } else {
-            console.log("Navigation skipped - shouldNavigate:", shouldNavigate, "nextPath:", nextPath);
+            // console.log("Navigation skipped - shouldNavigate:", shouldNavigate, "nextPath:", nextPath);
         }
     };
 

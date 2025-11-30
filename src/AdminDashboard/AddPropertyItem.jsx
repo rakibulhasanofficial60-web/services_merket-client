@@ -68,7 +68,7 @@ const AddPropertyItem = () => {
                 };
 
 
-                console.log(finalData);
+                // console.log(finalData);
                 const postData = await fetch("https://job-task-nu.vercel.app/api/v1/property-items/create", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -86,14 +86,14 @@ const AddPropertyItem = () => {
             }
         } catch (error) {
             toast.error(`Something wrong: ${error?.message || error}`);
-            console.log(error);
+            // console.log(error);
         } finally {
             setLoading(false);
         }
         setLoading(false);
     };
 
-    console.log(propertyItem);
+    // console.log(propertyItem);
 
     // Edit Save
     // const handleEditItem = () => {

@@ -65,7 +65,7 @@ const EditModal = ({ service, onClose }) => {
             }
         } catch (error) {
             toast.error(`Error: ${error?.message}`);
-            console.log(error);
+            // console.log(error);
         } finally {
             setLoading(false);
         }

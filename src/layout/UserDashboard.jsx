@@ -2,7 +2,6 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { MdDeleteSweep, MdMenu } from "react-icons/md";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import logo from '../assets/logo/logo.png';
-import { LuMenu } from "react-icons/lu";
 import { FaUser } from "react-icons/fa";
 import { MdPayments } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";

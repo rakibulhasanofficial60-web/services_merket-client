@@ -40,7 +40,7 @@ const AdminDateTime = () => {
             endDate: toDate,
             timeSlots: formattedSlots,
         };
-        console.log(payload);
+        // console.log(payload);
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/date-time/create`, {
                 method: "POST",

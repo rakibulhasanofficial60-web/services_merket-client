@@ -16,13 +16,14 @@ import { useNavigate } from "react-router-dom";
 
 export default function Confirmation() {
     const [openModal, setOpenModal] = useState(false);
-    const { services, total, vat, serviceCharge, date, time, address, mapLongitude, mapLatitude } = useSummary();
+    const { services, total, vat, serviceCharge, date, time, address, mapLongitude, mapLatitude, itemSummary } = useSummary();
     const [paymentMethod, setPaymentMethod] = useState("");
     const navigate = useNavigate();
-
+    console.log(itemSummary.map(i => i.id));
     const handelBookingConfirmation = async () => {
         try {
             const payload = {
+                propertyItemid: itemSummary.map(i => i.id),
                 serviceName: services[0]?.title || "",
                 address: `${address?.apartmentNo || ""} - ${address?.buildingName || ""} - ${address?.area || ""} - ${address?.city || ""}`,
                 offer: "30% off",

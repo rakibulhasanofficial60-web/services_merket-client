@@ -52,7 +52,7 @@ export default function AddServiceType() {
       }
     } catch (error) {
       toast.error(`Something wrong: ${error?.message || error}`);
-      console.log(error);
+      // console.log(error);
     } finally {
       setLoading(false);
     }
@@ -103,7 +103,7 @@ export default function AddServiceType() {
       }
     } catch (error) {
       toast.error(`Error: ${error?.message}`);
-      console.log(error);
+      // console.log(error);
     } finally {
       setLoading(false);
     }

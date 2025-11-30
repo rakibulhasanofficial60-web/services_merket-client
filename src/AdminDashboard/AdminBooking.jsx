@@ -4,6 +4,7 @@ import { RiEditBoxLine } from "react-icons/ri";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
 const AdminBooking = () => {
+    
     const { data: booking = [], isLoading } = useQuery({
         queryKey: ["bookingAdmin"],
         queryFn: async () => {
@@ -13,7 +14,7 @@ const AdminBooking = () => {
         },
     });
 
-    console.log(booking);
+    // console.log(booking);
 
     if (isLoading) return <p className="text-center md:mt-10">Loading...</p>;
     return (

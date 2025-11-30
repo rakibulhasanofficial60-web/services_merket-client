@@ -10,7 +10,7 @@ const CoverContent = ({ content }) => {
     const properties = Array.isArray(content?.propertyType)
         ? content.propertyType
         : [];
-console.log(content);
+// console.log(content);
     const handleOpenModal = (property) => {
         setSelectedProperty(property);
         setShowModal(true);

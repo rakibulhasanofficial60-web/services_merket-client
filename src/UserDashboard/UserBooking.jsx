@@ -28,6 +28,7 @@ export default function UserBooking() {
       return res.json();
     },
   });
+  console.log(booking);
 
   const bookingData = booking?.Data || [];
 
@@ -89,7 +90,6 @@ export default function UserBooking() {
           </div>
         )}
 
-        {/* Cards */}
         <div className="mt-6 flex flex-col gap-4 w-full items-center">
           {!isLoading &&
             !tabLoading &&
@@ -98,6 +98,7 @@ export default function UserBooking() {
             ))}
         </div>
       </div>
+
     </div>
   );
 }

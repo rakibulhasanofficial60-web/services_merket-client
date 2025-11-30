@@ -112,7 +112,7 @@ export default function AddPropertyType() {
             serviceTypeId: data.serviceTypeId,
             image: imageUrl,
         };
-        console.log(updatedData);
+        // console.log(updatedData);
         try {
             const res = await fetch(
                 `https://job-task-nu.vercel.app/api/v1/property-type/update/${selectedItem.id}`,

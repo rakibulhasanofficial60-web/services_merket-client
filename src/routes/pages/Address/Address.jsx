@@ -7,29 +7,31 @@ import { useState } from "react";
 import { generateId } from "./Map/generateId";
 
 const Address = () => {
-    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, serviceTitle, saveAddress } = useSummary();
+    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, liveAddress, serviceTitle, saveAddress, setLiveAddress } = useSummary();
     const [selectedType, setSelectedType] = useState("Apartment");
     const buttons = ["Apartment", "Villa", "Office", "Other"];
+
     const { register, handleSubmit, formState: { errors, isValid } } = useForm({
-        mode: "onChange" // ইউজার টাইপ করলেই ভ্যালিডেশন চেক হবে
+        mode: "onChange"
     });
     const id = generateId();
+    // console.log(liveAddress);
 
     const onSubmit = (data) => {
         const finalData = { id, type: selectedType, ...data };
-        console.log("Form submitted:", finalData);
+        // console.log("Form submitted:", finalData);
         saveAddress(finalData);
-        return true; // সাবমিট সফল হলে true রিটার্ন করুন
+        setLiveAddress(data);
+        return true;
     };
 
-    // NextBtn-এর জন্য আলাদা হ্যান্ডলার
     const handleNextClick = async () => {
         try {
-            console.log("Next button clicked");
+            // console.log("Next button clicked");
             // ফর্ম ভ্যালিডেশন চেক করুন
             const result = await handleSubmit(onSubmit)();
-            console.log("Form validation result:", result);
-            
+            // console.log("Form validation result:", result);
+
             // যদি ভ্যালিডেশন পাস করে এবং onSubmit সফলভাবে কাজ করে
             if (result !== false) {
                 return true;
@@ -72,11 +74,11 @@ const Address = () => {
                             {/* City - এখানে "City" থেকে "city" করা হয়েছে */}
                             <div>
                                 <label className="block text-gray-700 font-medium mb-1">City</label>
-                                <input 
-                                    {...register("city", { required: "City is required" })} 
-                                    type="text" 
-                                    placeholder="Enter City" 
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" 
+                                <input
+                                    {...register("city", { required: "City is required" })}
+                                    type="text"
+                                    placeholder="Enter City"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                 />
                                 {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>}
                             </div>
@@ -84,11 +86,11 @@ const Address = () => {
                             {/* Area */}
                             <div>
                                 <label className="block text-gray-700 font-medium mb-1">Area</label>
-                                <input 
-                                    {...register("area", { required: "Area is required" })} 
-                                    type="text" 
-                                    placeholder="Enter Area" 
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" 
+                                <input
+                                    {...register("area", { required: "Area is required" })}
+                                    type="text"
+                                    placeholder="Enter Area"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                 />
                                 {errors.area && <p className="text-red-500 text-sm mt-1">{errors.area.message}</p>}
                             </div>
@@ -98,21 +100,21 @@ const Address = () => {
                                 <>
                                     <div>
                                         <label className="block text-gray-700 font-medium mb-1">Community / Street Name</label>
-                                        <input 
-                                            {...register("community", { required: "Community is required" })} 
-                                            type="text" 
-                                            placeholder="Enter Community / Street Name" 
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" 
+                                        <input
+                                            {...register("community", { required: "Community is required" })}
+                                            type="text"
+                                            placeholder="Enter Community / Street Name"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                         />
                                         {errors.community && <p className="text-red-500 text-sm mt-1">{errors.community.message}</p>}
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 font-medium mb-1">Villa No</label>
-                                        <input 
-                                            {...register("villaNo", { required: "Villa number is required" })} 
-                                            type="text" 
-                                            placeholder="Enter Villa Number" 
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" 
+                                        <input
+                                            {...register("villaNo", { required: "Villa number is required" })}
+                                            type="text"
+                                            placeholder="Enter Villa Number"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                         />
                                         {errors.villaNo && <p className="text-red-500 text-sm mt-1">{errors.villaNo.message}</p>}
                                     </div>
@@ -123,31 +125,31 @@ const Address = () => {
                                 <>
                                     <div>
                                         <label className="block text-gray-700 font-medium mb-1">Nickname</label>
-                                        <input 
-                                            {...register("nickname", { required: "Nickname is required" })} 
-                                            type="text" 
-                                            placeholder="Enter Nickname" 
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" 
+                                        <input
+                                            {...register("nickname", { required: "Nickname is required" })}
+                                            type="text"
+                                            placeholder="Enter Nickname"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                         />
                                         {errors.nickname && <p className="text-red-500 text-sm mt-1">{errors.nickname.message}</p>}
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 font-medium mb-1">Street / Building Name</label>
-                                        <input 
-                                            {...register("streetName", { required: "Street/Building name is required" })} 
-                                            type="text" 
-                                            placeholder="Enter Street / Building Name" 
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" 
+                                        <input
+                                            {...register("streetName", { required: "Street/Building name is required" })}
+                                            type="text"
+                                            placeholder="Enter Street / Building Name"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                         />
                                         {errors.streetName && <p className="text-red-500 text-sm mt-1">{errors.streetName.message}</p>}
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 font-medium mb-1">Apartment / Villa No</label>
-                                        <input 
-                                            {...register("otherNo", { required: "Apartment/Villa number is required" })} 
-                                            type="text" 
-                                            placeholder="Enter Apartment / Villa No" 
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" 
+                                        <input
+                                            {...register("otherNo", { required: "Apartment/Villa number is required" })}
+                                            type="text"
+                                            placeholder="Enter Apartment / Villa No"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                         />
                                         {errors.otherNo && <p className="text-red-500 text-sm mt-1">{errors.otherNo.message}</p>}
                                     </div>
@@ -158,21 +160,21 @@ const Address = () => {
                                 <>
                                     <div>
                                         <label className="block text-gray-700 font-medium mb-1">Building Name</label>
-                                        <input 
-                                            {...register("buildingName", { required: "Building name is required" })} 
-                                            type="text" 
-                                            placeholder="Enter Building Name" 
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" 
+                                        <input
+                                            {...register("buildingName", { required: "Building name is required" })}
+                                            type="text"
+                                            placeholder="Enter Building Name"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                         />
                                         {errors.buildingName && <p className="text-red-500 text-sm mt-1">{errors.buildingName.message}</p>}
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 font-medium mb-1">Apartment No</label>
-                                        <input 
-                                            {...register("apartmentNo", { required: "Apartment number is required" })} 
-                                            type="text" 
-                                            placeholder="Enter Apartment No" 
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" 
+                                        <input
+                                            {...register("apartmentNo", { required: "Apartment number is required" })}
+                                            type="text"
+                                            placeholder="Enter Apartment No"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                         />
                                         {errors.apartmentNo && <p className="text-red-500 text-sm mt-1">{errors.apartmentNo.message}</p>}
                                     </div>
@@ -182,12 +184,12 @@ const Address = () => {
                         </form>
                     </div>
                 </div>
-                <Summery serviceTitle={serviceTitle} address={address} itemSummary={itemSummary} total={total} showInput={showInput} setShowInput={setShowInput} vat={vat} serviceCharge={serviceCharge} />
+                <Summery serviceTitle={serviceTitle} liveAddress={liveAddress} itemSummary={itemSummary} total={total} showInput={showInput} setShowInput={setShowInput} vat={vat} serviceCharge={serviceCharge} />
             </div>
 
             <div className="hidden md:block">
-                <NextBtn 
-                    onClick={handleNextClick} 
+                <NextBtn
+                    onClick={handleNextClick}
                     disabled={!isValid} // ফর্ম ভ্যালিড না হলে ডিজেবল থাকবে
                 />
             </div>
