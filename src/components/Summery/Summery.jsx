@@ -1,12 +1,15 @@
 import { useState } from "react";
 import dirhum from "../../assets/icon/dirhum.png";
 import NextBtn from "../NextBtn/NextBtn";
+import { useItem } from "../../provider/ItemProvider";
 
 export default function Summery({ total, showInput, setShowInput, vat, itemSummary, serviceCharge, address, date, time, serviceTitle }) {
     const [promo, setPromo] = useState("");
     const [open, setOpen] = useState(false);
+    const { removeItem } = useItem();
 
-
+    console.log(address);
+    
     const handleApply = () => {
         if (promo.trim() === "") {
             alert("Please enter a promo code!");
@@ -17,6 +20,9 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
         setShowInput(false);
     };
 
+    const handelRemoveItem = id => {
+        removeItem(id);
+    }
 
     return (
         <>
@@ -30,18 +36,47 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                         <h3 className="font-semibold text-sm mb-2">Service Details</h3>
                         <ul className="space-y-1">
                             {itemSummary.map((item, index) => (
-                                <div key={index} className="relative">
-                                    <li key={item.id} className="flex justify-between text-sm rounded-sm">
-                                        <span className="font-medium text-[14px]">
-                                            {item.title} - {serviceTitle[index]} X 1
+                                // <div key={index} className="">
+                                //     <li key={item.id} className="flex justify-between text-sm rounded-sm">
+                                //         <span className=" text-red-400 rounded-full bg-gray-200 px-1 cursor-pointer">x</span>
+                                //         <span className="font-medium text-[14px]">
+                                //             {item.title} - {serviceTitle[index]} X 1
+                                //         </span>
+                                //         <span className="flex items-center gap-1 font-semibold">
+                                //             <img src={dirhum} alt="" className="w-3.5 h-3.5 mt-px" />
+                                //             {item.price}
+                                //         </span>
+                                //     </li>
+                                // </div>
+
+
+                                <div
+                                    key={index}
+                                    className="bg-white border border-gray-200 rounded-lg shadow-sm p-3 mb-2 hover:shadow-md transition-all"
+                                >
+                                    <li className="flex justify-between items-center text-sm">
+
+                                        {/* Remove button */}
+                                        <button
+                                            onClick={() => handelRemoveItem(item.id)}
+                                            className="text-red-500 hover:bg-red-100 rounded-full px-2 py-0.5 text-xs font-semibold transition"
+                                        >
+                                            x
+                                        </button>
+
+                                        {/* Title */}
+                                        <span className="font-medium text-[14px] text-gray-700 flex-1 mx-3">
+                                            {item.title} — {serviceTitle[index]} × 1
                                         </span>
-                                        <span className="flex items-center gap-1 font-semibold">
-                                            <img src={dirhum} alt="" className="w-3.5 h-3.5 mt-px" />
+
+                                        {/* Price */}
+                                        <span className="flex items-center gap-1 font-semibold text-gray-800">
+                                            <img src={dirhum} alt="" className="w-3.5 h-3.5" />
                                             {item.price}
                                         </span>
-                                        {/* <span className="absolute top-0 right-0 text-red-400 rounded-full bg-gray-200 px-1 cursor-pointer">x</span> */}
                                     </li>
                                 </div>
+
                             ))}
                         </ul>
                     </div>
@@ -169,7 +204,40 @@ export default function Summery({ total, showInput, setShowInput, vat, itemSumma
                         </div>
                     )}
 
-                    {address && <p className="pt-2 border-t">Address: {address?.apartmentNo} - {address?.buildingName} - {address?.area}</p>}
+                    {address && (
+                        <div className="pt-2 border-t text-sm leading-relaxed">
+                            <p className="font-semibold">Address:</p>
+
+                            {/* Apartment */}
+                            {address.type === "Apartment" && (
+                                <p>
+                                    Apt {address.apartmentNo}, {address.buildingName}, {address.area}, {address.City}
+                                </p>
+                            )}
+
+                            {/* Office */}
+                            {address.type === "Office" && (
+                                <p>
+                                    Office {address.apartmentNo}, {address.buildingName}, {address.area}, {address.City}
+                                </p>
+                            )}
+
+                            {/* Villa */}
+                            {address.type === "Villa" && (
+                                <p>
+                                    Villa {address.villaNo}, {address.community}, {address.area}, {address.City}
+                                </p>
+                            )}
+
+                            {/* Other */}
+                            {address.type === "Other" && (
+                                <p>
+                                    {address.nickname} – {address.otherNo}, {address.streetName}, {address.area}, {address.City}
+                                </p>
+                            )}
+                        </div>
+                    )}
+
 
                     <div className="pt-2 border-t space-y-1">
                         <p className="flex justify-between"><span>Service Charge:</span><span className="flex items-center gap-1"><img src={dirhum} className="w-3.5 h-3.5" /> {serviceCharge}</span></p>

@@ -14,61 +14,52 @@ import dirhum1 from '../../../assets/icon/dirhum.png';
 import { useNavigate } from "react-router-dom";
 
 
-
 export default function Confirmation() {
     const [openModal, setOpenModal] = useState(false);
     const { services, total, vat, serviceCharge, date, time, address, mapLongitude, mapLatitude } = useSummary();
     const [paymentMethod, setPaymentMethod] = useState("");
     const navigate = useNavigate();
 
+    const handelBookingConfirmation = async () => {
+        try {
+            const payload = {
+                serviceName: services[0]?.title || "",
+                address: `${address?.apartmentNo || ""} - ${address?.buildingName || ""} - ${address?.area || ""} - ${address?.city || ""}`,
+                offer: "30% off",
+                serviceFee: Number(serviceCharge) || 0,
+                discount: 30,
+                subTotal: Number(total) || 0,
+                totalPay: paymentMethod === "Card" ? Number(total) + 5 : Number(total),
+                vat: Number(vat) || 0,
+                date: date || "",
+                time: time || "",
+                paymentMethod: paymentMethod || "Card",
+            };
 
-    // const handelBookingConfirmation = async () => {
-    //     try {
-    //         const payload = {
-    //             serviceName: services[0]?.title || "", // string
-    //             address: `${address?.apartmentNo || ""} - ${address?.buildingName || ""} - ${address?.area || ""} - ${address?.city || ""}`, // string
-    //             offer: "30% off", // example, replace if dynamic
-    //             serviceFee: Number(serviceCharge) || 0,
-    //             discount: 30, // example discount, replace if dynamic
-    //             subTotal: Number(total) || 0,
-    //             totalPay: paymentMethod === "cod" ? Number(total) + 5 : Number(total),
-    //             vat: Number(vat) || 0,
-    //             date: date || "",
-    //             time: time || "",
-    //             paymentMethod: paymentMethod || "cod",
-    //         };
+            console.log("Payload to backend:", payload);
 
-    //         console.log("Payload to backend:", payload);
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/booking/create`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
 
-    //         const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/booking/create`, {
-    //             // method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify(payload),
-    //         });
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Booking failed:", errorData);
+                return;
+            }
 
-    //         if (!response.ok) {
-    //             const errorData = await response.json();
-    //             console.error("Booking failed:", errorData);
-    //             alert("Booking failed. Please check your details.");
-    //             return;
-    //         }
+            const result = await response.json();
+            console.log("Booking successful:", result);
 
-    //         const result = await response.json();
-    //         console.log("Booking successful:", result);
-
-    //         navigate("/booking-success");
-    //     } catch (error) {
-    //         console.error("Booking error:", error);
-    //         alert("Something went wrong. Please try again.");
-    //     }
-    // };
-
-
-    const handelBookingConfirmation = event => {
-        navigate("/booking-success");
-    }
+            navigate("/booking-success");
+        } catch (error) {
+            console.error("Booking error:", error);
+        }
+    };
 
     return (
         <div className="pb-24">
@@ -128,7 +119,7 @@ export default function Confirmation() {
                     <div
                         onClick={() => {
                             setOpenModal(true);
-                            setPaymentMethod("card"); // REMOVE COD
+                            setPaymentMethod("Card");
                         }}
                         className="border rounded-xl p-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
                     >
@@ -141,9 +132,9 @@ export default function Confirmation() {
 
                     {/* CASH ON DELIVERY */}
                     <div
-                        onClick={() => setPaymentMethod("cod")}
+                        onClick={() => setPaymentMethod("Card")}
                         className={`border rounded-xl p-4 flex items-center justify-between cursor-pointer
-                        ${paymentMethod === "cod" ? "border-orange-500 bg-orange-50" : "hover:bg-gray-50"}`}
+                        ${paymentMethod === "Card" ? "border-orange-500 bg-orange-50" : "hover:bg-gray-50"}`}
                     >
                         <div className="flex items-center gap-3">
                             <PiMoneyWavy className="text-xl text-green-600" />
@@ -157,8 +148,8 @@ export default function Confirmation() {
                             <input
                                 type="radio"
                                 name="payment"
-                                checked={paymentMethod === "cod"}
-                                onChange={() => setPaymentMethod("cod")}
+                                checked={paymentMethod === "Card"}
+                                onChange={() => setPaymentMethod("Card")}
                                 className="h-4 w-4 cursor-pointer"
                             />
                         </div>
@@ -177,7 +168,7 @@ export default function Confirmation() {
                         </span>
                     </div>
 
-                    {paymentMethod === "cod" && (
+                    {paymentMethod === "Card" && (
                         <div className="flex justify-between">
                             <span>Cash On Delivery</span>
                             <span className="font-medium flex items-center gap-1">
@@ -210,7 +201,7 @@ export default function Confirmation() {
                     <div className="flex justify-between text-lg font-bold">
                         <span>Total to pay</span>
                         <span className="flex items-center gap-1">
-                            <img className="h-4 w-4 mt-[3px]" src={dirhum1} /> {paymentMethod === "cod" ? Number(total) + 5 : total}
+                            <img className="h-4 w-4 mt-[3px]" src={dirhum1} /> {paymentMethod === "Card" ? Number(total) + 5 : total}
                         </span>
                     </div>
                 </div>
@@ -252,7 +243,7 @@ export default function Confirmation() {
 
                         <div className="flex items-center bg-gray-100 text-gray-600 text-sm p-3 rounded-xl mt-5">
                             <span className="mr-2">⚠️</span>
-                            We will reserve and release ₱1 to confirm your card.
+                            We will reserve and release ₱1 to confirm your Card.
                         </div>
 
                         <button className="w-full cursor-pointer bg-orange-500 text-white py-3 rounded-xl font-semibold mt-6">

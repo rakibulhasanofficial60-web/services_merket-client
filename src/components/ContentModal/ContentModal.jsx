@@ -6,7 +6,7 @@ import { useItem } from "../../provider/ItemProvider";
 const ContentModal = ({ setShowModal, property }) => {
     const [quantities, setQuantities] = useState({});
     const { addItem, removeItem } = useItem();
-
+    
     useEffect(() => {
         const savedItems = JSON.parse(localStorage.getItem("item")) || [];
         const initialQuantities = {};

@@ -20,16 +20,57 @@ export const SummaryProvider = ({ children }) => {
     const [addressLocation, setAddressLocation] = useState(null);
     const [mapLatitude, setMapLatitude] = useState("");
     const [mapLongitude, setMapLongitude] = useState("");
+
     const [address, setAddress] = useState(() => {
         const saved = localStorage.getItem("addressInfo");
-        return saved ? JSON.parse(saved) : null;
+        return saved ? JSON.parse(saved) : [];
     });
 
-    const saveAddress = (data) => {
-        setAddress(data);
-        localStorage.setItem("addressInfo", JSON.stringify(data));
+    const saveAddress = (newAddress) => {
+        const saved = localStorage.getItem("addressInfo");
+        const addressArray = saved ? JSON.parse(saved) : [];
+        const exists = addressArray.some((addr) => addr.id === newAddress.id);
+
+        if (!exists) {
+            const updated = [...addressArray, newAddress];
+            setAddress(updated);
+            localStorage.setItem("addressInfo", JSON.stringify(updated));
+        }
     };
 
+    const getAddresses = () => {
+        const saved = localStorage.getItem("addressInfo");
+        return saved ? JSON.parse(saved) : [];
+    };
+
+    const addAddress = (newAddress) => {
+        const current = getAddresses();
+        const exists = current.some(
+            (addr) => addr.id === newAddress.id
+        );
+
+        if (!exists) {
+            const updated = [...current, newAddress];
+            setAddress(updated);
+            localStorage.setItem("addressInfo", JSON.stringify(updated));
+        }
+    };
+
+    const removeAddress = (id) => {
+        const current = getAddresses();
+        const updated = current.filter(addr => addr.id !== id);
+        setAddress(updated);
+        localStorage.setItem("addressInfo", JSON.stringify(updated));
+    };
+
+    // const updateAddress = (updatedAddress) => {
+    //     const current = getAddresses();
+    //     const updated = current.map(addr =>
+    //         addr.id === updatedAddress.id ? updatedAddress : addr
+    //     );
+    //     setAddress(updated);
+    //     localStorage.setItem("addressInfo", JSON.stringify(updated));
+    // };
 
     useEffect(() => {
         const sections = document.querySelectorAll("[id^='content-']");
@@ -66,7 +107,6 @@ export const SummaryProvider = ({ children }) => {
         })),
     });
 
-
     const itemSummary = itemQueries.map((q) => q.data).filter(Boolean);
     const serviceTitle = itemSummary.map(item =>
         item?.propertyType?.serviceType?.title || null
@@ -74,11 +114,10 @@ export const SummaryProvider = ({ children }) => {
 
     const subtotal = itemSummary.reduce((acc, item) => acc + Number(item?.price || 0), 0);
     const serviceCharge = Number((subtotal > 0 ? 20 : 0).toFixed(2));
-    //    const vat = (subtotal * 0.05).toFixed(2);
     const vat = Number((subtotal * 0.05).toFixed(2));
     const total = Number((subtotal + serviceCharge + vat).toFixed(2));
 
-    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime, serviceTitle, saveAddress, mapLatitude, setMapLatitude, mapLongitude, setMapLongitude, addressLocation, setAddressLocation };
+    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime, serviceTitle, saveAddress, mapLatitude, setMapLatitude, mapLongitude, setMapLongitude, addressLocation, setAddressLocation, addAddress, removeAddress, getAddresses };
 
     return (
         <SummaryContext.Provider value={summeryInfo}>
