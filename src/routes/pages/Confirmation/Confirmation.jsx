@@ -16,20 +16,39 @@ import { useNavigate } from "react-router-dom";
 
 export default function Confirmation() {
     const [openModal, setOpenModal] = useState(false);
-    const { services, total, vat, serviceCharge, date, time, address, mapLongitude, mapLatitude, itemSummary, liveAddress } = useSummary();
+    const { serviceCharge, serviceFee, subTotal, services, total, vat, date, time, mapLongitude, mapLatitude, liveAddress } = useSummary();
+
     const [paymentMethod, setPaymentMethod] = useState("");
     const navigate = useNavigate();
 
+    const getDisplayAddress = () => {
+        if (!liveAddress) return "No address provided";
 
-    console.log(address);
+        if (liveAddress.displayAddress) {
+            return liveAddress.displayAddress;
+        }
 
+        switch (liveAddress.type) {
+            case "Apartment":
+            case "Office":
+                return `${liveAddress.apartmentNo || ''} - ${liveAddress.buildingName || ''} - ${liveAddress.area || ''} - ${liveAddress.city || ''}`;
+
+            case "Villa":
+                return `${liveAddress.villaNo || ''} - ${liveAddress.community || ''} - ${liveAddress.area || ''} - ${liveAddress.city || ''}`;
+
+            case "Other":
+                return `${liveAddress.otherNo || ''} - ${liveAddress.streetName || ''} - ${liveAddress.area || ''} - ${liveAddress.city || ''}`;
+
+            default:
+                return `${liveAddress.area || ''} - ${liveAddress.city || ''}`;
+        }
+    };
 
     const handelBookingConfirmation = async () => {
         try {
             const payload = {
-                // propertyItemid: itemSummary.map(i => i.id),
                 serviceName: services[0]?.title || "",
-                address: `${liveAddress?.apartmentNo || ""} - ${liveAddress?.buildinpgName || ""} - ${liveAddress?.area || ""} - ${liveAddress?.city || ""}`,
+                address: getDisplayAddress(),
                 offer: "30% off",
                 serviceFee: Number(serviceCharge) || 0,
                 discount: 30,
@@ -83,11 +102,11 @@ export default function Confirmation() {
                     <p className="font-medium">{date}, between {time}</p>
                 </div>
 
+                {/* address  */}
                 <div className="flex items-start gap-3 mb-3">
                     <IoLocation className="text-2xl" />
-                    <p className="font-medium">{liveAddress?.apartmentNo} - {liveAddress?.buildingName} - {liveAddress?.area} - {liveAddress?.city}</p>
+                    <p className="font-medium">{getDisplayAddress()}</p>
                 </div>
-
 
                 {/* map hare  */}
                 <div className="w-full h-64 rounded-lg overflow-hidden">
@@ -119,7 +138,6 @@ export default function Confirmation() {
                 <h2 className="text-lg font-semibold mt-6 mb-3">Pay with</h2>
 
                 <div className="space-y-3">
-
                     {/* ADD NEW CARD */}
                     <div
                         onClick={() => {
@@ -165,9 +183,8 @@ export default function Confirmation() {
                 <h2 className="text-lg font-semibold mt-6 mb-3">Payment Summary</h2>
 
                 <div className="space-y-2 text-sm">
-
                     <div className="flex justify-between">
-                        <span>Service Charges</span>
+                        <span className="font-medium">Service Charges</span>
                         <span className="font-medium flex items-center gap-1">
                             <img className="h-3 w-3" src={dirhum1} />{serviceCharge}
                         </span>
@@ -175,7 +192,7 @@ export default function Confirmation() {
 
                     {paymentMethod === "Card" && (
                         <div className="flex justify-between">
-                            <span>Cash On Delivery</span>
+                            <span className="font-medium">Cash On Delivery Charge</span>
                             <span className="font-medium flex items-center gap-1">
                                 <img className="h-3 w-3" src={dirhum1} />5.00
                             </span>
@@ -183,18 +200,25 @@ export default function Confirmation() {
                     )}
 
                     <div className="flex justify-between">
-                        <span>Service Fee</span><span className="font-medium"></span>
+                        <span className="font-medium">Service Fee</span><span className="font-medium flex items-center gap-1"><img className="h-3 w-3" src={dirhum1} />{serviceFee}</span>
                     </div>
 
-                    <div className="flex justify-between font-semibold">
+                    {/* <div className="flex justify-between font-semibold">
                         <span>Discount</span>
                         <span className="flex items-center gap-1">
                             <img className="h-3 w-3" src={dirhum1} />30.00
                         </span>
+                    </div> */}
+
+                    <div className="flex justify-between items-center">
+                        <span className="font-medium">Sub Total</span>
+                        <span className="font-medium flex items-center gap-1">
+                            <img className="h-3 w-3" src={dirhum1} />{subTotal}
+                        </span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                        <span>VAT (5%)</span>
+                        <span className="font-medium">VAT (5%)</span>
                         <span className="font-medium flex items-center gap-1">
                             <img className="h-3 w-3" src={dirhum1} />{vat}
                         </span>
@@ -210,7 +234,6 @@ export default function Confirmation() {
                         </span>
                     </div>
                 </div>
-
             </div>
 
             <NextBtn onClick={handelBookingConfirmation} name="Book Now" />
@@ -259,4 +282,4 @@ export default function Confirmation() {
             )}
         </div>
     );
-}
+};

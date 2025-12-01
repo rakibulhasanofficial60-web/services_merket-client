@@ -16,15 +16,13 @@ export default function LocationPicker() {
         libraries: ["places"],
     });
 
-    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, serviceTitle, setMapLongitude, setMapLatitude, addressLocation, setAddressLocation } = useSummary();
+    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, address, serviceTitle, setMapLongitude, setMapLatitude, setAddressLocation } = useSummary();
 
     const [selectedPos, setSelectedPos] = useState(defaultCenter);
     const [map, setMap] = useState(null);
     const [autocomplete, setAutocomplete] = useState(null);
     const [mapType, setMapType] = useState("roadmap");
 
-
-    // Reverse Geocoding Function
     const getAddressFromLatLng = (lat, lng) => {
         const geocoder = new window.google.maps.Geocoder();
         return new Promise((resolve, reject) => {
@@ -38,22 +36,17 @@ export default function LocationPicker() {
         });
     };
 
-    // Centralized handler
     const handleLocation = async (pos) => {
         setSelectedPos(pos);
         map?.panTo(pos);
 
-        // const addr =
         await getAddressFromLatLng(pos.lat, pos.lng);
         setMapLatitude(pos.lat)
         setMapLongitude(pos.lng);
 
-        // Console latitude and longitude
         console.log("Latitude:", pos.lat, "Longitude:", pos.lng);
-        // console.log("Address:", addr);
     };
 
-    // Autocomplete
     const onLoadAutocomplete = (auto) => setAutocomplete(auto);
 
     const onPlaceChanged = async () => {
@@ -66,12 +59,11 @@ export default function LocationPicker() {
             lng: place.geometry.location.lng(),
         };
         handleLocation(pos);
-        
+
         const addressLocation = await getAddressFromLatLng(pos.lat, pos.lng);
         setAddressLocation(addressLocation);
     };
 
-    // Click on Map
     const handleMapClick = useCallback(
         async (event) => {
             const pos = {
@@ -186,4 +178,4 @@ export default function LocationPicker() {
             </div>
         </div>
     );
-}
+};

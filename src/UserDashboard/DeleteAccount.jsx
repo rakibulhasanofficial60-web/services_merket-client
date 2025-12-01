@@ -44,7 +44,7 @@ const DeleteAccount = () => {
 
           {/* Delete Button */}
           <div className="flex justify-center">
-            <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-md shadow-sm">
+            <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 cursor-pointer rounded-md shadow-sm">
               DELETE MY ACCOUNT
             </button>
           </div>

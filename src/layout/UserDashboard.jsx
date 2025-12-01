@@ -3,7 +3,6 @@ import { MdDeleteSweep, MdMenu } from "react-icons/md";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import logo from '../assets/logo/logo.png';
 import { FaUser } from "react-icons/fa";
-import { MdPayments } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlinePayments } from "react-icons/md";
 import { FaWallet } from "react-icons/fa6";
@@ -62,7 +61,7 @@ const UserDashboard = () => {
                     </li>
 
                     {/* Outstanding Payments */}
-                    <li className="list-none border-b border-dashed hover:bg-gray-50">
+                    {/* <li className="list-none border-b border-dashed hover:bg-gray-50">
                         <NavLink
                             to="/dashboard/outstanding-payments"
                             className={({ isActive }) =>
@@ -71,7 +70,7 @@ const UserDashboard = () => {
                             }>
                             <MdPayments /> Outstanding Payments
                         </NavLink>
-                    </li>
+                    </li> */}
 
                     {/* Saved Locations */}
                     <li className="list-none border-b border-dashed hover:bg-gray-50">
@@ -117,7 +116,7 @@ const UserDashboard = () => {
                                 `text-[14px] font-medium flex items-center gap-2 text-[#157D91] px-3 py-2 transition 
                         ${isActive ? "font-extrabold" : ""}`
                             }>
-                            <MdDeleteSweep /> Delete Account
+                            <MdDeleteSweep className="text-xl" /> Delete Account
                         </NavLink>
                     </li>
 
@@ -129,7 +128,7 @@ const UserDashboard = () => {
                                 `text-[14px] font-medium flex items-center gap-2 text-[#157D91] py-1 transition 
                         ${isActive ? "font-extrabold" : ""}`
                             }>
-                            <IoMdShare /> Invite a friend
+                            <IoMdShare className="text-[18px]" /> Invite a friend
                         </NavLink>
 
                         <span className="bg-[#ED6329] text-white text-[11px] px-2 py-0.5 rounded">

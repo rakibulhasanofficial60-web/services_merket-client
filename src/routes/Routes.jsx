@@ -8,7 +8,6 @@ import UserDashboard from "../layout/UserDashboard";
 import UserBooking from "../UserDashboard/UserBooking";
 import UserProfile from "../UserDashboard/UserProfile";
 import BookingSuccess from "./pages/BookingSuccess/BookingSuccess";
-import OutstandingPayments from "../UserDashboard/OutstandingPayments";
 import SavedLocations from "../UserDashboard/SaveLocations";
 import PaymentMethods from "../UserDashboard/PaymentMethods";
 import MyWallet from "../UserDashboard/MyWallet";
@@ -44,7 +43,7 @@ export const router = createBrowserRouter([
             { path: 'booking', element: <UserBooking /> },
             // { path: 'quotes', element: <UserQuotes /> },
             { path: 'profile', element: <UserProfile /> },
-            { path: 'outstanding-payments', element: <OutstandingPayments /> },
+            // { path: 'outstanding-payments', element: <OutstandingPayments /> },
             { path: 'saved-locations', element: <SavedLocations /> },
             { path: 'payment-methods', element: <PaymentMethods /> },
             { path: 'wallet', element: <MyWallet /> },

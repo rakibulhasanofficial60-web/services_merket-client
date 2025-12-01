@@ -1,10 +1,11 @@
 import { FaFacebookF, FaWhatsapp, FaTwitter, FaEnvelope } from "react-icons/fa";
+import invite from '../../src/assets/icon/invite.png'
 
 export default function InviteFriend() {
   return (
-    <div className="border rounded-md bg-white">
+    <div className="border-[#CED4DA] border rounded-md bg-white">
       {/* Header */}
-      <div className="flex items-center gap-3 border-b px-6 py-4">
+      <div className="flex items-center gap-3 border-[#CED4DA] border-b px-6 py-4">
         <span className="text-2xl text-teal-700">💠</span>
         <h2 className="text-xl font-semibold text-gray-800">Invite a friend</h2>
       </div>
@@ -55,7 +56,7 @@ export default function InviteFriend() {
         {/* Right Image */}
         <div className="w-full md:w-1/2">
           <img
-            src="/invite-friend.jpg"
+            src={invite}
             alt="Invite friend"
             className="w-full h-full object-cover rounded-r-md"
           />

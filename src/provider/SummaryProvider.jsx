@@ -8,13 +8,13 @@ import { useQueries } from "@tanstack/react-query";
 const SummaryContext = createContext();
 
 export const SummaryProvider = ({ children }) => {
+    const observer = useRef(null);
+    const { data } = useItem();
     const [services] = useAllServices();
     const [content] = useCoverContent();
     const [button] = useButton();
     const [showInput, setShowInput] = useState(false);
     const [activeId, setActiveId] = useState(null);
-    const observer = useRef(null);
-    const { data } = useItem();
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [addressLocation, setAddressLocation] = useState(null);
@@ -64,14 +64,15 @@ export const SummaryProvider = ({ children }) => {
         localStorage.setItem("addressInfo", JSON.stringify(updated));
     };
 
-    // const updateAddress = (updatedAddress) => {
-    //     const current = getAddresses();
-    //     const updated = current.map(addr =>
-    //         addr.id === updatedAddress.id ? updatedAddress : addr
-    //     );
-    //     setAddress(updated);
-    //     localStorage.setItem("addressInfo", JSON.stringify(updated));
-    // };
+    const updateAddress = (updatedAddress) => {
+        const current = getAddresses();
+        const updated = current.map(addr =>
+            addr.id === updatedAddress.id ? updatedAddress : addr
+        );
+        setAddress(updated);
+        localStorage.setItem("addressInfo", JSON.stringify(updated));
+        return updated;
+    };
 
     useEffect(() => {
         const sections = document.querySelectorAll("[id^='content-']");
@@ -113,12 +114,13 @@ export const SummaryProvider = ({ children }) => {
         item?.propertyType?.serviceType?.title || null
     );
 
-    const subtotal = itemSummary.reduce((acc, item) => acc + Number(item?.price || 0), 0);
-    const serviceCharge = Number((subtotal > 0 ? 20 : 0).toFixed(2));
-    const vat = Number((subtotal * 0.05).toFixed(2));
-    const total = Number((subtotal + serviceCharge + vat).toFixed(2));
+    const serviceCharge = itemSummary.reduce((acc, item) => acc + Number(item?.price || 0), 0);
+    const serviceFee = Number((serviceCharge > 0 ? 20 : 0).toFixed(2));
+    const subTotal = Number(serviceCharge + serviceFee);
+    const vat = Number((serviceCharge * 0.05).toFixed(2));
+    const total = Number((serviceCharge + serviceFee + vat).toFixed(2));
 
-    const summeryInfo = { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime, serviceTitle, saveAddress, mapLatitude, setMapLatitude, mapLongitude, setMapLongitude, addressLocation, setAddressLocation, addAddress, removeAddress, getAddresses, liveAddress, setLiveAddress };
+    const summeryInfo = { serviceCharge, serviceFee, subTotal, vat, total, services, button, setActiveId, activeId, content, itemSummary, showInput, setShowInput, address, setAddress, date, setDate, time, setTime, serviceTitle, saveAddress, mapLatitude, setMapLatitude, mapLongitude, setMapLongitude, addressLocation, setAddressLocation, addAddress, removeAddress, getAddresses, liveAddress, setLiveAddress, updateAddress };
 
     return (
         <SummaryContext.Provider value={summeryInfo}>
