@@ -30,7 +30,7 @@ const DateTime = () => {
     const [selectedTime, setSelectedTime] = useState(null);
     const scrollerRef = useRef(null);
 
-    const { itemSummary, total, vat, serviceCharge, serviceTitle, showInput, setShowInput, address, date, setDate, time, setTime } = useSummary();
+    const { itemSummary, vat, serviceCharge, serviceTitle, showInput, setShowInput, address, date, setDate, time, setTime } = useSummary();
 
     const scroll = (dir) => {
         if (!scrollerRef.current) return;
@@ -144,7 +144,8 @@ const DateTime = () => {
                     serviceTitle={serviceTitle}
                     address={address}
                     itemSummary={itemSummary}
-                    total={total}
+                    subTotal={serviceCharge}
+                    total={serviceCharge + (serviceCharge * 0.05)}
                     showInput={showInput}
                     setShowInput={setShowInput}
                     vat={vat}

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { generateId } from "./Map/generateId";
 
 const Address = () => {
-    const { itemSummary, total, vat, serviceCharge, showInput, setShowInput, liveAddress, serviceTitle, saveAddress, setLiveAddress } = useSummary();
+    const { itemSummary, vat, serviceCharge, showInput, setShowInput, address, serviceTitle, saveAddress, setLiveAddress } = useSummary();
     const [selectedType, setSelectedType] = useState("Apartment");
     const buttons = ["Apartment", "Villa", "Office", "Other"];
 
@@ -192,7 +192,20 @@ const Address = () => {
                         </form>
                     </div>
                 </div>
-                <Summery serviceTitle={serviceTitle} liveAddress={liveAddress} itemSummary={itemSummary} total={total} showInput={showInput} setShowInput={setShowInput} vat={vat} serviceCharge={serviceCharge} />
+                {/* <Summery serviceTitle={serviceTitle} liveAddress={liveAddress} itemSummary={itemSummary} total={total} showInput={showInput} setShowInput={setShowInput} vat={vat} serviceCharge={serviceCharge} /> */}
+
+                <Summery
+                    serviceTitle={serviceTitle}
+                    address={address}
+                    itemSummary={itemSummary}
+                    total={serviceCharge + (serviceCharge * 0.05)}
+                    subTotal={serviceCharge}
+                    showInput={showInput}
+                    setShowInput={setShowInput}
+                    vat={vat}
+                    serviceCharge={serviceCharge}
+                />
+
             </div>
 
             <div className="hidden md:block">

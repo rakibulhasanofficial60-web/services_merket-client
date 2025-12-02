@@ -12,15 +12,17 @@ import { SiTicktick } from "react-icons/si";
 import { useSummary } from "../../../provider/SummaryProvider";
 import dirhum1 from '../../../assets/icon/dirhum.png';
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 
 export default function Confirmation() {
     const [openModal, setOpenModal] = useState(false);
-    const { serviceCharge, serviceFee, subTotal, services, total, vat, date, time, mapLongitude, mapLatitude, liveAddress } = useSummary();
+    const { serviceCharge, serviceFee, subTotal, services, total, vat, date, time, mapLongitude, mapLatitude, liveAddress, itemSummary } = useSummary();
 
     const [paymentMethod, setPaymentMethod] = useState("");
     const navigate = useNavigate();
-
+    const ides = itemSummary.map(p => p.id);
+    
     const getDisplayAddress = () => {
         if (!liveAddress) return "No address provided";
 
@@ -47,14 +49,15 @@ export default function Confirmation() {
     const handelBookingConfirmation = async () => {
         try {
             const payload = {
+                propertyItemIds: ides,
                 serviceName: services[0]?.title || "",
                 address: getDisplayAddress(),
                 offer: "30% off",
                 serviceFee: Number(serviceCharge) || 0,
                 discount: 30,
                 subTotal: Number(total) || 0,
-                totalPay: paymentMethod === "Card" ? Number(total) + 5 : Number(total),
                 vat: Number(vat) || 0,
+                totalPay: paymentMethod === "Card" ? Number(total) + 5 : Number(total),
                 date: date || "",
                 time: time || "",
                 paymentMethod: paymentMethod || "Card",
@@ -74,6 +77,8 @@ export default function Confirmation() {
                 const errorData = await response.json();
                 console.error("Booking failed:", errorData);
                 return;
+            } else {
+                toast.success('Booking send');
             }
 
             const result = await response.json();

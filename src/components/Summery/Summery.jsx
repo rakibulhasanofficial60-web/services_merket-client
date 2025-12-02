@@ -28,7 +28,7 @@ export default function Summery({ total, showInput, setShowInput, vat, subTotal,
 
         const addressParts = [];
         if (type === "Apartment" || type === "Office") {
-            apartmentNo && addressParts.push(`Apt ${apartmentNo}`);
+            apartmentNo && addressParts.push(`${apartmentNo}`);
             buildingName && addressParts.push(buildingName);
         } else if (type === "Villa") {
             villaNo && addressParts.push(`Villa ${villaNo}`);

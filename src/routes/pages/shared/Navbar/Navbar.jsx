@@ -52,7 +52,7 @@ const Navbar = () => {
                                         z-50
                                     ">
                                 <Link
-                                    to="/dashboard/booking"
+                                    to="/dashboard/admin-booking"
                                     className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-[#01788E]"
                                 >
                                     My Booking
