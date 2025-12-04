@@ -1,15 +1,42 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { GoBrowser } from "react-icons/go";
-import { IoAddOutline, IoTrashOutline, IoCloseOutline } from "react-icons/io5";
-import { MdAccessTime, MdDateRange } from "react-icons/md";
+import { IoAddOutline, IoTrashOutline, IoCloseOutline, IoTimeOutline } from "react-icons/io5";
+import { MdDateRange, MdAccessTime } from "react-icons/md";
+import { FiCalendar, FiClock, FiTrash2 } from "react-icons/fi";
+import { BsClock } from "react-icons/bs";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+// Helper functions outside component
+const convertTo24Hour = (time12h) => {
+    if (!time12h) return "";
+    const [time, period] = time12h.split(' ');
+    const [hours, minutes] = time.split(':');
+    let hour = parseInt(hours, 10);
+
+    if (period === 'PM' && hour < 12) hour += 12;
+    if (period === 'AM' && hour === 12) hour = 0;
+
+    return `${hour.toString().padStart(2, '0')}:${minutes}`;
+};
+
+const convertTo12Hour = (time24h) => {
+    if (!time24h) return "";
+    const [hours, minutes] = time24h.split(':');
+    const hour = parseInt(hours, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12;
+    return `${hour12}:${minutes} ${ampm}`;
+};
 
 const AdminDateTime = () => {
-    const [fromDate, setFromDate] = useState("");
-    const [toDate, setToDate] = useState("");
+    const [fromDate, setFromDate] = useState(null);
+    const [toDate, setToDate] = useState(null);
     const [timeSlots, setTimeSlots] = useState([]);
     const [appliedRecords, setAppliedRecords] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [showTimePicker, setShowTimePicker] = useState({ index: null, type: null });
 
     const addSlot = () => {
         setTimeSlots([...timeSlots, { start: "", end: "" }]);
@@ -24,6 +51,45 @@ const AdminDateTime = () => {
     const removeSlot = (index) => {
         setTimeSlots(timeSlots.filter((_, i) => i !== index));
     };
+
+    // Generate time options for 12-hour format
+    const generateTimeOptions = () => {
+        const times = [];
+
+        // Helper function to convert to 24h for sorting
+        const to24h = (time12h) => {
+            if (!time12h) return "";
+            const [time, period] = time12h.split(' ');
+            const [hours, minutes] = time.split(':');
+            let hour = parseInt(hours, 10);
+
+            if (period === 'PM' && hour < 12) hour += 12;
+            if (period === 'AM' && hour === 12) hour = 0;
+
+            return `${hour.toString().padStart(2, '0')}:${minutes}`;
+        };
+
+        // Generate times with 15 minute intervals
+        for (let hour = 1; hour <= 12; hour++) {
+            for (let minute of ["00", "15", "30", "45"]) {
+                times.push(`${hour}:${minute} AM`);
+                times.push(`${hour}:${minute} PM`);
+            }
+        }
+
+        // Add 12:00 AM and 12:00 PM
+        times.push("12:00 AM");
+        times.push("12:00 PM");
+
+        // Sort by converting to 24h format first
+        return [...new Set(times)].sort((a, b) => {
+            const timeA = to24h(a);
+            const timeB = to24h(b);
+            return timeA.localeCompare(timeB);
+        });
+    };
+
+    const timeOptions = generateTimeOptions();
 
     const handleApply = async () => {
         if (!fromDate || !toDate) {
@@ -43,15 +109,39 @@ const AdminDateTime = () => {
             return;
         }
 
+        // Validate start time is before end time
+        for (const slot of timeSlots) {
+            const start24h = convertTo24Hour(slot.start);
+            const end24h = convertTo24Hour(slot.end);
+
+            if (start24h >= end24h) {
+                toast.error("Start time must be before end time");
+                return;
+            }
+        }
+
+        // Format dates for backend (YYYY-MM-DD)
+        const formatDateForBackend = (date) => {
+            if (!date) return "";
+            const d = new Date(date);
+            return d.toISOString().split('T')[0];
+        };
+
+        const startDate = formatDateForBackend(fromDate);
+        const endDate = formatDateForBackend(toDate);
+
+        // Convert to 24h format for backend
         const formattedSlots = timeSlots.map(
-            (slot) => `${slot.start} - ${slot.end}`
+            (slot) => `${convertTo24Hour(slot.start)} - ${convertTo24Hour(slot.end)}`
         );
 
         const payload = {
-            startDate: fromDate,
-            endDate: toDate,
+            startDate: startDate,
+            endDate: endDate,
             timeSlots: formattedSlots,
         };
+
+        console.log("Sending payload:", payload);
 
         setIsLoading(true);
         try {
@@ -62,22 +152,22 @@ const AdminDateTime = () => {
             });
 
             const data = await response.json();
+            console.log("API Response:", data);
+
             if (data.success) {
-                toast.success('Date & Time slots added successfully');
-                
+                toast.success('Time slots added successfully');
                 // Reset form
-                setFromDate("");
-                setToDate("");
+                setFromDate(null);
+                setToDate(null);
                 setTimeSlots([]);
-                
-                // Refresh records
+                // Refresh data
                 fetchDateTimeData();
             } else {
                 toast.error(data.message || "Failed to add time slots");
             }
         } catch (error) {
             console.error("Error sending data:", error);
-            toast.error("Something went wrong. Please try again.");
+            toast.error("Something went wrong");
         } finally {
             setIsLoading(false);
         }
@@ -85,19 +175,24 @@ const AdminDateTime = () => {
 
     const fetchDateTimeData = async () => {
         try {
+            console.log("Fetching data from API...");
             const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/date-time`);
             const data = await response.json();
+            console.log("Fetched data:", data);
+
             if (data.success) {
                 setAppliedRecords(data.Data || []);
+                console.log("Applied records set:", data.Data);
+            } else {
+                console.error("API returned error:", data.message);
             }
         } catch (error) {
             console.error("GET Error:", error);
-            toast.error("Failed to fetch time slots");
         }
     };
 
     const deleteTimeSlot = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this time slot?")) {
+        if (!window.confirm("Are you sure you want to delete this configuration?")) {
             return;
         }
 
@@ -108,14 +203,14 @@ const AdminDateTime = () => {
 
             const data = await response.json();
             if (data.success) {
-                toast.success("Time slot deleted successfully");
+                toast.success("Configuration deleted");
                 fetchDateTimeData();
             } else {
-                toast.error(data.message || "Failed to delete time slot");
+                toast.error(data.message || "Failed to delete");
             }
         } catch (error) {
             console.error("Delete Error:", error);
-            toast.error("Failed to delete time slot");
+            toast.error("Failed to delete");
         }
     };
 
@@ -123,230 +218,619 @@ const AdminDateTime = () => {
         fetchDateTimeData();
     }, []);
 
+    // Close time picker when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (showTimePicker.index !== null && !event.target.closest('.time-picker-dropdown')) {
+                setShowTimePicker({ index: null, type: null });
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [showTimePicker]);
+
     // Format date for display
     const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
+        if (!dateString) return "";
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+        } catch (error) {
+            console.log(error);
+            return dateString;
+        }
+    };
+
+    // Custom input component for DatePicker with manual input capability
+    const CustomDateInput = React.forwardRef(({ value, onClick, onChange, placeholder }, ref) => (
+        <div className="relative">
+            <input
+                type="text"
+                className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white text-gray-900 font-medium"
+                value={value}
+                onClick={onClick}
+                onChange={onChange}
+                placeholder={placeholder}
+                ref={ref}
+            />
+            <div
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                onClick={onClick}
+            >
+                <FiCalendar className="text-xl" />
+            </div>
+        </div>
+    ));
+
+    // Function to group time slots by date for table display
+    const getGroupedData = () => {
+        console.log("Grouping data from appliedRecords:", appliedRecords);
+
+        const grouped = {};
+
+        appliedRecords.forEach((record, recordIndex) => {
+            console.log(`Processing record ${recordIndex}:`, record);
+
+            // Handle different data structures
+            if (record.timeSlots && Array.isArray(record.timeSlots)) {
+                record.timeSlots.forEach((slot, slotIndex) => {
+                    console.log(`Slot ${slotIndex}:`, slot);
+
+                    // Check if slot has date property
+                    const dateKey = slot.date || record.startDate;
+
+                    if (!grouped[dateKey]) {
+                        grouped[dateKey] = {
+                            date: dateKey,
+                            slots: [],
+                            fullDate: formatDate(dateKey),
+                            recordId: record.id || record._id,
+                            dayName: new Date(dateKey).toLocaleDateString('en-US', { weekday: 'long' })
+                        };
+                    }
+
+                    // Extract time slot info
+                    let startTime, endTime;
+
+                    if (typeof slot === 'string') {
+                        // Format: "10:00 - 12:00"
+                        const [start, end] = slot.split(' - ');
+                        startTime = convertTo12Hour(start);
+                        endTime = convertTo12Hour(end);
+                    } else if (slot.startTime && slot.endTime) {
+                        // Object format: {startTime: "10:00", endTime: "12:00"}
+                        startTime = convertTo12Hour(slot.startTime);
+                        endTime = convertTo12Hour(slot.endTime);
+                    } else if (slot.start && slot.end) {
+                        // Object format: {start: "10:00", end: "12:00"}
+                        startTime = convertTo12Hour(slot.start);
+                        endTime = convertTo12Hour(slot.end);
+                    }
+
+                    if (startTime && endTime) {
+                        grouped[dateKey].slots.push({
+                            startTime,
+                            endTime,
+                            display: `${startTime} - ${endTime}`
+                        });
+                    }
+                });
+            } else if (record.time && Array.isArray(record.time)) {
+                // Alternative structure: record.time array
+                record.time.forEach((slot, slotIndex) => {
+                    console.log(`Time slot ${slotIndex}:`, slot);
+
+                    const dateKey = record.date || record.startDate;
+
+                    if (!grouped[dateKey]) {
+                        grouped[dateKey] = {
+                            date: dateKey,
+                            slots: [],
+                            fullDate: formatDate(dateKey),
+                            recordId: record.id || record._id,
+                            dayName: new Date(dateKey).toLocaleDateString('en-US', { weekday: 'long' })
+                        };
+                    }
+
+                    if (typeof slot === 'string') {
+                        const [start24h, end24h] = slot.split(' - ');
+                        const startTime = convertTo12Hour(start24h);
+                        const endTime = convertTo12Hour(end24h);
+
+                        grouped[dateKey].slots.push({
+                            startTime,
+                            endTime,
+                            display: `${startTime} - ${endTime}`
+                        });
+                    }
+                });
+            }
+        });
+
+        console.log("Grouped result:", grouped);
+
+        // Convert to array and sort by date
+        return Object.values(grouped).sort((a, b) => {
+            try {
+                return new Date(a.date) - new Date(b.date);
+            } catch (error) {
+                console.log(error);
+                return 0;
+            }
         });
     };
 
+    const groupedDates = getGroupedData();
+    console.log("Final grouped dates for display:", groupedDates);
+
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            {/* Header */}
-            <div className="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-50 rounded-lg">
-                            <GoBrowser className="text-xl text-blue-600" />
+        <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+            <div className="max-w-7xl mx-auto">
+                {/* Header */}
+                <div className="mb-8">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2.5 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-sm">
+                                <GoBrowser className="text-xl text-white" />
+                            </div>
+                            <div>
+                                <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Date & Time Management</h1>
+                                <p className="text-gray-600 mt-1">Configure available time slots for appointments</p>
+                            </div>
                         </div>
-                        <div>
-                            <h2 className="text-xl font-bold text-gray-800">Date & Time Management</h2>
-                            <p className="text-sm text-gray-500 mt-1">Configure available time slots for appointments</p>
+
+                        <div className="flex items-center gap-3">
+                            <div className="px-4 py-2 bg-blue-50 rounded-lg border border-blue-100">
+                                <div className="flex items-center gap-2">
+                                    <BsClock className="text-blue-600" />
+                                    <span className="text-sm font-medium text-blue-700">
+                                        {groupedDates.length} {groupedDates.length === 1 ? 'Date' : 'Dates'}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
-                            {appliedRecords.length} Active Slots
-                        </span>
                     </div>
                 </div>
-            </div>
 
-            <div className="p-6">
-                {/* Input Section */}
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 mb-8 border border-blue-100">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center gap-2">
-                        <MdDateRange className="text-blue-600" />
-                        Add New Time Slots
-                    </h3>
-
-                    {/* Date Range */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                        <div className="space-y-3">
-                            <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
-                                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                Start Date
-                            </label>
-                            <div className="relative">
-                                <input
-                                    type="date"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
-                                    value={fromDate}
-                                    onChange={(e) => setFromDate(e.target.value)}
-                                    min={new Date().toISOString().split('T')[0]}
-                                />
-                                <div className="absolute right-3 top-3 text-gray-400">
-                                    📅
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* Left Panel - Configuration */}
+                    <div className="lg:col-span-2 space-y-6">
+                        {/* Configuration Card */}
+                        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                            <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
+                                <div className="flex items-center gap-2.5">
+                                    <div className="p-2 bg-blue-100 rounded-lg">
+                                        <MdDateRange className="text-lg text-blue-600" />
+                                    </div>
+                                    <h2 className="text-xl font-semibold text-gray-900">Configure Time Slots</h2>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="space-y-3">
-                            <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
-                                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                End Date
-                            </label>
-                            <div className="relative">
-                                <input
-                                    type="date"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
-                                    value={toDate}
-                                    onChange={(e) => setToDate(e.target.value)}
-                                    min={fromDate || new Date().toISOString().split('T')[0]}
-                                />
-                                <div className="absolute right-3 top-3 text-gray-400">
-                                    📅
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Time Slots Section */}
-                    <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                            <h4 className="text-base font-medium text-gray-700 flex items-center gap-2">
-                                <MdAccessTime className="text-blue-600" />
-                                Time Slots
-                            </h4>
-                            <button
-                                onClick={addSlot}
-                                className="flex items-center gap-2 px-4 py-2 bg-white border border-blue-600 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                            >
-                                <IoAddOutline className="text-lg" />
-                                Add Slot
-                            </button>
-                        </div>
-
-                        <div className="space-y-3">
-                            {timeSlots.map((slot, index) => (
-                                <div key={index} className="flex items-center gap-3 p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
-                                    <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <div>
-                                            <label className="block text-xs text-gray-500 mb-1">Start Time</label>
-                                            <input
-                                                type="time"
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-500"
-                                                value={slot.start}
-                                                onChange={(e) => updateSlot(index, "start", e.target.value)}
+                            <div className="p-6">
+                                {/* Date Range */}
+                                <div className="mb-8">
+                                    <h3 className="text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">
+                                        <FiCalendar className="text-gray-500" />
+                                        Date Range
+                                    </h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                        <div className="space-y-2.5">
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                Start Date
+                                            </label>
+                                            <DatePicker
+                                                selected={fromDate}
+                                                onChange={(date) => setFromDate(date)}
+                                                selectsStart
+                                                startDate={fromDate}
+                                                endDate={toDate}
+                                                minDate={new Date()}
+                                                dateFormat="MM/dd/yyyy"
+                                                placeholderText="MM/DD/YYYY"
+                                                customInput={
+                                                    <CustomDateInput
+                                                        placeholder="MM/DD/YYYY"
+                                                    />
+                                                }
+                                                popperClassName="z-50"
+                                                popperPlacement="bottom-start"
+                                                isClearable
+                                                showMonthDropdown
+                                                showYearDropdown
+                                                dropdownMode="select"
                                             />
                                         </div>
-                                        <div>
-                                            <label className="block text-xs text-gray-500 mb-1">End Time</label>
-                                            <input
-                                                type="time"
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-500"
-                                                value={slot.end}
-                                                onChange={(e) => updateSlot(index, "end", e.target.value)}
+
+                                        <div className="space-y-2.5">
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                End Date
+                                            </label>
+                                            <DatePicker
+                                                selected={toDate}
+                                                onChange={(date) => setToDate(date)}
+                                                selectsEnd
+                                                startDate={fromDate}
+                                                endDate={toDate}
+                                                minDate={fromDate || new Date()}
+                                                dateFormat="MM/dd/yyyy"
+                                                placeholderText="MM/DD/YYYY"
+                                                customInput={
+                                                    <CustomDateInput
+                                                        placeholder="MM/DD/YYYY"
+                                                    />
+                                                }
+                                                popperClassName="z-50"
+                                                popperPlacement="bottom-start"
+                                                isClearable
+                                                showMonthDropdown
+                                                showYearDropdown
+                                                dropdownMode="select"
                                             />
                                         </div>
                                     </div>
+                                </div>
+
+                                {/* Time Slots */}
+                                <div className="mb-8">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                                            <FiClock className="text-gray-500" />
+                                            Time Slots (12-hour format)
+                                        </h3>
+                                        <button
+                                            onClick={addSlot}
+                                            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-blue-600 text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium shadow-sm hover:shadow"
+                                        >
+                                            <IoAddOutline className="text-lg" />
+                                            Add Slot
+                                        </button>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        {timeSlots.map((slot, index) => (
+                                            <div key={index} className="relative flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-blue-300 transition-colors group">
+                                                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    {/* Start Time */}
+                                                    <div className="space-y-1.5">
+                                                        <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                                                            Start Time
+                                                        </label>
+                                                        <div className="relative">
+                                                            <input
+                                                                type="text"
+                                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 cursor-pointer"
+                                                                value={slot.start}
+                                                                onClick={() => setShowTimePicker({
+                                                                    index,
+                                                                    type: 'start',
+                                                                    open: true
+                                                                })}
+                                                                placeholder="Click to select time"
+                                                                readOnly
+                                                            />
+                                                            <div
+                                                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                                                                onClick={() => setShowTimePicker({
+                                                                    index,
+                                                                    type: 'start',
+                                                                    open: true
+                                                                })}
+                                                            >
+                                                                <FiClock className="text-lg" />
+                                                            </div>
+
+                                                            {/* Time Picker Dropdown for Start Time */}
+                                                            {showTimePicker.index === index && showTimePicker.type === 'start' && (
+                                                                <div className="absolute left-0 right-0 top-full mt-1 z-10 time-picker-dropdown">
+                                                                    <div className="bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                                                        <div className="p-2 border-b border-gray-200 bg-gray-50">
+                                                                            <p className="text-xs text-gray-600 font-medium">Select Start Time</p>
+                                                                        </div>
+                                                                        <div className="max-h-48 overflow-y-auto">
+                                                                            {timeOptions.map((timeOption, idx) => (
+                                                                                <div
+                                                                                    key={idx}
+                                                                                    className={`px-3 py-2 hover:bg-blue-50 cursor-pointer ${slot.start === timeOption ? 'bg-blue-100' : ''}`}
+                                                                                    onClick={() => {
+                                                                                        updateSlot(index, 'start', timeOption);
+                                                                                        setShowTimePicker({ index: null, type: null });
+                                                                                    }}
+                                                                                >
+                                                                                    <span className="text-gray-800">{timeOption}</span>
+                                                                                </div>
+                                                                            ))}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+
+                                                    {/* End Time */}
+                                                    <div className="space-y-1.5">
+                                                        <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                                                            End Time
+                                                        </label>
+                                                        <div className="relative">
+                                                            <input
+                                                                type="text"
+                                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 cursor-pointer"
+                                                                value={slot.end}
+                                                                onClick={() => setShowTimePicker({
+                                                                    index,
+                                                                    type: 'end',
+                                                                    open: true
+                                                                })}
+                                                                placeholder="Click to select time"
+                                                                readOnly
+                                                            />
+                                                            <div
+                                                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                                                                onClick={() => setShowTimePicker({
+                                                                    index,
+                                                                    type: 'end',
+                                                                    open: true
+                                                                })}
+                                                            >
+                                                                <FiClock className="text-lg" />
+                                                            </div>
+
+                                                            {/* Time Picker Dropdown for End Time */}
+                                                            {showTimePicker.index === index && showTimePicker.type === 'end' && (
+                                                                <div className="absolute left-0 right-0 top-full mt-1 z-10 time-picker-dropdown">
+                                                                    <div className="bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                                                        <div className="p-2 border-b border-gray-200 bg-gray-50">
+                                                                            <p className="text-xs text-gray-600 font-medium">Select End Time</p>
+                                                                        </div>
+                                                                        <div className="max-h-48 overflow-y-auto">
+                                                                            {timeOptions.map((timeOption, idx) => (
+                                                                                <div
+                                                                                    key={idx}
+                                                                                    className={`px-3 py-2 hover:bg-blue-50 cursor-pointer ${slot.end === timeOption ? 'bg-blue-100' : ''}`}
+                                                                                    onClick={() => {
+                                                                                        updateSlot(index, 'end', timeOption);
+                                                                                        setShowTimePicker({ index: null, type: null });
+                                                                                    }}
+                                                                                >
+                                                                                    <span className="text-gray-800">{timeOption}</span>
+                                                                                </div>
+                                                                            ))}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {timeSlots.length > 1 && (
+                                                    <button
+                                                        onClick={() => removeSlot(index)}
+                                                        className="p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                        title="Remove slot"
+                                                    >
+                                                        <IoCloseOutline className="text-xl" />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        ))}
+
+                                        {timeSlots.length === 0 && (
+                                            <div className="text-center py-10 border-2 border-dashed border-gray-300 rounded-2xl bg-gray-50/50">
+                                                <div className="w-16 h-16 mx-auto mb-4 bg-blue-50 rounded-full flex items-center justify-center">
+                                                    <MdAccessTime className="text-3xl text-blue-400" />
+                                                </div>
+                                                <p className="text-gray-600 font-medium">No time slots added</p>
+                                                <p className="text-sm text-gray-400 mt-1">Add your first time slot to get started</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Apply Button */}
+                                <div className="pt-6 border-t border-gray-100">
                                     <button
-                                        onClick={() => removeSlot(index)}
-                                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                        title="Remove slot"
+                                        onClick={handleApply}
+                                        disabled={isLoading || timeSlots.length === 0 || !fromDate || !toDate}
+                                        className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                                     >
-                                        <IoCloseOutline className="text-xl" />
+                                        {isLoading ? (
+                                            <>
+                                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                                Applying Slots...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>Apply Time Slots</span>
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                                </svg>
+                                            </>
+                                        )}
                                     </button>
                                 </div>
-                            ))}
-
-                            {timeSlots.length === 0 && (
-                                <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
-                                    <MdAccessTime className="text-4xl text-gray-300 mx-auto mb-3" />
-                                    <p className="text-gray-500">No time slots added yet</p>
-                                    <p className="text-sm text-gray-400 mt-1">Click "Add Slot" to create new time slots</p>
-                                </div>
-                            )}
+                            </div>
                         </div>
                     </div>
 
-                    {/* Apply Button */}
-                    <div className="mt-8 pt-6 border-t border-blue-100">
-                        <button
-                            onClick={handleApply}
-                            disabled={isLoading || timeSlots.length === 0 || !fromDate || !toDate}
-                            className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
-                        >
-                            {isLoading ? (
-                                <>
-                                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                    Applying...
-                                </>
-                            ) : (
-                                <>
-                                    <span>Apply Time Slots</span>
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                    </svg>
-                                </>
-                            )}
-                        </button>
+                    {/* Right Panel - Preview */}
+                    <div className="space-y-6">
+                        {/* Stats Card */}
+                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Overview</h3>
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-blue-100">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-blue-100 rounded-lg">
+                                            <FiCalendar className="text-blue-600" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm text-gray-600">Selected Range</p>
+                                            <p className="font-semibold text-gray-900">
+                                                {fromDate && toDate ? (
+                                                    <>
+                                                        {fromDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - {toDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                                    </>
+                                                ) : (
+                                                    "Not set"
+                                                )}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-blue-100">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-green-100 rounded-lg">
+                                            <BsClock className="text-green-600" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm text-gray-600">Time Slots</p>
+                                            <p className="font-semibold text-gray-900">{timeSlots.length} slots</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-blue-100">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-purple-100 rounded-lg">
+                                            <IoTimeOutline className="text-purple-600" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm text-gray-600">Total Days</p>
+                                            <p className="font-semibold text-gray-900">
+                                                {fromDate && toDate ? (
+                                                    Math.ceil((toDate - fromDate) / (1000 * 60 * 60 * 24)) + 1
+                                                ) : 0} days
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Preview Slots */}
+                        {timeSlots.length > 0 && (
+                            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Preview (12-hour format)</h3>
+                                <div className="space-y-3">
+                                    {timeSlots.map((slot, index) => (
+                                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                                <span className="font-medium text-gray-900">
+                                                    {slot.start} - {slot.end}
+                                                </span>
+                                            </div>
+                                            <span className="text-sm text-gray-500">Slot {index + 1}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                                    <p className="text-xs text-blue-700">
+                                        <span className="font-medium">Note:</span> Time slots will be converted to 24-hour format for backend storage.
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* API Data Preview - For Debugging */}
+                        {appliedRecords.length > 0 && (
+                            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">API Data Preview</h3>
+                                <div className="text-xs font-mono bg-gray-900 text-gray-100 p-4 rounded-lg overflow-auto max-h-60">
+                                    <pre>{JSON.stringify(appliedRecords, null, 2)}</pre>
+                                </div>
+                                <p className="text-xs text-gray-500 mt-2">
+                                    Showing raw API response for debugging
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
 
                 {/* Applied Records Table */}
-                {appliedRecords.length > 0 && (
-                    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                            <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                </svg>
-                                Active Time Slots
-                            </h3>
+                {groupedDates.length > 0 && (
+                    <div className="mt-8 bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div className="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-gray-100 rounded-lg">
+                                        <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                        </svg>
+                                    </div>
+                                    <h2 className="text-xl font-semibold text-gray-900">Configured Time Slots (12-hour format)</h2>
+                                </div>
+                                <div className="text-sm text-gray-600">
+                                    Showing {groupedDates.length} dates
+                                </div>
+                            </div>
                         </div>
 
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead>
                                     <tr className="bg-gray-50">
-                                        <th className="py-3 px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">
-                                            Date Range
+                                        <th className="py-4 px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">
+                                            <div className="flex items-center gap-2">
+                                                <FiCalendar className="text-gray-500" />
+                                                Date
+                                            </div>
                                         </th>
-                                        <th className="py-3 px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">
-                                            Time Slots
+                                        <th className="py-4 px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">
+                                            <div className="flex items-center gap-2">
+                                                <BsClock className="text-gray-500" />
+                                                Time Slots
+                                            </div>
                                         </th>
-                                        <th className="py-3 px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">
+                                        <th className="py-4 px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">
+                                            Total
+                                        </th>
+                                        <th className="py-4 px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">
                                             Status
                                         </th>
-                                        <th className="py-3 px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">
+                                        <th className="py-4 px-6 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">
                                             Actions
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200">
-                                    {appliedRecords.map((record) => (
-                                        <tr key={record.id} className="hover:bg-gray-50 transition-colors">
+                                    {groupedDates.map((item, index) => (
+                                        <tr key={index} className="hover:bg-gray-50/50 transition-colors">
                                             <td className="py-4 px-6">
                                                 <div className="space-y-1">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-sm font-medium text-gray-900">
-                                                            {formatDate(record.startDate)}
-                                                        </span>
-                                                        <span className="text-gray-400">→</span>
-                                                        <span className="text-sm font-medium text-gray-900">
-                                                            {formatDate(record.endDate)}
-                                                        </span>
+                                                    <div className="text-sm font-semibold text-gray-900">
+                                                        {item.fullDate}
                                                     </div>
                                                     <div className="text-xs text-gray-500">
-                                                        {Math.ceil((new Date(record.endDate) - new Date(record.startDate)) / (1000 * 60 * 60 * 24)) + 1} days
+                                                        {item.dayName}
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="py-4 px-6">
-                                                <div className="flex flex-wrap gap-2">
-                                                    {record.timeSlots?.map((slot, idx) => (
+                                                <div className="flex flex-wrap gap-2 max-w-md">
+                                                    {item.slots.map((slot, idx) => (
                                                         <span
                                                             key={idx}
-                                                            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                                                            className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100"
                                                         >
-                                                            {slot}
+                                                            <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                                                            {slot.display || `${slot.startTime} - ${slot.endTime}`}
                                                         </span>
                                                     ))}
                                                 </div>
+                                            </td>
+                                            <td className="py-4 px-6">
+                                                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                    {item.slots.length} slots
+                                                </span>
                                             </td>
                                             <td className="py-4 px-6">
                                                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -356,11 +840,11 @@ const AdminDateTime = () => {
                                             </td>
                                             <td className="py-4 px-6">
                                                 <button
-                                                    onClick={() => deleteTimeSlot(record.id)}
-                                                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                                    title="Delete"
+                                                    onClick={() => deleteTimeSlot(item.recordId)}
+                                                    className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-gray-300 hover:border-red-200"
                                                 >
-                                                    <IoTrashOutline className="text-lg" />
+                                                    <FiTrash2 className="text-sm" />
+                                                    Remove
                                                 </button>
                                             </td>
                                         </tr>
@@ -373,11 +857,11 @@ const AdminDateTime = () => {
                         <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
                             <div className="flex items-center justify-between">
                                 <div className="text-sm text-gray-600">
-                                    Showing <span className="font-medium">{appliedRecords.length}</span> time slot configurations
+                                    <span className="font-medium">{groupedDates.length}</span> date configurations loaded
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <button className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                                        Export
+                                    <button className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+                                        Export CSV
                                     </button>
                                 </div>
                             </div>
@@ -385,15 +869,41 @@ const AdminDateTime = () => {
                     </div>
                 )}
 
-                {appliedRecords.length === 0 && (
-                    <div className="text-center py-12 border-2 border-dashed border-gray-300 rounded-xl">
-                        <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                            <MdAccessTime className="text-3xl text-gray-400" />
+                {groupedDates.length === 0 && appliedRecords.length === 0 && (
+                    <div className="mt-8 text-center py-16 border-2 border-dashed border-gray-300 rounded-2xl bg-gray-50/50">
+                        <div className="w-20 h-20 mx-auto mb-5 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center">
+                            <MdAccessTime className="text-4xl text-blue-400" />
                         </div>
-                        <h4 className="text-lg font-medium text-gray-700 mb-2">No Time Slots Configured</h4>
-                        <p className="text-gray-500 max-w-md mx-auto">
-                            Start by adding date ranges and time slots above. Your configurations will appear here.
+                        <h4 className="text-xl font-semibold text-gray-700 mb-2">No Time Slots Configured</h4>
+                        <p className="text-gray-500 max-w-md mx-auto mb-6">
+                            Configure your first date range and time slots to get started
                         </p>
+                        <div className="inline-flex items-center gap-2 text-blue-600 font-medium">
+                            <IoAddOutline className="text-lg" />
+                            <span>Add your first configuration</span>
+                        </div>
+                    </div>
+                )}
+
+                {groupedDates.length === 0 && appliedRecords.length > 0 && (
+                    <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-2xl p-6">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-2 bg-yellow-100 rounded-lg">
+                                <svg className="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                </svg>
+                            </div>
+                            <h3 className="text-lg font-semibold text-yellow-800">Data Format Issue</h3>
+                        </div>
+                        <p className="text-yellow-700 mb-3">
+                            Data is available from API but couldn't be displayed properly. Check the console for details.
+                        </p>
+                        <button
+                            onClick={() => console.log("Applied Records:", appliedRecords)}
+                            className="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors text-sm font-medium"
+                        >
+                            Check Console for Data
+                        </button>
                     </div>
                 )}
             </div>
@@ -402,218 +912,3 @@ const AdminDateTime = () => {
 };
 
 export default AdminDateTime;
-
-
-
-
-
-
-
-
-
-
-
-// main component 
-// import { useEffect, useState } from "react";
-// import toast from "react-hot-toast";
-// import { GoBrowser } from "react-icons/go";
-
-// const AdminDateTime = () => {
-//     const [fromDate, setFromDate] = useState("");
-//     const [toDate, setToDate] = useState("");
-//     const [timeSlots, setTimeSlots] = useState([]);
-//     const [appliedRecords, setAppliedRecords] = useState([]);
-
-
-//     const addSlot = () => {
-//         setTimeSlots([...timeSlots, { start: "", end: "" }]);
-//     };
-
-//     const updateSlot = (index, field, value) => {
-//         const updated = [...timeSlots];
-//         updated[index][field] = value;
-//         setTimeSlots(updated);
-//     };
-
-//     const removeSlot = (index) => {
-//         setTimeSlots(timeSlots.filter((_, i) => i !== index));
-//     };
-
-//     const handleApply = async () => {
-//         if (!fromDate || !toDate)
-//             return alert("দয়া করে তারিখ নির্বাচন করুন");
-
-
-//         if (timeSlots.length === 0)
-//             return alert("কমপক্ষে একটি টাইম স্লট দিন");
-
-//         const formattedSlots = timeSlots.map(
-//             (slot) => `${slot.start} - ${slot.end}`
-//         );
-
-//         const payload = {
-//             startDate: fromDate,
-//             endDate: toDate,
-//             timeSlots: formattedSlots,
-//         };
-//         // console.log(payload);
-//         try {
-//             const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/date-time/create`, {
-//                 method: "POST",
-//                 headers: { "Content-Type": "application/json" },
-//                 body: JSON.stringify(payload),
-//             });
-
-//             const data = await response.json();
-//             if (data.success) {
-//                 setAppliedRecords([
-//                     ...appliedRecords,
-//                     {
-//                         id: Date.now(),
-//                         startDate: fromDate,
-//                         endDate: toDate,
-//                         timeSlots: formattedSlots,
-//                     },
-//                 ]);
-//                 toast.success('Data & Time slots added successfully');
-//             }
-//         } catch (error) {
-//             console.error("Error sending data:", error);
-//             alert("something wrong");
-//         }
-//     };
-
-//     const fetchDateTimeData = async () => {
-//         try {
-//             const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/date-time`);
-//             const data = await response.json();
-//             setAppliedRecords(data.Data);
-
-//         } catch (error) {
-//             console.error("GET Error:", error);
-//         }
-//     };
-
-//     useEffect(() => {
-//         fetchDateTimeData();
-//     }, []);
-
-
-//     return (
-//         <div className="border border-[#E5E7EB] px-2 md:px-6 py-4 rounded-lg bg-white w-full max-w-4xl mx-auto">
-
-//             {/* Header */}
-//             <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
-//                 <h2 className="flex items-center gap-2.5 text-xl font-semibold text-[#5D4F52]">
-//                     <GoBrowser className="text-[#01788E]" /> Date & Time
-//                 </h2>
-
-//                 <button className="btn btn-outline" onClick={handleApply}>
-//                     Apply
-//                 </button>
-//             </div>
-
-//             {/* Date Fields */}
-//             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-//                 <div>
-//                     <label className="block text-sm font-medium text-gray-700 mb-1">From</label>
-//                     <input
-//                         type="date"
-//                         className="border border-gray-300 rounded-lg px-3 py-2 w-full"
-//                         value={fromDate}
-//                         onChange={(e) => setFromDate(e.target.value)}
-//                     />
-//                 </div>
-
-//                 <div>
-//                     <label className="block text-sm font-medium text-gray-700 mb-1">To</label>
-//                     <input
-//                         type="date"
-//                         className="border border-gray-300 rounded-lg px-3 py-2 w-full"
-//                         value={toDate}
-//                         onChange={(e) => setToDate(e.target.value)}
-//                     />
-//                 </div>
-//             </div>
-
-//             {/* Time Slots */}
-//             <div className="mt-6">
-//                 <h3 className="text-lg font-semibold text-gray-700 mb-3">Time Slots</h3>
-
-//                 {timeSlots.map((slot, index) => (
-//                     <div key={index} className="flex items-center gap-3 mb-3">
-//                         <input
-//                             type="time"
-//                             className="border border-gray-300 rounded-lg px-3 py-2"
-//                             value={slot.start}
-//                             onChange={(e) => updateSlot(index, "start", e.target.value)}
-//                         />
-
-//                         <span>-</span>
-
-//                         <input
-//                             type="time"
-//                             className="border border-gray-300 rounded-lg px-3 py-2"
-//                             value={slot.end}
-//                             onChange={(e) => updateSlot(index, "end", e.target.value)}
-//                         />
-
-//                         <button className="btn btn-outline" onClick={() => removeSlot(index)}>
-//                             X
-//                         </button>
-//                     </div>
-//                 ))}
-
-//                 <button className="btn btn-outline mt-4" onClick={addSlot}>
-//                     Add Time Slot
-//                 </button>
-//             </div>
-
-//             {/* Applied Records Table */}
-//             <div className="mt-6 overflow-x-auto">
-//                 <table className="min-w-full border-collapse border border-gray-300 text-sm">
-//                     <thead className="bg-gray-200">
-//                         <tr>
-//                             {/* Left title column */}
-//                             <th className="border px-4 py-2 text-left font-semibold bg-gray-100">Date</th>
-//                             {/* Right columns: Dates dynamically */}
-//                             {appliedRecords?.map((item) => (
-//                                 <th
-//                                     key={item.id}
-//                                     className="border px-4 py-2 text-center font-semibold text-gray-700 whitespace-nowrap"
-//                                 >
-//                                     {item.date}
-//                                 </th>
-//                             ))}
-//                         </tr>
-//                     </thead>
-//                     <tbody>
-//                         {/* Time Slots Row */}
-//                         <tr className="bg-white hover:bg-gray-50">
-//                             {/* Left title */}
-//                             <td className="border px-4 py-2 font-medium bg-gray-50">Time Slots</td>
-//                             {/* Time slots for each date */}
-//                             {appliedRecords?.map((item) => (
-//                                 <td key={item.id} className="border px-4 py-2 align-top whitespace-nowrap">
-//                                     <div className="flex flex-wrap gap-2">
-//                                         {item.time?.length > 0 ? (
-//                                             item.time.map((slot, idx) => (
-//                                                 <span key={idx} className="bg-gray-100 px-2 py-1 rounded text-sm">
-//                                                     {slot}
-//                                                 </span>
-//                                             ))
-//                                         ) : (
-//                                             <span className="text-gray-400 italic">No slots</span>
-//                                         )}
-//                                     </div>
-//                                 </td>
-//                             ))}
-//                         </tr>
-//                     </tbody>
-//                 </table>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default AdminDateTime;
