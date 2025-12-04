@@ -21,14 +21,14 @@ const convertTo24Hour = (time12h) => {
     return `${hour.toString().padStart(2, '0')}:${minutes}`;
 };
 
-const convertTo12Hour = (time24h) => {
-    if (!time24h) return "";
-    const [hours, minutes] = time24h.split(':');
-    const hour = parseInt(hours, 10);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes} ${ampm}`;
-};
+// const convertTo12Hour = (time24h) => {
+//     if (!time24h) return "";
+//     const [hours, minutes] = time24h.split(':');
+//     const hour = parseInt(hours, 10);
+//     const ampm = hour >= 12 ? 'PM' : 'AM';
+//     const hour12 = hour % 12 || 12;
+//     return `${hour12}:${minutes} ${ampm}`;
+// };
 
 const AdminDateTime = () => {
     const [fromDate, setFromDate] = useState(null);
@@ -56,19 +56,6 @@ const AdminDateTime = () => {
     const generateTimeOptions = () => {
         const times = [];
 
-        // Helper function to convert to 24h for sorting
-        const to24h = (time12h) => {
-            if (!time12h) return "";
-            const [time, period] = time12h.split(' ');
-            const [hours, minutes] = time.split(':');
-            let hour = parseInt(hours, 10);
-
-            if (period === 'PM' && hour < 12) hour += 12;
-            if (period === 'AM' && hour === 12) hour = 0;
-
-            return `${hour.toString().padStart(2, '0')}:${minutes}`;
-        };
-
         // Generate times with 15 minute intervals
         for (let hour = 1; hour <= 12; hour++) {
             for (let minute of ["00", "15", "30", "45"]) {
@@ -83,8 +70,8 @@ const AdminDateTime = () => {
 
         // Sort by converting to 24h format first
         return [...new Set(times)].sort((a, b) => {
-            const timeA = to24h(a);
-            const timeB = to24h(b);
+            const timeA = convertTo24Hour(a);
+            const timeB = convertTo24Hour(b);
             return timeA.localeCompare(timeB);
         });
     };
@@ -130,18 +117,18 @@ const AdminDateTime = () => {
         const startDate = formatDateForBackend(fromDate);
         const endDate = formatDateForBackend(toDate);
 
-        // Convert to 24h format for backend
+        // **এখন থেকে 12-hour format এ পাঠাবো (AM/PM)**
         const formattedSlots = timeSlots.map(
-            (slot) => `${convertTo24Hour(slot.start)} - ${convertTo24Hour(slot.end)}`
+            (slot) => `${slot.start} - ${slot.end}`
         );
 
         const payload = {
             startDate: startDate,
             endDate: endDate,
-            timeSlots: formattedSlots,
+            timeSlots: formattedSlots, // 12-hour format এ পাঠানো
         };
 
-        console.log("Sending payload:", payload);
+        console.log("Sending payload (12-hour format):", payload);
 
         setIsLoading(true);
         try {
@@ -283,7 +270,7 @@ const AdminDateTime = () => {
                     console.log(`Slot ${slotIndex}:`, slot);
 
                     // Check if slot has date property
-                    const dateKey = slot.date || record.startDate;
+                    const dateKey = slot.date || record.startDate || record.date;
 
                     if (!grouped[dateKey]) {
                         grouped[dateKey] = {
@@ -299,18 +286,19 @@ const AdminDateTime = () => {
                     let startTime, endTime;
 
                     if (typeof slot === 'string') {
-                        // Format: "10:00 - 12:00"
+                        // Format: "10:00 AM - 12:00 PM"
                         const [start, end] = slot.split(' - ');
-                        startTime = convertTo12Hour(start);
-                        endTime = convertTo12Hour(end);
+                        // যেহেতু এখন 12-hour format এ আসবে, তাই convertTo12Hour দরকার নেই
+                        startTime = start;
+                        endTime = end;
                     } else if (slot.startTime && slot.endTime) {
-                        // Object format: {startTime: "10:00", endTime: "12:00"}
-                        startTime = convertTo12Hour(slot.startTime);
-                        endTime = convertTo12Hour(slot.endTime);
+                        // Object format: {startTime: "10:00 AM", endTime: "12:00 PM"}
+                        startTime = slot.startTime;
+                        endTime = slot.endTime;
                     } else if (slot.start && slot.end) {
-                        // Object format: {start: "10:00", end: "12:00"}
-                        startTime = convertTo12Hour(slot.start);
-                        endTime = convertTo12Hour(slot.end);
+                        // Object format: {start: "10:00 AM", end: "12:00 PM"}
+                        startTime = slot.start;
+                        endTime = slot.end;
                     }
 
                     if (startTime && endTime) {
@@ -339,14 +327,12 @@ const AdminDateTime = () => {
                     }
 
                     if (typeof slot === 'string') {
-                        const [start24h, end24h] = slot.split(' - ');
-                        const startTime = convertTo12Hour(start24h);
-                        const endTime = convertTo12Hour(end24h);
-
+                        // এখন 12-hour format আসবে: "10:00 AM - 1:00 PM"
+                        const [start, end] = slot.split(' - ');
                         grouped[dateKey].slots.push({
-                            startTime,
-                            endTime,
-                            display: `${startTime} - ${endTime}`
+                            startTime: start,
+                            endTime: end,
+                            display: `${start} - ${end}`
                         });
                     }
                 });
@@ -734,22 +720,9 @@ const AdminDateTime = () => {
                                 </div>
                                 <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
                                     <p className="text-xs text-blue-700">
-                                        <span className="font-medium">Note:</span> Time slots will be converted to 24-hour format for backend storage.
+                                        <span className="font-medium">Note:</span> Time slots will be sent to server in 12-hour format (AM/PM).
                                     </p>
                                 </div>
-                            </div>
-                        )}
-
-                        {/* API Data Preview - For Debugging */}
-                        {appliedRecords.length > 0 && (
-                            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">API Data Preview</h3>
-                                <div className="text-xs font-mono bg-gray-900 text-gray-100 p-4 rounded-lg overflow-auto max-h-60">
-                                    <pre>{JSON.stringify(appliedRecords, null, 2)}</pre>
-                                </div>
-                                <p className="text-xs text-gray-500 mt-2">
-                                    Showing raw API response for debugging
-                                </p>
                             </div>
                         )}
                     </div>
@@ -859,10 +832,8 @@ const AdminDateTime = () => {
                                 <div className="text-sm text-gray-600">
                                     <span className="font-medium">{groupedDates.length}</span> date configurations loaded
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <button className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium">
-                                        Export CSV
-                                    </button>
+                                <div className="text-xs text-gray-500">
+                                    All times in 12-hour format (AM/PM)
                                 </div>
                             </div>
                         </div>

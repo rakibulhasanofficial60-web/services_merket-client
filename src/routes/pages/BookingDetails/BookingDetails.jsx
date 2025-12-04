@@ -5,7 +5,9 @@ import { useSummary } from "../../../provider/SummaryProvider";
 
 
 export default function BookingDetails() {
-    const { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime } = useSummary();
+    const { address, date, time } = useSummary();
+
+    // const { services, button, setActiveId, activeId, content, itemSummary, total, showInput, setShowInput, vat, serviceCharge, address, setAddress, date, setDate, time, setTime } = useSummary();
 
     return (
         <div className="w-full min-h-screen p-4 flex justify-center items-start">
@@ -99,4 +101,4 @@ export default function BookingDetails() {
             </div>
         </div>
     );
-}
+};

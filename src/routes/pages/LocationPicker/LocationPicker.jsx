@@ -140,15 +140,15 @@ export default function LocationPicker() {
         setFromListSelection(false);
     };
 
-    const handleBackToAddressList = () => {
-        setShowMap(false);
-        if (selectedAddress) {
-            setIsNextDisabled(false);
-            setFromListSelection(true);
-        } else {
-            setIsNextDisabled(true);
-        }
-    };
+    // const handleBackToAddressList = () => {
+    //     setShowMap(false);
+    //     if (selectedAddress) {
+    //         setIsNextDisabled(false);
+    //         setFromListSelection(true);
+    //     } else {
+    //         setIsNextDisabled(true);
+    //     }
+    // };
 
     // ✅ Next button custom handler
     const handleNextClick = async () => {
@@ -314,7 +314,6 @@ export default function LocationPicker() {
                 />
             </div>
             <div className="hidden md:block">
-                {/* ✅ handleNextClick function pass করো */}
                 <NextBtn
                     disabled={isNextDisabled}
                     onClick={handleNextClick}

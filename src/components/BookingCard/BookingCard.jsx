@@ -16,7 +16,7 @@ const BookingCard = ({ item }) => {
     const navigate = useNavigate();
 
     return (
-        <div className="w-full max-w-xl bg-white border rounded-2xl p-5 shadow-md hover:shadow-lg transition cursor-pointer">
+        <div className="w-full max-w-xl border-[#01788E] rounded-2xl p-5 shadow-md hover:shadow-lg transition cursor-pointer">
 
             {/* Header */}
             <div className="flex justify-between items-start">
@@ -46,7 +46,7 @@ const BookingCard = ({ item }) => {
                 {/* Total Price */}
                 <div className="flex items-center gap-1">
                     <img src={dirhum} className="h-5 w-5" alt="currency" />
-                    <p className="text-[22px] font-bold text-gray-900">{totalPay}</p>
+                    <p className="text-[20px] font-bold text-gray-700">{totalPay}</p>
                 </div>
 
                 {/* Manage Button */}
@@ -54,7 +54,7 @@ const BookingCard = ({ item }) => {
                     onClick={() => navigate("/booking-details")}
                     className="flex items-center gap-2 text-[14px] font-semibold text-[#01788E] border border-[#01788E] px-4 py-2 rounded-lg hover:bg-[#F3FAFB] transition"
                 >
-                    MANAGE
+                    Manage
                     <FaArrowRight className="text-[12px]" />
                 </button>
             </div>
