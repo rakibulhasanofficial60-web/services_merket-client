@@ -51,7 +51,7 @@ export default function BookingDetails() {
                         <p className="text-gray-500">20251119000426MPDXB</p>
                     </div>
 
-                    <div className="flex justify-between py-2 border-4">
+                    <div className="flex justify-between py-2">
                         <p>Start time</p>
                         <p className="text-gray-500">{date}, {time}</p>
                     </div>
@@ -62,7 +62,6 @@ export default function BookingDetails() {
                     </div>
                 </div>
 
-                {/* Service */}
                 <div className="mt-6 rounded-lg p-4 shadow-md">
                     <h2 className="font-semibold mb-2">Service</h2>
 

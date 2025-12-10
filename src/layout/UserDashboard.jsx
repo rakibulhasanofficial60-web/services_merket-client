@@ -15,8 +15,8 @@ import { IoMdTime } from "react-icons/io";
 
 
 const UserDashboard = () => {
-    const user = true;
-    const admin = false;
+    const user = false;
+    const admin = true;
 
 
     const links = (
