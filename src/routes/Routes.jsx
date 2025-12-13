@@ -1,4 +1,3 @@
-import { createBrowserRouter } from "react-router-dom";
 import Main from "../layout/Main";
 import Home from "./pages/Home/Home/Home";
 import Address from "./pages/Address/Address";
@@ -21,6 +20,7 @@ import AddPropertyType from "../AdminDashboard/AddPropertyType";
 import AddPropertyItem from "../AdminDashboard/AddPropertyItem";
 import AdminDateTime from "../AdminDashboard/AdminDateTime";
 import LocationPicker from "./pages/LocationPicker/LocationPicker";
+import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
     {
@@ -33,7 +33,12 @@ export const router = createBrowserRouter([
             { path: 'date-time', element: <DateTime /> },
             { path: 'confirmation', element: <Confirmation /> },
             { path: 'booking-success', element: <BookingSuccess /> },
-            { path: 'booking-details', element: <BookingDetails /> }
+            // { path: 'booking-details', element: <BookingDetails /> }
+            {
+                path: '/booking-details/:id',
+                element: <BookingDetails></BookingDetails>,
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_BACKEND_API_URL}/booking/${params.id}`)
+            }
         ]
     },
     {

@@ -15,6 +15,11 @@ const BookingCard = ({ item }) => {
     const { serviceName, status, date, time, totalPay } = item;
     const navigate = useNavigate();
 
+    const handelManagebooking = item => {
+        console.log(item.id);
+        navigate(`/booking-details/${item.id}`);
+    }
+
     return (
         <div className="w-full max-w-xl border-[#01788E] rounded-2xl p-5 shadow-md hover:shadow-lg transition cursor-pointer">
 
@@ -51,7 +56,7 @@ const BookingCard = ({ item }) => {
 
                 {/* Manage Button */}
                 <button
-                    onClick={() => navigate("/booking-details")}
+                    onClick={() => handelManagebooking(item)}
                     className="flex items-center gap-2 text-[14px] font-semibold text-[#01788E] border border-[#01788E] px-4 py-2 rounded-lg hover:bg-[#F3FAFB] transition"
                 >
                     Manage
